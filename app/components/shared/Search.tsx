@@ -1,12 +1,14 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Input from "@/app/components/ui/Input";
 
 export default function Search() {
-    const [query, setQuery] = useState("");
+    const searchParams = useSearchParams();
+
+    const [query, setQuery] = useState(searchParams.get("query") ?? "");
     const pathname = usePathname();
     const router = useRouter();
 

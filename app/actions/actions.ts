@@ -16,12 +16,13 @@ export const fetchBlogPosts = async (query?: string | string[]) => {
 }
 
 // Fetch blog post by ID
-export const fetchBlogPostById = async (postId: string) => {
+export const fetchBlogPostById = async (postId: string): Promise<TBlogPost> => {
     const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts/${postId}`);
     return await res.json();
 }
 
-export const deleteBlogPost = async (postId: string) => {
+// Delete blog post by ID
+export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
     const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts/${postId}`, {
         method: "DELETE"
     });
