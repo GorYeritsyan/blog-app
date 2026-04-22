@@ -14,7 +14,7 @@ const button = tv({
             outline: "border border-gray-200 bg-white hover:bg-zinc-100 text-zinc-600"
         }
     }
-})
+});
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: React.ReactNode;

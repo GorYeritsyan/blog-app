@@ -1,15 +1,12 @@
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
+import { fetchBlogPostById } from "@/app/actions/actions";
 
 export default async function Page({ params }: { params: Promise<{ postId: string }>}) {
     const { postId } = await params;
-
-    const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts/${postId}`);
-    const blogPost = await res.json();
+    const blogPost = await fetchBlogPostById(postId);
 
     const date = new Date(blogPost.createdAt).toDateString();
-
-    console.log(blogPost);
 
     return (
         <section>

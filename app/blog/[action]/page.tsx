@@ -3,8 +3,6 @@ import Container from "@/app/components/shared/Container";
 export default async function Page({ params }: { params: Promise<{ action: "create" | "edit" }> }) {
     const { action } = await params;
 
-    console.log(action);
-
     return (
         <section>
             <Container>

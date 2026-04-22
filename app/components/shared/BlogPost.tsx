@@ -1,9 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { type TBlogPost } from "@/app/types/types";
 import Button from "@/app/components/ui/Button";
+import { deleteBlogPost } from "@/app/actions/actions";
+import { useRouter } from "next/navigation";
 
 export default function BlogPost({ post }: { post: TBlogPost }) {
+    const router = useRouter();
     const date = new Date(post.createdAt).toDateString();
+
+    const handleDeleteBlogPost = async (postId: string) => {
+        await deleteBlogPost(postId);
+        router.refresh();
+    }
 
     return (
         <div className="flex flex-col gap-4 px-6 py-4 hover:bg-zinc-50 border-b border-b-zinc-200">
@@ -27,7 +37,7 @@ export default function BlogPost({ post }: { post: TBlogPost }) {
                     <Link href="/blog/edit">
                         <Button>Edit</Button>
                     </Link>
-                    <Button variant="danger">Delete</Button>
+                    <Button variant="danger" onClick={() => handleDeleteBlogPost(post.id)}>Delete</Button>
                 </div>
             </div>
         </div>
