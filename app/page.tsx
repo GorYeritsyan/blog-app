@@ -1,29 +1,37 @@
-import Post from "@/app/components/Post";
+import BlogPost from "@/app/components/shared/BlogPost";
 import Button from "@/app/components/ui/Button";
+import Container from "@/app/components/shared/Container";
+import { type TBlogPost } from "@/app/types/types";
+import Link from "next/link";
 
 export default async function Home() {
-    const posts = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts`)
+    const blogPosts: TBlogPost[] = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts`)
         .then(res => res.json());
-
-    console.log(posts);
 
     return (
         <section>
-            <div className="max-w-7xl m-auto">
+            <Container>
                 <div className="py-8">
                     <div className="flex flex-col gap-8">
                         <div className="flex items-center justify-between w-full">
                             <h1 className="text-4xl font-bold">Blog Posts</h1>
-                            <Button>Create Post</Button>
+                            <Link href="/blog/create">
+                                <Button>Create Post</Button>
+                            </Link>
                         </div>
-                        <div className="flex flex-col">
-                            {posts.map(post => (
-                                <Post key={post.id} post={post} />
-                            ))}
+                        <div className="flex flex-col gap-4">
+                            Search
+                            {/* Blog Posts */}
+                            <div className="flex flex-col *:last:border-none">
+                                {blogPosts.map(post => (
+                                    <BlogPost key={post.id} post={post} />
+                                ))}
+                            </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
+            </Container>
         </section>
     );
 }

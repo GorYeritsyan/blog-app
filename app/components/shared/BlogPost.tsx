@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { type TBlogPost } from "@/app/types/types";
 
-export default function Post({ post }) {
+export default function BlogPost({ post }: { post: TBlogPost }) {
     const date = new Date(post.createdAt).toDateString();
 
     return (
