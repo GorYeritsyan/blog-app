@@ -3,10 +3,19 @@ import Button from "@/app/components/ui/Button";
 import Container from "@/app/components/shared/Container";
 import { type TBlogPost } from "@/app/types/types";
 import Link from "next/link";
+import Search from "@/app/components/shared/Search";
 
-export default async function Home() {
-    const blogPosts: TBlogPost[] = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts`)
+export default async function Home(props: PageProps<"/">) {
+    const { query } = await props.searchParams;
+
+    let blogPosts: TBlogPost[] = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts`)
         .then(res => res.json());
+
+    console.log("q", query);
+    if (query && typeof query === "string") {
+        blogPosts = blogPosts.filter(post => post.title.toLowerCase().includes(query.toLowerCase())
+        || post.content.toLowerCase().includes(query.toLowerCase()));
+    }
 
     return (
         <section>
@@ -20,7 +29,7 @@ export default async function Home() {
                             </Link>
                         </div>
                         <div className="flex flex-col gap-4">
-                            Search
+                            <Search />
                             {/* Blog Posts */}
                             <div className="flex flex-col *:last:border-none">
                                 {blogPosts.map(post => (
