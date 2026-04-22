@@ -5,7 +5,7 @@ import { cn } from "@/app/utils/utils";
 import { tv } from "tailwind-variants";
 
 const button = tv({
-    base: "font-semibold px-3 py-1.5 rounded-lg cursor-pointer flex items-center gap-3 active:translate-y-px duration-100",
+    base: "font-semibold px-3 py-1.5 rounded-lg cursor-pointer flex items-center justify-center gap-3 active:translate-y-px duration-100",
     variants: {
         color: {
             primary: "bg-zinc-900 hover:bg-zinc-800 text-white",

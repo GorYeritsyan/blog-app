@@ -1,9 +1,14 @@
 "use client";
 
-import {createContext, useContext, useRef} from "react";
+import {createContext, ReactNode, useContext, useRef} from "react";
 import {cn} from "@/app/utils/utils";
 
 export const FormContext = createContext({});
+
+type FormProps = {
+    children: ReactNode;
+    onSubmit: (data: FormData) => void;
+}
 
 export default function Form({ children, onSubmit, className }) {
     const formRef = useRef({});

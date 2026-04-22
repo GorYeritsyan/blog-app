@@ -28,6 +28,6 @@ export default function Search() {
     }
 
     return (
-        <Input value={query} onChange={handleSearch} />
+        <Input placeholder="Search for blog posts..." value={query} onChange={handleSearch} />
     );
 }
