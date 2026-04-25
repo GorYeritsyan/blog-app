@@ -1,11 +1,11 @@
 "use server";
 
 import { type TBlogPost } from "@/app/types/types";
+import { fetchInstance } from "@/app/actions/index";
 
 // Fetch all blog posts and filter
 export const fetchBlogPosts = async (query?: string | string[]) => {
-    const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts`)
-    let blogPosts: TBlogPost[] = await res.json();
+    let blogPosts = await fetchInstance<TBlogPost[]>("/posts");
 
     if (query && typeof query === "string") {
         blogPosts = blogPosts.filter(post => post.title.toLowerCase().includes(query.toLowerCase())
@@ -17,15 +17,12 @@ export const fetchBlogPosts = async (query?: string | string[]) => {
 
 // Fetch blog post by ID
 export const fetchBlogPostById = async (postId: string): Promise<TBlogPost> => {
-    const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts/${postId}`);
-    return await res.json();
+    return await fetchInstance(`/posts/${postId}`);
 }
 
 // Delete blog post by ID
 export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
-    const res = await fetch(`https://${process.env.PROJECT_SECRET}.mockapi.io/api/posts/${postId}`, {
-        method: "DELETE"
+    return await fetchInstance(`/posts/${postId}`, {
+        method: "DELETE",
     });
-
-    return await res.json();
 }

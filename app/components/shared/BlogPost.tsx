@@ -1,24 +1,18 @@
 "use client";
 
 import Link from "next/link";
+
 import { type TBlogPost } from "@/app/types/types";
 import Button from "@/app/components/ui/Button";
-import { deleteBlogPost } from "@/app/actions/actions";
-import { useRouter } from "next/navigation";
+import DeleteModalButton from "@/app/components/shared/DeleteModalButton";
 
 export default function BlogPost({ post }: { post: TBlogPost }) {
-    const router = useRouter();
     const date = new Date(post.createdAt).toDateString();
-
-    const handleDeleteBlogPost = async (postId: string) => {
-        await deleteBlogPost(postId);
-        router.refresh();
-    }
 
     return (
         <div className="flex flex-col gap-4 px-6 py-4 hover:bg-zinc-50 border-b border-b-zinc-200">
             <div className="flex flex-col gap-1">
-                <p className="text-zinc-400">Publication date - <span>{date}</span></p>
+                <p className="text-zinc-400">Published <span>{date}</span></p>
 
                 <div className="flex flex-col gap-3">
                     <Link className="text-2xl font-semibold hover:underline capitalize" href={`/${post.id}`}>
@@ -37,7 +31,9 @@ export default function BlogPost({ post }: { post: TBlogPost }) {
                     <Link href="/blog/edit">
                         <Button>Edit</Button>
                     </Link>
-                    <Button variant="danger" onClick={() => handleDeleteBlogPost(post.id)}>Delete</Button>
+
+                    {/* Modal Button to delete blog post */}
+                    <DeleteModalButton postId={post.id} />
                 </div>
             </div>
         </div>

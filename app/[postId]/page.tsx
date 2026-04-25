@@ -1,6 +1,12 @@
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
-import { fetchBlogPostById } from "@/app/actions/actions";
+import { fetchBlogPostById, fetchBlogPosts } from "@/app/actions/actions";
+
+export async function generateStaticParams() {
+    const blogPosts = await fetchBlogPosts();
+
+    return blogPosts.map(post => ({ postId: post.id }));
+}
 
 export default async function Page({ params }: { params: Promise<{ postId: string }>}) {
     const { postId } = await params;

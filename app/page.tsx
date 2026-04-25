@@ -3,7 +3,7 @@ import Button from "@/app/components/ui/Button";
 import Container from "@/app/components/shared/Container";
 import Link from "next/link";
 import Search from "@/app/components/shared/Search";
-import {deleteBlogPost, fetchBlogPosts} from "@/app/actions/actions";
+import { fetchBlogPosts } from "@/app/actions/actions";
 
 export default async function Home(props: PageProps<"/">) {
     const { query } = await props.searchParams;
@@ -33,7 +33,6 @@ export default async function Home(props: PageProps<"/">) {
                                 <p className="text-center font-medium text-zinc-400">There is no blog posts</p>
                             )}
                         </div>
-
                     </div>
                 </div>
             </Container>

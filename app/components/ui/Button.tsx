@@ -16,9 +16,11 @@ const button = tv({
     }
 });
 
+export type TButtonVariants = "primary" | "ghost" | "danger" | "outline";
+
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: React.ReactNode;
-    variant?: "primary" | "ghost" | "danger" | "outline";
+    variant?: TButtonVariants;
     className?: string;
 }
 
