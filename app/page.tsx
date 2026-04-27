@@ -4,10 +4,15 @@ import Container from "@/app/components/shared/Container";
 import Link from "next/link";
 import Search from "@/app/components/shared/Search";
 import { fetchBlogPosts } from "@/app/actions/actions";
+import Pagination from "@/app/components/ui/pagination/Pagination";
 
 export default async function Home(props: PageProps<"/">) {
-    const { query } = await props.searchParams;
-    const blogPosts= await fetchBlogPosts(query);
+    const { query, page = 1 } = await props.searchParams;
+    const limit = 2;
+    const blogPosts= await fetchBlogPosts({ query });
+
+    const totalPages = Math.ceil(blogPosts.length / limit);
+    const paginatedBlogPosts = [...blogPosts].slice((page - 1) * limit, page * limit);
 
     return (
         <section>
@@ -23,15 +28,16 @@ export default async function Home(props: PageProps<"/">) {
                         <div className="flex flex-col gap-4">
                             <Search />
                             {/* Blog Posts */}
-                            {blogPosts.length > 0 ? (
+                            {paginatedBlogPosts.length > 0 ? (
                                 <div className="flex flex-col *:last:border-none">
-                                    {blogPosts.map(post => (
+                                    {paginatedBlogPosts.map(post => (
                                         <BlogPost key={post.id} post={post} />
                                     ))}
                                 </div>
                             ) : (
                                 <p className="text-center font-medium text-zinc-400">There is no blog posts</p>
                             )}
+                            <Pagination totalPages={totalPages} />
                         </div>
                     </div>
                 </div>

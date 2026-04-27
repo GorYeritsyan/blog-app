@@ -14,17 +14,18 @@ export default function Search() {
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
+        const params = new URLSearchParams(searchParams);
 
         if (e.target.value.trim()) {
-            const params = new URLSearchParams();
             params.set("query", e.target.value);
-            // window.history.replaceState(null, "", `?${params.toString()}`);
-            router.replace(`${pathname}?${params.toString()}`);
         } else {
-            // window.history.replaceState(null, "", "?");
-            router.replace(`${pathname}`);
+            params.delete("query");
         }
 
+        params.set("page", "1");
+
+        // window.history.replaceState(null, "", `?${params.toString()}`);
+        router.replace(`${pathname}?${params.toString()}`);
     }
 
     return (

@@ -1,11 +1,11 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { type TBlogPost } from "@/app/types/types";
 import { fetchInstance } from "@/app/actions/index";
-import {redirect} from "next/navigation";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async (query?: string | string[]) => {
+export const fetchBlogPosts = async ({ query }) => {
     let blogPosts = await fetchInstance<TBlogPost[]>("/posts");
 
     if (query && typeof query === "string") {
