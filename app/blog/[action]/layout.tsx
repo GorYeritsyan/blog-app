@@ -1,7 +1,7 @@
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
 import { ReactNode } from "react";
-import {TBlogAction} from "@/app/types/types";
+import { TBlogAction } from "@/app/types/types";
 
 type TPageProps = {
     children: ReactNode;

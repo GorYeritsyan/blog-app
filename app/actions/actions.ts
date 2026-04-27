@@ -5,7 +5,7 @@ import { type TBlogPost } from "@/app/types/types";
 import { fetchInstance } from "@/app/actions/index";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async ({ query }) => {
+export const fetchBlogPosts = async (query?: string | string[]) => {
     let blogPosts = await fetchInstance<TBlogPost[]>("/posts");
 
     if (query && typeof query === "string") {

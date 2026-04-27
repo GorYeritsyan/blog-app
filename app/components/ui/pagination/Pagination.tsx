@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import PaginationButton from "@/app/components/ui/pagination/PaginationButton";
 import Button from "@/app/components/ui/Button";
-import { useRouter, useSearchParams } from "next/navigation";
 import PaginationNextButton from "@/app/components/ui/pagination/PaginationNextButton";
 import PaginationPrevButton from "@/app/components/ui/pagination/PaginationPrevButton";
 
@@ -65,7 +65,7 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
                         <PaginationButton currentPage={currentPage} onChangePage={handlePageChange} page={1} />
                     )}
 
-                    {isEllipsis && currentPage > centerOffsetLength && <Button readOnly variant="ghost">...</Button>}
+                    {isEllipsis && currentPage > centerOffsetLength && <Button disabled variant="ghost">...</Button>}
 
                     {/* Pagination center buttons */}
                     {paginationCenter.map((page) => (
@@ -73,7 +73,7 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
                     ))}
 
                     {isEllipsis && currentPage < (totalPages - 2 * offset) && (
-                        <Button readOnly variant="ghost">...</Button>
+                        <Button disabled variant="ghost">...</Button>
                     )}
 
                     {/* Pagination end buttons */}

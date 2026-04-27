@@ -9,10 +9,10 @@ import Pagination from "@/app/components/ui/pagination/Pagination";
 export default async function Home(props: PageProps<"/">) {
     const { query, page = 1 } = await props.searchParams;
     const limit = 2;
-    const blogPosts= await fetchBlogPosts({ query });
+    const blogPosts= await fetchBlogPosts(query);
 
     const totalPages = Math.ceil(blogPosts.length / limit);
-    const paginatedBlogPosts = [...blogPosts].slice((page - 1) * limit, page * limit);
+    const paginatedBlogPosts = [...blogPosts].slice((+page - 1) * limit, +page * limit);
 
     return (
         <section>
