@@ -5,3 +5,5 @@ export type TBlogPost = {
     author: string;
     createdAt: Date;
 }
+
+export type TBlogAction = "create" | "edit";

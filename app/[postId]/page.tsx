@@ -20,11 +20,11 @@ export default async function Page({ params }: { params: Promise<{ postId: strin
                 <div className="py-8">
                     <div className="flex items-start gap-10">
                         <BackButton />
-                        <div className="flex flex-col gap-8">
+                        <div className="flex flex-col gap-8 w-full">
                             <div className="flex flex-col gap-3 items-center text-center w-full">
                                 <h1 className="capitalize self-center text-4xl font-semibold">{blogPost.title}</h1>
 
-                                <span className="text-zinc-400">{date}</span>
+                                <span className="text-zinc-400">Published {date}</span>
 
                                 <p className="text-gray-400">
                                     Created by <span className="font-medium text-zinc-900">{blogPost.author}</span>

@@ -28,7 +28,7 @@ export default function BlogPost({ post }: { post: TBlogPost }) {
                 </p>
 
                 <div className="flex gap-2">
-                    <Link href="/blog/edit">
+                    <Link href={`/blog/edit/${post.id}`}>
                         <Button>Edit</Button>
                     </Link>
 
