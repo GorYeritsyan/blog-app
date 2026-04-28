@@ -1,7 +1,7 @@
 "use client";
 
-import {ChangeEvent, useRef, useState} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useRef, useState } from "react";
 
 import Input from "@/app/components/ui/Input";
 
@@ -28,9 +28,9 @@ export default function Search() {
                 params.delete("query");
             }
 
-            params.set("page", "1");
+            // Reset page
+            params.delete("page");
 
-            // window.history.replaceState(null, "", `?${params.toString()}`);
             router.replace(`${pathname}?${params.toString()}`);
         }, 1000);
     }

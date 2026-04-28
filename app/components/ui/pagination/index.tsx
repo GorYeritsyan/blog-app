@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import PaginationButton from "@/app/components/ui/pagination/PaginationButton";
 import Button from "@/app/components/ui/Button";
-import PaginationNextButton from "@/app/components/ui/pagination/PaginationNextButton";
-import PaginationPrevButton from "@/app/components/ui/pagination/PaginationPrevButton";
+import NextButton from "@/app/components/ui/pagination/NextButton";
+import PrevButton from "@/app/components/ui/pagination/PrevButton";
 
 type PaginationProps = {
     visibleButtonsNumber?: number;
@@ -12,7 +12,7 @@ type PaginationProps = {
     totalPages: number;
 }
 
-const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }: PaginationProps) => {
+const Index = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }: PaginationProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -26,7 +26,7 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
     let paginationCenter: number[] = Array.from({ length: paginationArrayLength });
 
     if (isEllipsis) {
-        // Pagination start length is startOffset
+        // Index start length is startOffset
         paginationCenter = paginationCenter
             .map((_, i) => currentPage - offset + i)
             .filter(page => page > 0 && page <= totalPages);
@@ -40,7 +40,17 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
 
     const handlePageChange = (page: number) => {
         const params = new URLSearchParams(searchParams);
-        params.set("page", `${page}`);
+        const currentPage = +(params.get("page") ?? 1);
+
+        if (currentPage === page) return;
+
+        // Remove page param from url if page is 1
+        if (page > 1) {
+            params.set("page", `${page}`);
+        } else {
+            params.delete("page");
+        }
+
         router.replace(`?${params.toString()}`);
     }
 
@@ -57,17 +67,17 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
             {totalPages > 1 && (
                 <div className="flex gap-4 items-center justify-center">
                     {currentPage > 1 && (
-                        <PaginationPrevButton onDecrementPage={decrementPage} />
+                        <PrevButton onDecrementPage={decrementPage} />
                     )}
 
-                    {/* Pagination start buttons */}
+                    {/* Index start buttons */}
                     {isEllipsis && currentPage > offset * 2 && (
                         <PaginationButton currentPage={currentPage} onChangePage={handlePageChange} page={1} />
                     )}
 
                     {isEllipsis && currentPage > centerOffsetLength && <Button disabled variant="ghost">...</Button>}
 
-                    {/* Pagination center buttons */}
+                    {/* Index center buttons */}
                     {paginationCenter.map((page) => (
                         <PaginationButton currentPage={currentPage} onChangePage={handlePageChange} key={page} page={page} />
                     ))}
@@ -76,13 +86,13 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
                         <Button disabled variant="ghost">...</Button>
                     )}
 
-                    {/* Pagination end buttons */}
+                    {/* Index end buttons */}
                     {isEllipsis && currentPage < totalPages - offset && (
                         <PaginationButton currentPage={currentPage} onChangePage={handlePageChange} page={totalPages} />
                     )}
 
                     {currentPage < totalPages && (
-                        <PaginationNextButton onIncrementPage={incrementPage} currentPage={currentPage} totalPages={totalPages} />
+                        <NextButton onIncrementPage={incrementPage} currentPage={currentPage} totalPages={totalPages} />
                     )}
                 </div>
             )}
@@ -90,4 +100,4 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
     );
 }
 
-export default Pagination;
+export default Index;

@@ -3,11 +3,11 @@
 import { FaAngleLeft } from "react-icons/fa6";
 import Button from "@/app/components/ui/Button";
 
-type PaginationPrevButtonProps = {
+type PrevButtonProps = {
     onDecrementPage: () => void;
 }
 
-export default function PaginationPrevButton({ onDecrementPage }: PaginationPrevButtonProps) {
+export default function PrevButton({ onDecrementPage }: PrevButtonProps) {
     return (
         <Button
             variant="ghost"

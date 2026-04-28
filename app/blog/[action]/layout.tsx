@@ -10,6 +10,15 @@ type TPageProps = {
     }>
 }
 
+export async function generateMetadata({ params }: Pick<TPageProps, "params">) {
+    const { action } = await params;
+
+    // (Edit | Create) + Blog Post
+    const title = `${action[0].toUpperCase() + action.slice(1)} Blog Post`;
+
+    return { title };
+}
+
 export default async function Page({ children, params }: TPageProps) {
     const { action } = await params;
 
