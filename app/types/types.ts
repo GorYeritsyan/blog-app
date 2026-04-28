@@ -3,6 +3,7 @@ export type TBlogPost = {
     title: string;
     content: string;
     author: string;
+    slug: string;
     createdAt: Date;
 }
 

@@ -1,7 +1,7 @@
+import Link from "next/link";
 import BlogPost from "@/app/components/shared/BlogPost";
 import Button from "@/app/components/ui/Button";
 import Container from "@/app/components/shared/Container";
-import Link from "next/link";
 import Search from "@/app/components/shared/Search";
 import { fetchBlogPosts } from "@/app/actions/actions";
 import Pagination from "@/app/components/ui/pagination/Pagination";
@@ -9,6 +9,7 @@ import Pagination from "@/app/components/ui/pagination/Pagination";
 export default async function Home(props: PageProps<"/">) {
     const { query, page = 1 } = await props.searchParams;
     const limit = 2;
+
     const blogPosts= await fetchBlogPosts(query);
 
     const totalPages = Math.ceil(blogPosts.length / limit);

@@ -23,7 +23,7 @@ const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }
     const halfOfVisibleButtons = visibleButtonsNumber / 2;
 
     const paginationArrayLength = isEllipsis ? centerOffsetLength : visibleButtonsNumber;
-    let paginationCenter = Array.from({ length: paginationArrayLength });
+    let paginationCenter: number[] = Array.from({ length: paginationArrayLength });
 
     if (isEllipsis) {
         // Pagination start length is startOffset

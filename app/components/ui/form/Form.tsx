@@ -1,6 +1,6 @@
 "use client";
 
-import {createContext, ReactNode, useContext, useRef, FormHTMLAttributes} from "react";
+import { createContext, type ReactNode, useContext, useRef, type FormHTMLAttributes } from "react";
 
 type TFormContext = {
     errors?: { [key: string]: string } | null;

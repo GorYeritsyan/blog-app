@@ -1,5 +1,5 @@
 import { LuLoaderCircle } from "react-icons/lu";
-import {cn} from "@/app/utils/utils";
+import { cn } from "@/app/utils/utils";
 
 export default function Spinner({ className }: { className?: string }) {
     return (

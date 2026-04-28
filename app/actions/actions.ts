@@ -47,7 +47,7 @@ export const createBlogPost = async (prevState: { message: string } | undefined,
     redirect("/");
 }
 
-export const editBlogPost = async (prevState: { message: string } | undefined, formData: FormData, postId: string) => {
+export const saveBlogPost = async (prevState: { message: string } | undefined, formData: FormData, postId: string) => {
     const { title, content, author } = Object.fromEntries(formData);
 
     const updatedBlogPost = await fetchInstance(`/posts/${postId}`, {

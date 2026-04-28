@@ -25,7 +25,6 @@ export default function Field({ children, label, name }: FieldProps) {
             <div className="flex flex-col gap-1 w-full">
                 <label htmlFor={name} className="font-semibold">{label}</label>
                 {children}
-                {/*<Input id={name} name={name} defaultValue={blogPost?.title ?? ""} />*/}
                 {errors?.[name] && (
                     <p className="text-red-600 font-medium">{errors?.[name]}</p>
                 )}

@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 
 import Input from "@/app/components/ui/Input";
 import Button from "@/app/components/ui/Button";
-import { createBlogPost, editBlogPost } from "@/app/actions/actions";
+import { createBlogPost, saveBlogPost } from "@/app/actions/actions";
 import { type TBlogPost } from "@/app/types/types";
 import Spinner from "@/app/components/ui/Spinner";
 import Form from "@/app/components/ui/form/Form";
@@ -14,7 +14,7 @@ import Textarea from "@/app/components/ui/Textarea";
 export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     const isEditing = !!blogPost;
 
-    const blogAction = isEditing ? "Edit" : "Create";
+    const blogAction = isEditing ? "Save" : "Create";
     const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
 
     // Show default values when editing blog post
@@ -28,20 +28,23 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
         const newErrors: { [key: string]: string } = {};
         const formValues = Object.fromEntries(formData) as { [key: string]: string };
 
+        // Error message for required fields
         Object.entries(formValues).forEach(([key, value]) => {
             if (!value.trim()) {
                 newErrors[key] = "This field is required";
             }
         });
 
+        // Show error messages
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
 
+        // Reset errors to don't show messages
         setErrors(null);
 
-       return isEditing ? editBlogPost(prevState, formData, blogPost.id) : createBlogPost(prevState, formData);
+       return isEditing ? saveBlogPost(prevState, formData, blogPost.id) : createBlogPost(prevState, formData);
     };
 
     const [error, formAction, isPending] = useActionState(blogActionTrigger, undefined);

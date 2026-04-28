@@ -3,7 +3,7 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from "react";
 import { cn } from "@/app/utils/utils";
 import { useField } from "@/app/components/ui/form/Field";
-import {useForm} from "@/app/components/ui/form/Form";
+import { useForm } from "@/app/components/ui/form/Form";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     className?: string;

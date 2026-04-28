@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import ModalTrigger from "@/app/components/ui/modal/ModalTrigger";
 import ModalContent from "@/app/components/ui/modal/ModalContent";
 import ModalClose from "@/app/components/ui/modal/ModalClose";
@@ -7,11 +7,10 @@ import Modal from "@/app/components/ui/modal/Modal";
 import { deleteBlogPost } from "@/app/actions/actions";
 
 export default function DeleteModalButton({ postId }: { postId: string }) {
-    const router = useRouter();
 
     const handleDeleteBlogPost = async (postId: string) => {
         await deleteBlogPost(postId);
-        router.refresh();
+        redirect("/");
     }
 
     return (
