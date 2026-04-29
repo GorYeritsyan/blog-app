@@ -1,16 +1,18 @@
+import { ReactNode } from "react";
+import { Metadata } from "next";
+
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
-import { ReactNode } from "react";
 import { TBlogAction } from "@/app/types/types";
 
-type TPageProps = {
+type TLayoutProps = {
     children: ReactNode;
     params: Promise<{
         action: TBlogAction;
     }>
 }
 
-export async function generateMetadata({ params }: Pick<TPageProps, "params">) {
+export async function generateMetadata({ params }: Pick<TLayoutProps, "params">): Promise<Metadata> {
     const { action } = await params;
 
     // (Edit | Create) + Blog Post
@@ -19,7 +21,7 @@ export async function generateMetadata({ params }: Pick<TPageProps, "params">) {
     return { title };
 }
 
-export default async function Page({ children, params }: TPageProps) {
+export default async function Layout({ children, params }: LayoutProps<"/blog/[action]">) {
     const { action } = await params;
 
     return (

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+
 import ModalTrigger from "@/app/components/ui/modal/ModalTrigger";
 import ModalContent from "@/app/components/ui/modal/ModalContent";
 import ModalClose from "@/app/components/ui/modal/ModalClose";
@@ -20,7 +21,9 @@ export default function DeleteModalButton({ postId }: { postId: string }) {
             </ModalTrigger>
             <ModalContent title="Delete Blog Post" description="Are you sure you want to delete this blog post?">
                 <ModalClose variant="outline">Close</ModalClose>
-                <ModalSubmit variant="danger" action={() => handleDeleteBlogPost(postId)}>Yes, I'm sure</ModalSubmit>
+                <ModalSubmit variant="danger" action={() => handleDeleteBlogPost(postId)}>
+                    Yes, I'm sure
+                </ModalSubmit>
             </ModalContent>
         </Modal>
     );

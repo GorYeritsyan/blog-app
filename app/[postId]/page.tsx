@@ -1,11 +1,15 @@
 import { Suspense } from "react";
+import { Metadata } from "next";
+
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
 import { fetchBlogPostById, fetchBlogPosts } from "@/app/actions/actions";
 import BlogPostDetailsSkeleton from "@/app/components/shared/skeletons/BlogPostDetailsSkeleton";
 import BlogPostDetails from "@/app/components/shared/BlogPostDetails";
 
-export async function generateMetadata({ params }: { params: Promise<{ postId: string }>}) {
+export const revalidate = 3600;
+
+export async function generateMetadata({ params }: { params: Promise<{ postId: string }>}): Promise<Metadata> {
     const { postId } = await params;
 
     const { title, content } = await fetchBlogPostById(postId);
