@@ -1,10 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import Button, { TButtonVariants } from "@/app/components/ui/Button";
 import { useModal } from "@/app/components/ui/modal/Modal";
 
-type ModalSubmitProps = {
+type ModalSubmitProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
     variant?: TButtonVariants;
     className?: string;

@@ -23,9 +23,11 @@ export const fetchBlogPostById = async (postId: string): Promise<TBlogPost> => {
 
 // Delete blog post by ID
 export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
-    return await fetchInstance(`/posts/${postId}`, {
+    await fetchInstance(`/posts/${postId}`, {
         method: "DELETE",
     });
+
+    redirect("/");
 }
 
 // Create & Edit Blog Post Server Actions

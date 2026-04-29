@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import ModalTrigger from "@/app/components/ui/modal/ModalTrigger";
 import ModalContent from "@/app/components/ui/modal/ModalContent";
 import ModalClose from "@/app/components/ui/modal/ModalClose";
@@ -11,7 +9,6 @@ export default function DeleteModalButton({ postId }: { postId: string }) {
 
     const handleDeleteBlogPost = async (postId: string) => {
         await deleteBlogPost(postId);
-        redirect("/");
     }
 
     return (
