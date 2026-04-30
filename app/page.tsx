@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import Button from "@/app/components/ui/Button";
 import Container from "@/app/components/shared/Container";
 import Search from "@/app/components/shared/Search";
@@ -20,6 +21,7 @@ export default async function Home(props: PageProps<"/">) {
                         </div>
                         <div className="flex flex-col gap-4">
                             <Search />
+
                             {/* Blog Posts */}
                             <BlogPosts query={query as string} page={+page} />
                         </div>

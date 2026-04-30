@@ -5,15 +5,19 @@ import { type TBlogPost } from "@/app/types/types";
 import { fetchInstance } from "@/app/actions/index";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async (query?: string | string[]) => {
-    let blogPosts = await fetchInstance<TBlogPost[]>("/posts");
+export const fetchBlogPosts = async (query?: string) => {
+    const searchParams = new URLSearchParams({ order: "desc", sortBy: "title" });
 
-    if (query && typeof query === "string") {
-        blogPosts = blogPosts.filter(post => post.title.toLowerCase().includes(query.toLowerCase())
-            || post.content.toLowerCase().includes(query.toLowerCase()));
+    // Filter by title - (search)
+    if (query) {
+        searchParams.set("title", query);
+        // searchParams.set("content", query as string);
+    } else {
+        searchParams.delete("title");
+        // searchParams.delete("content");
     }
 
-    return blogPosts;
+    return await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
 }
 
 // Fetch blog post by ID
