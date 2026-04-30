@@ -3,8 +3,7 @@ import Pagination from "@/app/components/ui/pagination";
 import { fetchBlogPosts } from "@/app/actions/actions";
 
 export default async function BlogPosts({ query, page }: { query: string; page: number }) {
-    const limit = 2;
-    const { data: blogPosts, totalPages }= await fetchBlogPosts({ query, page, limit });
+    const { data: blogPosts, totalPages } = await fetchBlogPosts({ query, page });
 
     return (
         <>
@@ -18,7 +17,9 @@ export default async function BlogPosts({ query, page }: { query: string; page: 
                 <p className="text-center font-medium text-zinc-400">There is no blog posts</p>
             )}
 
-            <Pagination totalPages={totalPages} />
+            {!!totalPages &&  blogPosts.length > 0 && (
+                <Pagination totalPages={totalPages} />
+            )}
         </>
     );
 }

@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 
+import { fetchBlogPostById, fetchBlogPosts } from "@/app/actions/actions";
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
-import { fetchBlogPostById, fetchBlogPosts } from "@/app/actions/actions";
 import BlogPostDetailsSkeleton from "@/app/components/shared/skeletons/BlogPostDetailsSkeleton";
 import BlogPostDetails from "@/app/components/shared/BlogPostDetails";
 
@@ -17,10 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ postId: s
     return { title, description: content };
 }
 
-// TODO: Check how to type generateStaticParams params prop
-export async function generateStaticParams({ params }: { params: Promise<{ query: string; page: string }> }) {
-    const { query, page = 1 } = await params;
-    const { data: blogPosts } = await fetchBlogPosts({ query, page: +page, limit: 2 });
+// Generate first page statically at build time
+export async function generateStaticParams() {
+    const { data: blogPosts } = await fetchBlogPosts({});
 
     return blogPosts.map(post => ({ postId: post.id }));
 }

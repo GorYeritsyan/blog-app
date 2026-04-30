@@ -5,29 +5,30 @@ import { type TBlogPost } from "@/app/types/types";
 import { fetchInstance } from "@/app/actions/index";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async ({ query, page, limit }: { query?: string; page?: number; limit?: number }) => {
-    const searchParams = new URLSearchParams({ order: "desc", sortBy: "title" });
+export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: number }) => {
+    const limit = 2;
+    const searchParams = new URLSearchParams({ sortBy: "createdAt", order: "desc" });
 
     // Filter by title - (search)
     if (query) {
-        searchParams.set("title", query);
+        searchParams.set("search", query);
         // searchParams.set("content", query as string);
     } else {
-        searchParams.delete("title");
+        searchParams.delete("search");
         // searchParams.delete("content");
     }
 
-    const blogPosts = await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
+    // All blog posts
+    const blogPosts = await fetchInstance<TBlogPost[] | "Not found">(`/posts?${searchParams.toString()}`);
+    // For paginated Blog Posts
     const totalPages = Math.ceil(blogPosts.length / limit);
 
-    if (page && limit) {
-        searchParams.set("page", page);
-        searchParams.set("limit", limit);
-    }
+    searchParams.set("page", `${page ?? 1}`);
+    searchParams.set("limit", `${limit}`);
 
-    const paginatedBlogPosts = await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
+    const paginatedBlogPosts = await fetchInstance<TBlogPost[] | "Not found">(`/posts?${searchParams.toString()}`);
 
-    return { data: paginatedBlogPosts, totalPages };
+    return { data: typeof paginatedBlogPosts !== "string" ? paginatedBlogPosts : [], totalPages };
 }
 
 // Fetch blog post by ID
@@ -45,7 +46,7 @@ export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
 }
 
 // Create & Edit Blog Post Server Actions
-export const createBlogPost = async (prevState: { message: string } | undefined, formData: FormData) => {
+export const createBlogPost = async (_: unknown, formData: FormData) => {
     const { title, content, author } = Object.fromEntries(formData);
 
     const createdBlogPost = await fetchInstance("/posts", {
@@ -53,7 +54,7 @@ export const createBlogPost = async (prevState: { message: string } | undefined,
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content, author })
+        body: JSON.stringify({ title, content, author, createdAt: new Date(Date.now()) })
     });
 
     if (!createdBlogPost) {
@@ -63,7 +64,7 @@ export const createBlogPost = async (prevState: { message: string } | undefined,
     redirect("/");
 }
 
-export const saveBlogPost = async (prevState: { message: string } | undefined, formData: FormData, postId: string) => {
+export const saveBlogPost = async (_: unknown, formData: FormData, postId: string) => {
     const { title, content, author } = Object.fromEntries(formData);
 
     const updatedBlogPost = await fetchInstance(`/posts/${postId}`, {

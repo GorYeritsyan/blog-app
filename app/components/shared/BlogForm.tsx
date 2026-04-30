@@ -2,10 +2,10 @@
 
 import { useActionState, useState } from "react";
 
+import { type TBlogPost } from "@/app/types/types";
+import { createBlogPost, saveBlogPost } from "@/app/actions/actions";
 import Input from "@/app/components/ui/Input";
 import Button from "@/app/components/ui/Button";
-import { createBlogPost, saveBlogPost } from "@/app/actions/actions";
-import { type TBlogPost } from "@/app/types/types";
 import Spinner from "@/app/components/ui/Spinner";
 import Form from "@/app/components/ui/form/Form";
 import Field from "@/app/components/ui/form/Field";
@@ -24,7 +24,7 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
         author: blogPost?.author ?? "",
     }
 
-    const blogActionTrigger = (prevState: { message: string } | undefined, formData: FormData) => {
+    const blogActionTrigger = (_: unknown, formData: FormData) => {
         const newErrors: { [key: string]: string } = {};
         const formValues = Object.fromEntries(formData) as { [key: string]: string };
 
@@ -44,7 +44,7 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
         // Reset errors to don't show messages
         setErrors(null);
 
-       return isEditing ? saveBlogPost(prevState, formData, blogPost.id) : createBlogPost(prevState, formData);
+       return isEditing ? saveBlogPost(null, formData, blogPost.id) : createBlogPost(null, formData);
     };
 
     const [error, formAction, isPending] = useActionState(blogActionTrigger, undefined);

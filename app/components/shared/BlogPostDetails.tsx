@@ -2,7 +2,6 @@ import { fetchBlogPostById } from "@/app/actions/actions";
 
 export default async function BlogPostDetails({ postId }: { postId: string }) {
     const blogPost = await fetchBlogPostById(postId);
-
     const date = new Date(blogPost.createdAt).toDateString();
 
     return (
