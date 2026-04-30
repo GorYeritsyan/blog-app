@@ -17,8 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ postId: s
     return { title, description: content };
 }
 
-export async function generateStaticParams() {
-    const blogPosts = await fetchBlogPosts();
+// TODO: Check how to type generateStaticParams params prop
+export async function generateStaticParams({ params }: { params: Promise<{ query: string; page: string }> }) {
+    const { query, page = 1 } = await params;
+    const { data: blogPosts } = await fetchBlogPosts({ query, page: +page, limit: 2 });
 
     return blogPosts.map(post => ({ postId: post.id }));
 }

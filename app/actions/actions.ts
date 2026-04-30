@@ -5,7 +5,7 @@ import { type TBlogPost } from "@/app/types/types";
 import { fetchInstance } from "@/app/actions/index";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async (query?: string) => {
+export const fetchBlogPosts = async ({ query, page, limit }: { query?: string; page?: number; limit?: number }) => {
     const searchParams = new URLSearchParams({ order: "desc", sortBy: "title" });
 
     // Filter by title - (search)
@@ -17,7 +17,17 @@ export const fetchBlogPosts = async (query?: string) => {
         // searchParams.delete("content");
     }
 
-    return await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
+    const blogPosts = await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
+    const totalPages = Math.ceil(blogPosts.length / limit);
+
+    if (page && limit) {
+        searchParams.set("page", page);
+        searchParams.set("limit", limit);
+    }
+
+    const paginatedBlogPosts = await fetchInstance<TBlogPost[]>(`/posts?${searchParams.toString()}`);
+
+    return { data: paginatedBlogPosts, totalPages };
 }
 
 // Fetch blog post by ID
