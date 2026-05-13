@@ -8,13 +8,12 @@ import Button from "@/src/components/ui/Button";
 import Spinner from "@/src/components/ui/Spinner";
 import Form from "@/src/components/ui/form/Form";
 import {createBlogPost} from "@/src/actions/actions";
+import {registerUser} from "@/src/actions/auth";
 
 export default function RegisterForm() {
     const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
 
-
-
-    const [error, formAction, isPending] = useActionState(createUser, undefined);
+    const [error, formAction, isPending] = useActionState(registerUser, undefined);
 
     return (
         <Form errors={errors} action={formAction} className="max-w-100 space-y-4">

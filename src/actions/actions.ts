@@ -3,11 +3,14 @@
 import { redirect } from "next/navigation";
 import { type TBlogPost, type TPagination } from "@/src/types/types";
 import { fetchInstance } from "@/src/actions/index";
+import {cookies} from "next/headers";
 
 // Fetch all blog posts and filter
 export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: number }) => {
     const limit = 4;
     const searchParams = new URLSearchParams();
+    const cookieStore = await cookies();
+    console.log("REFRESH TOKEN", cookieStore.get("refreshToken"));
 
     // Filter by title - (search)
     if (query) {

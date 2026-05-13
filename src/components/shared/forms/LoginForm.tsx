@@ -7,45 +7,15 @@ import Button from "@/src/components/ui/Button";
 import Spinner from "@/src/components/ui/Spinner";
 import {useActionState, useState} from "react";
 import {createBlogPost} from "@/src/actions/actions";
+import {loginUser} from "@/src/actions/auth";
 
 export default function LoginForm() {
-    const blogAction = "Login";
     const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
 
-    // Show default values when editing blog post
-    const defaultValues = {
-        title: "",
-        content: "",
-        author: "",
-    }
-
-    const blogActionTrigger = (_: unknown, formData: FormData) => {
-        const newErrors: { [key: string]: string } = {};
-        const formValues = Object.fromEntries(formData) as { [key: string]: string };
-
-        // Error message for required fields
-        Object.entries(formValues).forEach(([key, value]) => {
-            if (!value.trim()) {
-                newErrors[key] = "This field is required";
-            }
-        });
-
-        // Show error messages
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
-
-        // Reset errors to don't show messages
-        setErrors(null);
-
-        return createBlogPost(formData);
-    };
-
-    const [error, formAction, isPending] = useActionState(blogActionTrigger, undefined);
+    const [error, formAction, isPending] = useActionState(loginUser, undefined);
 
     return (
-        <Form errors={errors} action={formAction} defaultValues={defaultValues} className="max-w-100 space-y-4">
+        <Form errors={errors} action={formAction} className="max-w-100 space-y-4">
             <Field name="email" label="Email">
                 <Input />
             </Field>
@@ -60,7 +30,7 @@ export default function LoginForm() {
             )}
 
             <Button disabled={isPending} type="submit" className="w-full">
-                {isPending ? <Spinner className="text-2xl" /> : blogAction}
+                {isPending ? <Spinner className="text-2xl" /> : "Login"}
             </Button>
         </Form>
     );
