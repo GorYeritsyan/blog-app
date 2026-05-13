@@ -1,42 +1,40 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useRef, type FormHTMLAttributes } from "react";
+import { createContext, ReactNode, useContext, SubmitEvent } from "react";
 
-type TFormContext = {
-    errors?: { [key: string]: string } | null;
-    defaultValues?: { [key: string]: string };
-    handleChange?: (key: string, value: string) => void;
-}
+const FormContext = createContext({});
 
-type FormProps = FormHTMLAttributes<HTMLFormElement> & {
+type FormProps = {
     children: ReactNode;
-    errors: { [key: string]: string } | null;
-    defaultValues: { [key: string]: string };
-    className?: string;
+    action: (formValues: any) => void;
 }
 
-const FormContext = createContext<TFormContext>({});
+export default function Form({ children, action }: FormProps) {
 
-export default function Form({ children, errors, className, defaultValues, ...props }: FormProps) {
-    const formRef = useRef<{ [key: string]: string }>({});
 
-    const handleChange = (key: string, value: string) => {
-        formRef.current[key] = value;
+    const handleFormSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formValues = Object.fromEntries(new FormData(e.target));
+
+        console.log(formValues);
+
+        action(formValues);
     }
 
     return (
-        <FormContext.Provider value={{ errors, defaultValues, handleChange }}>
-            <form className={className} {...props}>
+        <FormContext.Provider value={{}}>
+            <form onSubmit={handleFormSubmit}>
                 {children}
             </form>
         </FormContext.Provider>
-    )
+    );
 }
 
 export const useForm = () => {
     const context = useContext(FormContext);
 
-    if (!context) throw new Error('useForm must be used within Form');
+    if (!context) throw new Error("useForm() must be used within Form");
 
     return context;
 }

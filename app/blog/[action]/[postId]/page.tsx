@@ -1,12 +1,21 @@
 import BlogForm from "@/app/components/shared/BlogForm";
-import { TBlogAction } from "@/app/types/types";
-import { fetchBlogPostById } from "@/app/actions/actions";
 
-export default async function Page({ params }: { params: Promise<{ action: TBlogAction; postId: string }>}) {
-    const { postId } = await params;
-    const blogPost = await fetchBlogPostById(postId);
+type TPageProps = {
+    params: Promise<{
+        action: "edit" | "create";
+        postId: string;
+    }>
+}
+
+export default async function Page({ params }: TPageProps) {
+    const { action, postId } = await params;
+
+    console.log("Post ID", postId);
+    console.log("Action", action);
 
     return (
-        <BlogForm blogPost={blogPost} />
+        <>
+            <BlogForm />
+        </>
     );
 }

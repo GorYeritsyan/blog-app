@@ -1,27 +1,13 @@
 import { ReactNode } from "react";
-import { Metadata } from "next";
-
 import Container from "@/app/components/shared/Container";
 import BackButton from "@/app/components/shared/BackButton";
-import { TBlogAction } from "@/app/types/types";
 
 type TLayoutProps = {
     children: ReactNode;
-    params: Promise<{
-        action: TBlogAction;
-    }>
+    params: Promise<{ action: "edit" | "create" }>;
 }
 
-export async function generateMetadata({ params }: Pick<TLayoutProps, "params">): Promise<Metadata> {
-    const { action } = await params;
-
-    // (Edit | Create) + Blog Post
-    const title = `${action[0].toUpperCase() + action.slice(1)} Blog Post`;
-
-    return { title };
-}
-
-export default async function Layout({ children, params }: LayoutProps<"/blog/[action]">) {
+export default async function Layout({ children, params }: TLayoutProps ) {
     const { action } = await params;
 
     return (
@@ -31,8 +17,9 @@ export default async function Layout({ children, params }: LayoutProps<"/blog/[a
                     <div className="flex items-start gap-8">
                         <BackButton />
 
-                        <div className="flex flex-col gap-8 w-full">
+                        <div className="flex flex-col gap-8">
                             <h1 className="text-4xl font-semibold capitalize">{action} blog post</h1>
+                            {/*<BlogForm />*/}
                             {children}
                         </div>
                     </div>
