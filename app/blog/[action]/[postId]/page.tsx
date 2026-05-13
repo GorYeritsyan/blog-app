@@ -8,10 +8,7 @@ type TPageProps = {
 }
 
 export default async function Page({ params }: TPageProps) {
-    const { action, postId } = await params;
-
-    console.log("Post ID", postId);
-    console.log("Action", action);
+    const { postId } = await params;
 
     return (
         <>
