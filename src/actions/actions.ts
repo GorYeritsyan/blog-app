@@ -9,8 +9,6 @@ import {cookies} from "next/headers";
 export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: number }) => {
     const limit = 4;
     const searchParams = new URLSearchParams();
-    const cookieStore = await cookies();
-    console.log("REFRESH TOKEN", cookieStore.get("refreshToken"));
 
     // Filter by title - (search)
     if (query) {
