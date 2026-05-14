@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { type TBlogPost, type TPagination } from "@/src/types/types";
 import { fetchInstance } from "@/src/actions/index";
-import {cookies} from "next/headers";
 
 // Fetch all blog posts and filter
 export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: number }) => {

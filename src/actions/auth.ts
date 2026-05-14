@@ -56,3 +56,18 @@ export const loginUser = async (prevState: any, formData: FormData) => {
 
     redirect("/");
 }
+
+export const logout = async (formData: FormData) => {
+    const cookieStore = await cookies();
+
+    // await tryCatch(fetchInstance(`/auth/logout`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     }
+    // }));
+
+    cookieStore.delete("token");
+
+    redirect("/login");
+}

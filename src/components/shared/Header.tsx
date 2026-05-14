@@ -1,6 +1,5 @@
 import Container from "@/src/components/shared/Container";
-import Link from "next/link";
-import Button from "@/src/components/ui/Button";
+import LogoutButton from "@/src/components/shared/buttons/LogoutButton";
 
 export default function Header() {
     return (
@@ -8,7 +7,7 @@ export default function Header() {
             <Container>
                 <div className="flex items-center justify-between py-5">
                     <h1 className="text-3xl font-bold">Blog</h1>
-                    <Button variant="danger">Log out</Button>
+                    <LogoutButton />
                 </div>
             </Container>
         </header>
