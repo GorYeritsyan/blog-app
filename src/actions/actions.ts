@@ -1,11 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { type TBlogPost, type TPagination } from "@/src/types/types";
+import {ApiResponse, type TBlogPost, type TPagination} from "@/src/types/types";
 import { fetchInstance } from "@/src/actions/index";
+import {tryCatch} from "@/src/utils/utils";
+import {getMe} from "@/src/actions/auth";
 
 // Fetch all blog posts and filter
-export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: number }) => {
+export const fetchBlogPosts = async ({ query, page = 1 }: { query?: string; page?: number }) => {
     const limit = 4;
     const searchParams = new URLSearchParams();
 
@@ -17,18 +19,24 @@ export const fetchBlogPosts = async ({ query, page }: { query?: string; page?: n
     }
 
     // Pagination
-    searchParams.set("page", `${page ?? 1}`);
+    searchParams.set("page", `${page}`);
     searchParams.set("limit", `${limit}`);
 
     // All blog posts
-    const { data: blogPosts, pagination } = await fetchInstance<{ data: TBlogPost; pagination: TPagination }>(`/blog?${searchParams.toString()}`);
+    const { data, error } = await tryCatch<TBlogPost[]>(fetchInstance(`/blog?${searchParams.toString()}`));
 
-    return { data: typeof blogPosts !== "string" ? blogPosts : [], totalPages: pagination.totalPages };
+    if (error) console.log(error.message);
+
+    return { data: data?.data || [], totalPages: data?.pagination?.totalPages };
 }
 
 // Fetch blog post by ID
-export const fetchBlogPostById = async (postId: string): Promise<TBlogPost> => {
-    return await fetchInstance(`/blog/${postId}`);
+export const fetchBlogPostById = async (postId: string) => {
+    const { data, error } = await tryCatch(fetchInstance(`/blog/${postId}`));
+
+    if (error) console.log(error.message);
+
+    return data?.data;
 }
 
 // Delete blog post by ID
@@ -45,14 +53,15 @@ export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
 
 // Create & Edit Blog Post Server Actions
 export const createBlogPost = async (formData: FormData) => {
-    const { title, content, author } = Object.fromEntries(formData);
+    const { title, content } = Object.fromEntries(formData);
+    const user = await getMe();
 
-    const createdBlogPost = await fetchInstance("/posts", {
+    const createdBlogPost = await fetchInstance("/blog", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content, author, createdAt: new Date(Date.now()) })
+        body: JSON.stringify({ title, content, authorId: user?.id })
     });
 
     if (!createdBlogPost) {
@@ -63,14 +72,15 @@ export const createBlogPost = async (formData: FormData) => {
 }
 
 export const saveBlogPost = async (formData: FormData, postId: string) => {
-    const { title, content, author } = Object.fromEntries(formData);
+    const { title, content } = Object.fromEntries(formData);
+    const user = await getMe();
 
     const updatedBlogPost = await fetchInstance(`/posts/${postId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content, author })
+        body: JSON.stringify({ title, content, authorId: user?.id })
     });
 
     if (!updatedBlogPost) {

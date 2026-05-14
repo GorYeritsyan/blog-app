@@ -9,32 +9,46 @@ import Spinner from "@/src/components/ui/Spinner";
 import Form from "@/src/components/ui/form/Form";
 import {createBlogPost} from "@/src/actions/actions";
 import {registerUser} from "@/src/actions/auth";
+import {useForm} from "react-hook-form";
+import {RegisterBody, RegisterSchema} from "@/src/lib/validations/auth";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
 
 export default function RegisterForm() {
-    const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
+    const form = useForm<RegisterBody>({
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        },
+        resolver: zodResolver(RegisterSchema)
+    });
 
-    const [error, formAction, isPending] = useActionState(registerUser, undefined);
+    const onSubmit = async (values: RegisterBody) => {
+        await registerUser(values);
+    };
 
     return (
-        <Form errors={errors} action={formAction} className="max-w-100 space-y-4">
+        <Form onSubmit={form.handleSubmit(onSubmit)} errors={form.formState.errors} className="max-w-100 space-y-4">
             {/* Name */}
             <Field name="name" label="Full Name">
-                <Input />
+                <Input {...form.register("name")} />
             </Field>
 
             {/* Email */}
             <Field name="email" label="Email">
-                <Input />
+                <Input {...form.register("email")} />
             </Field>
 
             {/* Password */}
             <Field name="password" label="Password">
-                <Input type="password" />
+                <Input {...form.register("password")} type="password" />
             </Field>
 
             {/* Confirm Password */}
             <Field name="confirmPassword" label="Confirm Password">
-                <Input type="password" />
+                <Input {...form.register("confirmPassword")} type="password" />
             </Field>
 
             {/* If something went wrong in the server */}

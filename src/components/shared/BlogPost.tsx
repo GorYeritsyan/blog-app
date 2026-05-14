@@ -24,7 +24,7 @@ export default function BlogPost({ post }: { post: TBlogPost }) {
 
             <div className="flex items-center justify-between w-full">
                 <p className="text-gray-400">
-                    Created by <span className="font-medium text-zinc-900">{post.author.name}</span>
+                    Created by <span className="font-medium text-zinc-900">{post?.author?.name}</span>
                 </p>
 
                 <div className="flex gap-2">

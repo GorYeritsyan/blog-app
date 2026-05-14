@@ -6,12 +6,10 @@ import { tryCatch } from "@/src/utils/utils";
 import { type ApiResponse, type TUser } from "@/src/types/types";
 import { cookies } from "next/headers";
 
-export const registerUser = async (prevState: any, formData: FormData) => {
-    const { name, email, password, confirmPassword } = Object.fromEntries(formData);
-
+export const registerUser = async ({ name, email, password }) => {
     // Validate Form Data using Zod
 
-    const { data, error } = await tryCatch<ApiResponse<TUser>>(fetchInstance(`/auth/register`, {
+    const { data, error } = await tryCatch<TUser>(fetchInstance(`/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -21,9 +19,6 @@ export const registerUser = async (prevState: any, formData: FormData) => {
 
     // If there is any error during try/catch
     if (error) return { message: error.message };
-
-    // If there is response but with error field
-    if (!data.success) return { message: data.error };
 
     console.log("registeredUser", data);
 
@@ -36,7 +31,7 @@ export const loginUser = async (prevState: any, formData: FormData) => {
 
     // Validate fields
 
-    const { data, error } = await tryCatch<ApiResponse>(fetchInstance(`/auth/login`, {
+    const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -47,8 +42,8 @@ export const loginUser = async (prevState: any, formData: FormData) => {
     // If there is any error during try/catch
     if (error) return { message: error.message };
 
-    // If there is response but with error field
-    if (!data.success) return { message: data.error };
+    // // If there is response but with error field
+    // if (!data.success) return { message: data.error };
 
     // Set access token in the cookies - 15m
     cookieStore.set("token", data.token!, { httpOnly: true, maxAge: 15 * 60 });
@@ -57,17 +52,18 @@ export const loginUser = async (prevState: any, formData: FormData) => {
     redirect("/");
 }
 
-export const logout = async (formData: FormData) => {
+export const logout = async () => {
     const cookieStore = await cookies();
 
-    // await tryCatch(fetchInstance(`/auth/logout`, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     }
-    // }));
-
     cookieStore.delete("token");
-
     redirect("/login");
+}
+
+// GET auth user details
+export const getMe = async () => {
+    const { data } = await tryCatch<TUser>(fetchInstance("/auth/me"));
+
+    console.log("ME", data)
+
+    return data?.data;
 }

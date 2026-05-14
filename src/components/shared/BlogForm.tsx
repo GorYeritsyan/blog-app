@@ -21,7 +21,7 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     const defaultValues = {
         title: blogPost?.title ?? "",
         content: blogPost?.content ?? "",
-        author: blogPost?.author ?? "",
+        author: blogPost?.author?.name ?? "",
     }
 
     const blogActionTrigger = (_: unknown, formData: FormData) => {

@@ -2,6 +2,7 @@ export type TBlogPost = {
     id: string;
     title: string;
     content: string;
+    author?: TUser;
     authorId: number;
     createdAt: Date;
 }
@@ -23,12 +24,12 @@ export type TUser = {
     email: string;
 }
 
-type TFailure = {
+type ApiFailure = {
     success: false;
     error: string;
 };
 
-type TSuccess<T> = {
+export type ApiSuccess<T> = {
     success: true;
     pagination?: TPagination;
     data: T;
@@ -37,6 +38,6 @@ type TSuccess<T> = {
 }
 
 // API Response type
-export type ApiResponse<T = never> = TSuccess<T> | TFailure;
+export type ApiResponse<T = never> = ApiSuccess<T> | ApiFailure;
 
-export type LoginResponse = { success: true; message: string; token: string } | TFailure;
+export type LoginResponse = { success: true; message: string; token: string } | ApiFailure;

@@ -26,7 +26,7 @@ export default function Field({ children, label, name }: FieldProps) {
                 <label htmlFor={name} className="font-semibold">{label}</label>
                 {children}
                 {errors?.[name] && (
-                    <p className="text-red-600 font-medium">{errors?.[name]}</p>
+                    <p className="text-red-600 font-medium">{errors?.[name]?.message}</p>
                 )}
             </div>
         </FieldContext.Provider>

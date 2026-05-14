@@ -18,11 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ postId: s
 }
 
 // Generate first page statically at build time
-export async function generateStaticParams() {
-    const { data: blogPosts } = await fetchBlogPosts({});
-
-    return blogPosts.map(post => ({ postId: post.id }));
-}
+// export async function generateStaticParams() {
+//     const { data: blogPosts } = await fetchBlogPosts({});
+//
+//     return blogPosts.map(post => ({ postId: post.id }));
+// }
 
 export default async function Page({ params }: { params: Promise<{ postId: string }>}) {
     const { postId } = await params;
