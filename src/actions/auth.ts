@@ -3,13 +3,24 @@
 import { redirect } from "next/navigation";
 import { fetchInstance } from "@/src/actions/index";
 import { tryCatch } from "@/src/utils/utils";
-import { type ApiResponse, type TUser } from "@/src/types/types";
+import { type TUser } from "@/src/types/types";
 import { cookies } from "next/headers";
+import { type LoginFormValues, LoginSchema, type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
 
-export const registerUser = async ({ name, email, password }) => {
+export const registerUser = async (prevState: any, formValues: RegisterFormValues) => {
     // Validate Form Data using Zod
+    const result = RegisterSchema.safeParse(formValues);
 
-    const { data, error } = await tryCatch<TUser>(fetchInstance(`/auth/register`, {
+    // Handle error
+    if (!result.success) {
+        return { errors: "Invalid data" };
+    }
+
+    // Get form values
+    const { name, email, password } = result.data;
+
+    // Create user
+    const { error } = await tryCatch<TUser>(fetchInstance(`/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -19,17 +30,22 @@ export const registerUser = async ({ name, email, password }) => {
 
     // If there is any error during try/catch
     if (error) return { message: error.message };
-
-    console.log("registeredUser", data);
+    // console.log("registeredUser", data);
 
     redirect("/login");
 }
 
-export const loginUser = async (prevState: any, formData: FormData) => {
+export const loginUser = async (prevState: any, formValues: LoginFormValues) => {
     const cookieStore = await cookies();
-    const { email, password } = Object.fromEntries(formData);
 
     // Validate fields
+    const result = LoginSchema.safeParse(formValues);
+
+    if (!result.success) {
+        return { errors: "Invalid data" };
+    }
+
+    const { email, password } = result.data;
 
     const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
         method: "POST",
@@ -41,9 +57,6 @@ export const loginUser = async (prevState: any, formData: FormData) => {
 
     // If there is any error during try/catch
     if (error) return { message: error.message };
-
-    // // If there is response but with error field
-    // if (!data.success) return { message: data.error };
 
     // Set access token in the cookies - 15m
     cookieStore.set("token", data.token!, { httpOnly: true, maxAge: 15 * 60 });
@@ -60,10 +73,8 @@ export const logout = async () => {
 }
 
 // GET auth user details
-export const getMe = async () => {
+export const getCurrentUser = async () => {
     const { data } = await tryCatch<TUser>(fetchInstance("/auth/me"));
-
-    console.log("ME", data)
 
     return data?.data;
 }

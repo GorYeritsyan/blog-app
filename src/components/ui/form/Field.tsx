@@ -4,8 +4,6 @@ import { createContext, ReactNode, useContext } from "react";
 import { useForm } from "@/src/components/ui/form/Form";
 
 type TFieldContext = {
-    name?: string;
-    defaultValue?: string;
     errors?: { [key: string]: string } | null;
 }
 
@@ -18,10 +16,10 @@ type FieldProps = {
 const FieldContext = createContext<TFieldContext>({});
 
 export default function Field({ children, label, name }: FieldProps) {
-    const { errors, defaultValues } = useForm();
+    const { errors } = useForm();
 
     return (
-        <FieldContext.Provider value={{ name, errors, defaultValue: defaultValues?.[name] }}>
+        <FieldContext.Provider value={{ errors }}>
             <div className="flex flex-col gap-1 w-full">
                 <label htmlFor={name} className="font-semibold">{label}</label>
                 {children}

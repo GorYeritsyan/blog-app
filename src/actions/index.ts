@@ -1,8 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+
 import { ApiResponse } from "@/src/types/types";
-import {redirect} from "next/navigation";
 
 export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
     const cookieStore = await cookies();
@@ -18,8 +19,9 @@ export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?:
         headers
     });
 
+
     // TODO: Check this logic
-    if (token && !res.ok) {
+    if (token && res.status == 401) {
         // await logout();
         redirect("/api/logout");
     }

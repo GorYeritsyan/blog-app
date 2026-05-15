@@ -21,5 +21,5 @@ export default function proxy(req: NextRequest) {
 
 // TODO: check matcher logic
 export const config = {
-    matcher: ["/", "/login", "/register", "/logout", "/blog"],
+    matcher: ["/", "/login", "/register", "/logout", "/blog/:path*"],
 }

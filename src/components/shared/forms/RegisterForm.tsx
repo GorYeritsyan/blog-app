@@ -1,21 +1,21 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { startTransition, useActionState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import Field from "@/src/components/ui/form/Field";
 import Input from "@/src/components/ui/Input";
 import Button from "@/src/components/ui/Button";
 import Spinner from "@/src/components/ui/Spinner";
 import Form from "@/src/components/ui/form/Form";
-import {createBlogPost} from "@/src/actions/actions";
-import {registerUser} from "@/src/actions/auth";
-import {useForm} from "react-hook-form";
-import {RegisterBody, RegisterSchema} from "@/src/lib/validations/auth";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
+import { registerUser } from "@/src/actions/auth";
+import { type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
 
 export default function RegisterForm() {
-    const form = useForm<RegisterBody>({
+    const [error, registerAction, isPending] = useActionState(registerUser, undefined);
+
+    const form = useForm<RegisterFormValues>({
         defaultValues: {
             name: "",
             email: "",
@@ -25,8 +25,10 @@ export default function RegisterForm() {
         resolver: zodResolver(RegisterSchema)
     });
 
-    const onSubmit = async (values: RegisterBody) => {
-        await registerUser(values);
+    const onSubmit = async (values: RegisterFormValues) => {
+        startTransition(async () => {
+            registerAction(values);
+        });
     };
 
     return (

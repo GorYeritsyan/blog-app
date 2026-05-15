@@ -1,31 +1,22 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useRef, type FormHTMLAttributes } from "react";
+import { createContext, ReactNode, useContext, FormHTMLAttributes } from "react";
 
 type TFormContext = {
     errors?: { [key: string]: string } | null;
-    defaultValues?: { [key: string]: string };
-    handleChange?: (key: string, value: string) => void;
 }
 
 type FormProps = FormHTMLAttributes<HTMLFormElement> & {
     children: ReactNode;
     errors: { [key: string]: string } | null;
-    defaultValues?: { [key: string]: string };
     className?: string;
 }
 
 const FormContext = createContext<TFormContext>({});
 
-export default function Form({ children, errors, className, defaultValues, ...props }: FormProps) {
-    const formRef = useRef<{ [key: string]: string }>({});
-
-    const handleChange = (key: string, value: string) => {
-        formRef.current[key] = value;
-    }
-
+export default function Form({ children, errors, className, ...props }: FormProps) {
     return (
-        <FormContext.Provider value={{ errors, defaultValues, handleChange }}>
+        <FormContext.Provider value={{ errors }}>
             <form className={className} {...props}>
                 {children}
             </form>

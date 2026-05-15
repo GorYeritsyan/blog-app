@@ -39,5 +39,3 @@ export type ApiSuccess<T> = {
 
 // API Response type
 export type ApiResponse<T = never> = ApiSuccess<T> | ApiFailure;
-
-export type LoginResponse = { success: true; message: string; token: string } | ApiFailure;

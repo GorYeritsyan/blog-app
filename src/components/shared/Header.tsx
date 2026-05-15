@@ -1,12 +1,10 @@
 import Container from "@/src/components/shared/Container";
-import { getMe } from "@/src/actions/auth";
+import { getCurrentUser } from "@/src/actions/auth";
 import Button from "@/src/components/ui/Button";
 import Link from "next/link";
 
 export default async function Header() {
-    // const data = await auth();
-    // console.log("data", data);
-    const user = await getMe();
+    const currentUser = await getCurrentUser();
 
     return (
         <header className="border-b border-zinc-200 shadow-sm shadow-zinc-100">
@@ -16,10 +14,12 @@ export default async function Header() {
 
 
                     {/*<LogoutButton />*/}
-                    <span>{user?.email}</span>
-                    <Link href="/api/logout">
-                        <Button variant="danger">Logout</Button>
-                    </Link>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm font-medium">{currentUser?.email}</span>
+                        <Link href="/api/logout">
+                            <Button variant="danger">Logout</Button>
+                        </Link>
+                    </div>
                 </div>
             </Container>
         </header>

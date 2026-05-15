@@ -1,10 +1,7 @@
 import { ReactNode } from "react";
 import Container from "@/src/components/shared/Container";
-import Link from "next/link";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
-
-
     return (
         <section>
             <Container>

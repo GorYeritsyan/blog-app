@@ -16,5 +16,6 @@ export const LoginSchema = z.object({
     password: z.string().regex(/^[a-zA-Z0-9]{3,30}$/, "Password is invalid"),
 });
 
-export type RegisterBody = z.infer<typeof RegisterSchema>;
-export type LoginBody = z.infer<typeof LoginSchema>;
+// Form values types
+export type RegisterFormValues = z.infer<typeof RegisterSchema>;
+export type LoginFormValues = z.infer<typeof LoginSchema>;

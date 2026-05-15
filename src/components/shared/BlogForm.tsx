@@ -1,66 +1,49 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { startTransition, useActionState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { type TBlogPost } from "@/src/types/types";
-import { createBlogPost, saveBlogPost } from "@/src/actions/actions";
 import Input from "@/src/components/ui/Input";
 import Button from "@/src/components/ui/Button";
 import Spinner from "@/src/components/ui/Spinner";
 import Form from "@/src/components/ui/form/Form";
 import Field from "@/src/components/ui/form/Field";
 import Textarea from "@/src/components/ui/Textarea";
+import { type TBlogPost } from "@/src/types/types";
+import { saveOrCreateBlogPost } from "@/src/actions/actions";
+import { type BlogPostFormValues, BlogPostSchema } from "@/src/lib/validations/blog";
 
 export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     const isEditing = !!blogPost;
-
     const blogAction = isEditing ? "Save" : "Create";
-    const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
 
-    // Show default values when editing blog post
-    const defaultValues = {
-        title: blogPost?.title ?? "",
-        content: blogPost?.content ?? "",
-        author: blogPost?.author?.name ?? "",
-    }
+    const form = useForm<BlogPostFormValues>({
+        defaultValues: {
+            title: blogPost?.title || "",
+            content: blogPost?.content || "",
+        },
+        resolver: zodResolver(BlogPostSchema)
+    });
 
-    const blogActionTrigger = (_: unknown, formData: FormData) => {
-        const newErrors: { [key: string]: string } = {};
-        const formValues = Object.fromEntries(formData) as { [key: string]: string };
+    const [error, blogFormAction, isPending] = useActionState(saveOrCreateBlogPost, undefined);
 
-        // Error message for required fields
-        Object.entries(formValues).forEach(([key, value]) => {
-            if (!value.trim()) {
-                newErrors[key] = "This field is required";
-            }
+    const onSubmit = (values: BlogPostFormValues) => {
+        startTransition(() => {
+            blogFormAction({ ...values, postId: blogPost?.id });
         });
 
-        // Show error messages
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
-
-        // Reset errors to don't show messages
-        setErrors(null);
-
-       return isEditing ? saveBlogPost(formData, blogPost.id) : createBlogPost(formData);
+        console.log(values);
     };
 
-    const [error, formAction, isPending] = useActionState(blogActionTrigger, undefined);
-
     return (
-        <Form errors={errors} action={formAction} defaultValues={defaultValues} className="max-w-100 space-y-4">
+        <Form onSubmit={form.handleSubmit(onSubmit)} errors={form.formState.errors} className="max-w-100 space-y-4">
             <Field name="title" label="Title">
-                <Input />
+                <Input {...form.register("title")} />
             </Field>
 
             <Field name="content" label="Content">
-                <Textarea />
-            </Field>
-
-            <Field name="author" label="Author">
-                <Input />
+                <Textarea {...form.register("content")} />
             </Field>
 
             {/* If something went wrong in the server */}
