@@ -6,6 +6,7 @@ import { tryCatch } from "@/src/utils/utils";
 import { type TUser } from "@/src/types/types";
 import { cookies } from "next/headers";
 import { type LoginFormValues, LoginSchema, type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
+import {signIn} from "@/auth";
 
 export const registerUser = async (prevState: any, formValues: RegisterFormValues) => {
     // Validate Form Data using Zod
@@ -36,32 +37,37 @@ export const registerUser = async (prevState: any, formValues: RegisterFormValue
 }
 
 export const loginUser = async (prevState: any, formValues: LoginFormValues) => {
-    const cookieStore = await cookies();
+    const formData = new FormData();
+    formData.append("email", formValues.email);
+    formData.append("password", formValues.password);
 
-    // Validate fields
-    const result = LoginSchema.safeParse(formValues);
-
-    if (!result.success) {
-        return { errors: "Invalid data" };
-    }
-
-    const { email, password } = result.data;
-
-    const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-    }));
-
-    // If there is any error during try/catch
-    if (error) return { message: error.message };
-
-    // Set access token in the cookies - 15m
-    cookieStore.set("token", data.token!, { httpOnly: true, maxAge: 15 * 60 });
-    // console.log("Refresh token", cookieStore.get("refreshToken"));
-
+    await signIn("credentials", { email: formValues.email, password: formValues.password, redirectTo: "/" });
+    // const cookieStore = await cookies();
+    //
+    // // Validate fields
+    // const result = LoginSchema.safeParse(formValues);
+    //
+    // if (!result.success) {
+    //     return { errors: "Invalid data" };
+    // }
+    //
+    // const { email, password } = result.data;
+    //
+    // const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ email, password }),
+    // }));
+    //
+    // // If there is any error during try/catch
+    // if (error) return { message: error.message };
+    //
+    // // Set access token in the cookies - 15m
+    // cookieStore.set("token", data.token!, { httpOnly: true, maxAge: 15 * 60 });
+    // // console.log("Refresh token", cookieStore.get("refreshToken"));
+    //
     redirect("/");
 }
 
