@@ -22,7 +22,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             authorize: async (credentials) => {
                 const data = await LoginSchema.parseAsync(credentials);
 
-                const res = await fetch(`http://localhost:3000/api/auth/login`, {
+                const res = await fetch(`http://localhost:8080/api/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
