@@ -2,6 +2,7 @@
 
 import { ApiResponse } from "@/src/types/types";
 import { auth } from "@/auth";
+import {redirect} from "next/navigation";
 
 export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
     const token = (await auth())?.accessToken;
@@ -15,6 +16,12 @@ export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?:
         ...options,
         headers
     });
+
+    // If there is session but accessToken inside that session is expired then redirect to login page
+    // Must throw error in try/catch, otherwise redirect won't work
+    if (res.status === 401) {
+        redirect("/api/logout");
+    }
 
     return await res.json();
 }

@@ -1,6 +1,8 @@
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { ApiResponse, ApiSuccess } from "@/src/types/types";
+import {redirect} from "next/navigation";
+import {isRedirectError} from "next/dist/client/components/redirect-error";
 
 export const cn = (...classNames: ClassValue[]) => {
     return twMerge(clsx(...classNames));
@@ -22,6 +24,8 @@ export const tryCatch = async <T = never, E = Error>(promise: Promise<ApiRespons
 
         return { data, error: null };
     } catch (error) {
+        // In case if error is NEXT_REDIRECT (redirect) throw error
+        if (isRedirectError(error)) throw error;
         return { data: null, error: error as E };
     }
 }

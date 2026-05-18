@@ -1,12 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { CredentialsSignin } from "next-auth";
+
 import { fetchInstance } from "@/src/actions/index";
 import { tryCatch } from "@/src/utils/utils";
 import { type TUser } from "@/src/types/types";
 import { type LoginFormValues, LoginSchema, type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
-import {InvalidLoginError, signIn, signOut} from "@/auth";
-import {CredentialsSignin} from "next-auth";
+import { signIn, signOut } from "@/auth";
 
 export const registerUser = async (prevState: { message: string } | undefined, formValues: RegisterFormValues) => {
     // Validate Form Data using Zod
@@ -62,5 +63,6 @@ export const logout = async () => {
 // GET auth user details
 export const getCurrentUser = async () => {
     const { data } = await tryCatch<TUser>(fetchInstance("/auth/me"));
+
     return data?.data;
 }

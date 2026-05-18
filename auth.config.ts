@@ -10,21 +10,22 @@ export const authConfig = {
             const { pathname } = nextUrl;
             const isLoggedIn = !!auth?.user;
             const isAuthRoute = pathname === "/login" || pathname === "/register";
-            console.log("auth", auth);
 
+            // If not logged in and in the protected route then redirect to login
             if (!isLoggedIn && !isAuthRoute) {
                 return NextResponse.redirect(new URL("/login", nextUrl));
             }
 
+            // if logged in and in the login or register page then redirect to homepage
             if (isLoggedIn && isAuthRoute) {
-                console.log("logged in", auth);
                 return NextResponse.redirect(new URL("/", nextUrl));
             }
 
-            // If authorized
+            // If Authorized
             return true;
         },
 
+        // Attach accessToken to jwt token
         async jwt({ token, user }) {
             if (user) {
                 token.accessToken = user.token;

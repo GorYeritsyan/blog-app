@@ -1,10 +1,16 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import {LoginSchema} from "@/src/lib/validations/auth";
-import {authConfig} from "@/auth.config";
+import { LoginSchema } from "@/src/lib/validations/auth";
+import { authConfig } from "@/auth.config";
+import { fetchInstance } from "@/src/actions";
+import { tryCatch } from "@/src/utils/utils";
+import {TUser} from "@/src/types/types";
 
 export class InvalidLoginError extends CredentialsSignin {
-    code = "Invalid credentials."
+    constructor(code: string) {
+        super();
+        this.code = code;
+    }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -12,24 +18,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         Credentials({
             authorize: async (credentials) => {
-                const data = await LoginSchema.parseAsync(credentials);
+                const validBody = await LoginSchema.parseAsync(credentials);
 
-                const res = await fetch(`http://localhost:8080/api/auth/login`, {
+                const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(data)
-                });
+                    body: JSON.stringify(validBody)
+                }));
 
-                const { data: user } = await res.json();
+                const user = data?.data;
 
-                if (!user) {
-                    throw new InvalidLoginError();
+                if (error) {
+                    throw new InvalidLoginError(error.message);
                 }
 
                 return user;
             }
-        })
+        }),
     ]
 });

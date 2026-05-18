@@ -89,7 +89,6 @@ export const fetchBlogPostById = async (postId: string) => {
 // }
 
 export const saveOrCreateBlogPost = async (prevState: { message: string } | undefined, values: BlogPostFormValues) => {
-    console.log("saveOrCreateBlogPost", values);
     const result = BlogPostSchema.safeParse(values);
 
     if (!result.success) {
