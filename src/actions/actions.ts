@@ -36,6 +36,7 @@ export const fetchBlogPostById = async (postId: string) => {
 
     if (error) console.log(error.message);
 
+    console.log("data", data)
     return data?.data;
 }
 
@@ -87,7 +88,7 @@ export const fetchBlogPostById = async (postId: string) => {
 //     redirect("/");
 // }
 
-export const saveOrCreateBlogPost = async (prevState: any, values: BlogPostFormValues) => {
+export const saveOrCreateBlogPost = async (prevState: { message: string } | undefined, values: BlogPostFormValues) => {
     console.log("saveOrCreateBlogPost", values);
     const result = BlogPostSchema.safeParse(values);
 
@@ -97,6 +98,7 @@ export const saveOrCreateBlogPost = async (prevState: any, values: BlogPostFormV
 
     const { title, content, postId } = result.data;
 
+    // Edit blog post
     if (postId) {
         const { error } = await tryCatch<TBlogPost>(fetchInstance(`/blog/${postId}`, {
             method: "PATCH",
@@ -113,6 +115,7 @@ export const saveOrCreateBlogPost = async (prevState: any, values: BlogPostFormV
         redirect("/");
     }
 
+    // Create blog post
     const { error } = await tryCatch<TBlogPost>(fetchInstance("/blog", {
         method: "POST",
         headers: {

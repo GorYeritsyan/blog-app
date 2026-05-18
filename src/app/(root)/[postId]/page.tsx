@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 
-import { fetchBlogPostById } from "@/src/actions/actions";
+import {fetchBlogPostById, fetchBlogPosts} from "@/src/actions/actions";
 import Container from "@/src/components/shared/Container";
 import BackButton from "@/src/components/shared/BackButton";
 import BlogPostDetailsSkeleton from "@/src/components/shared/skeletons/BlogPostDetailsSkeleton";
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ postId: s
 
 // Generate first page statically at build time
 // export async function generateStaticParams() {
-//     const { data: blogPosts } = await fetchBlogPosts({});
+//     const { data: blogPosts } = await fetchBlogPosts();
 //
 //     return blogPosts.map(post => ({ postId: post.id }));
 // }

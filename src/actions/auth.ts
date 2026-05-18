@@ -4,11 +4,11 @@ import { redirect } from "next/navigation";
 import { fetchInstance } from "@/src/actions/index";
 import { tryCatch } from "@/src/utils/utils";
 import { type TUser } from "@/src/types/types";
-import { cookies } from "next/headers";
 import { type LoginFormValues, LoginSchema, type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
-import {signIn} from "@/auth";
+import {InvalidLoginError, signIn, signOut} from "@/auth";
+import {CredentialsSignin} from "next-auth";
 
-export const registerUser = async (prevState: any, formValues: RegisterFormValues) => {
+export const registerUser = async (prevState: { message: string } | undefined, formValues: RegisterFormValues) => {
     // Validate Form Data using Zod
     const result = RegisterSchema.safeParse(formValues);
 
@@ -31,56 +31,36 @@ export const registerUser = async (prevState: any, formValues: RegisterFormValue
 
     // If there is any error during try/catch
     if (error) return { message: error.message };
-    // console.log("registeredUser", data);
 
     redirect("/login");
 }
 
-export const loginUser = async (prevState: any, formValues: LoginFormValues) => {
-    const formData = new FormData();
-    formData.append("email", formValues.email);
-    formData.append("password", formValues.password);
+export const loginUser = async (prevState: { message: string } | undefined, formValues: LoginFormValues) => {
+    const result = LoginSchema.safeParse(formValues);
 
-    await signIn("credentials", { email: formValues.email, password: formValues.password, redirectTo: "/" });
-    // const cookieStore = await cookies();
-    //
-    // // Validate fields
-    // const result = LoginSchema.safeParse(formValues);
-    //
-    // if (!result.success) {
-    //     return { errors: "Invalid data" };
-    // }
-    //
-    // const { email, password } = result.data;
-    //
-    // const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ email, password }),
-    // }));
-    //
-    // // If there is any error during try/catch
-    // if (error) return { message: error.message };
-    //
-    // // Set access token in the cookies - 15m
-    // cookieStore.set("token", data.token!, { httpOnly: true, maxAge: 15 * 60 });
-    // // console.log("Refresh token", cookieStore.get("refreshToken"));
-    //
-    redirect("/");
+    if (!result.success) {
+        return { message: "Invalid data" };
+    }
+
+    const { email, password } = result.data;
+
+    // TODO: Check redirection logic
+    try {
+        await signIn("credentials", { email, password, redirectTo: "/" });
+    } catch (error) {
+        if (error instanceof CredentialsSignin) {
+            return { message: error.code };
+        }
+        throw error;
+    }
 }
 
 export const logout = async () => {
-    const cookieStore = await cookies();
-
-    cookieStore.delete("token");
-    redirect("/login");
+    await signOut({ redirectTo: "/login" });
 }
 
 // GET auth user details
 export const getCurrentUser = async () => {
     const { data } = await tryCatch<TUser>(fetchInstance("/auth/me"));
-
     return data?.data;
 }

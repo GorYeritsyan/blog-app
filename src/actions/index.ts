@@ -1,16 +1,10 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-
 import { ApiResponse } from "@/src/types/types";
-import {auth, signOut} from "@/auth";
+import { auth } from "@/auth";
 
 export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
-    const cookieStore = await cookies();
-    // const token = cookieStore.get("token")?.value;
-    const session = await auth();
-    const token = session?.accessToken ?? null;
+    const token = (await auth())?.accessToken;
     const headers = new Headers(options?.headers);
 
     if (token) {
@@ -21,14 +15,6 @@ export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?:
         ...options,
         headers
     });
-
-
-    // TODO: Check this logic
-    if (token && res.status == 401) {
-        // await logout();
-        // redirect("/api/logout");
-        await signOut();
-    }
 
     return await res.json();
 }

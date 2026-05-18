@@ -1,24 +1,16 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import {LoginSchema} from "@/src/lib/validations/auth";
+import {authConfig} from "@/auth.config";
 
-class InvalidLoginError extends CredentialsSignin {
-    code = "Invalid identifier or password"
+export class InvalidLoginError extends CredentialsSignin {
+    code = "Invalid credentials."
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    ...authConfig,
     providers: [
         Credentials({
-            // credentials: {
-            //     email: {
-            //         type: "email",
-            //         label: "Email",
-            //     },
-            //     password: {
-            //         type: "password",
-            //         label: "Password",
-            //     }
-            // },
             authorize: async (credentials) => {
                 const data = await LoginSchema.parseAsync(credentials);
 
@@ -32,28 +24,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 const { data: user } = await res.json();
 
-                if (res.ok && user) {
-                    return user;
+                if (!user) {
+                    throw new InvalidLoginError();
                 }
 
-                return null;
+                return user;
             }
         })
-    ],
-
-    callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.accessToken = user.token
-            }
-
-            return token;
-        },
-
-        async session({ session, token }) {
-            session.accessToken = token.accessToken;
-            return session;
-        }
-    },
-    session: { strategy: "jwt" }
+    ]
 });
