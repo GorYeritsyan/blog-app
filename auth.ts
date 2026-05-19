@@ -28,13 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     body: JSON.stringify(validBody)
                 }));
 
-                const user = data?.data;
+                const { user, token } = data?.data;
 
                 if (error) {
                     throw new InvalidLoginError(error.message);
                 }
 
-                return user;
+                return { ...user, token };
             }
         }),
     ]
