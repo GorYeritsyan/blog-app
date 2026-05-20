@@ -1,13 +1,14 @@
-"use client";
-
 import Link from "next/link";
 
 import { type TBlogPost } from "@/src/types/types";
 import Button from "@/src/components/ui/Button";
 import DeleteModalButton from "@/src/components/shared/DeleteModalButton";
+import {auth} from "@/auth";
+import {getCurrentUser} from "@/src/actions/auth";
 
-export default function BlogPost({ post }: { post: TBlogPost }) {
+export default async function BlogPost({ post }: { post: TBlogPost }) {
     const date = new Date(post.createdAt).toDateString();
+    const currentUser = await getCurrentUser();
 
     return (
         <div className="flex flex-col gap-4 px-6 py-4 hover:bg-zinc-50 border-b border-b-zinc-200">
@@ -27,14 +28,17 @@ export default function BlogPost({ post }: { post: TBlogPost }) {
                     Created by <span className="font-medium text-zinc-900">{post?.author?.name}</span>
                 </p>
 
-                <div className="flex gap-2">
-                    <Link href={`/blog/edit/${post.id}`}>
-                        <Button>Edit</Button>
-                    </Link>
+                {/* Show edit and delete buttons if current user same post author */}
+                {currentUser?.id === post?.authorId && (
+                    <div className="flex gap-2">
+                        <Link href={`/blog/edit/${post.id}`}>
+                            <Button>Edit</Button>
+                        </Link>
 
-                    {/* Modal Button to delete blog post */}
-                    <DeleteModalButton postId={post.id} />
-                </div>
+                        {/* Modal Button to delete blog post */}
+                        <DeleteModalButton postId={post.id} />
+                    </div>
+                )}
             </div>
         </div>
     );

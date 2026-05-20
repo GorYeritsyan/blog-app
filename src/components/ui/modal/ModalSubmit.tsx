@@ -8,14 +8,14 @@ type ModalSubmitProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
     variant?: TButtonVariants;
     className?: string;
-    action: () => void;
+    onSubmit: () => void;
 }
 
-export default function ModalSubmit({ children, variant, action, className, ...props }: ModalSubmitProps) {
+export default function ModalSubmit({ children, variant, onSubmit, className, ...props }: ModalSubmitProps) {
     const { closeModal } = useModal();
 
     function handleModalSubmit() {
-        action();
+        onSubmit();
         closeModal();
     }
 

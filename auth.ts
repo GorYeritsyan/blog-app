@@ -4,7 +4,6 @@ import { LoginSchema } from "@/src/lib/validations/auth";
 import { authConfig } from "@/auth.config";
 import { fetchInstance } from "@/src/actions";
 import { tryCatch } from "@/src/utils/utils";
-import {TUser} from "@/src/types/types";
 
 export class InvalidLoginError extends CredentialsSignin {
     constructor(code: string) {
@@ -28,11 +27,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     body: JSON.stringify(validBody)
                 }));
 
-                const { user, token } = data?.data;
-
                 if (error) {
                     throw new InvalidLoginError(error.message);
                 }
+
+                const { user, token } = data.data;
 
                 return { ...user, token };
             }

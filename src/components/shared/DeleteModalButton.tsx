@@ -1,3 +1,5 @@
+"use client";
+
 import ModalTrigger from "@/src/components/ui/modal/ModalTrigger";
 import ModalContent from "@/src/components/ui/modal/ModalContent";
 import ModalClose from "@/src/components/ui/modal/ModalClose";
@@ -18,7 +20,7 @@ export default function DeleteModalButton({ postId }: { postId: string }) {
             </ModalTrigger>
             <ModalContent title="Delete Blog Post" description="Are you sure you want to delete this blog post?">
                 <ModalClose variant="outline">Close</ModalClose>
-                <ModalSubmit variant="danger" action={() => handleDeleteBlogPost(postId)}>
+                <ModalSubmit variant="danger" onSubmit={() => handleDeleteBlogPost(postId)}>
                     Yes, I'm sure
                 </ModalSubmit>
             </ModalContent>
