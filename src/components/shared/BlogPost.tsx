@@ -3,8 +3,7 @@ import Link from "next/link";
 import { type TBlogPost } from "@/src/types/types";
 import Button from "@/src/components/ui/Button";
 import DeleteModalButton from "@/src/components/shared/DeleteModalButton";
-import {auth} from "@/auth";
-import {getCurrentUser} from "@/src/actions/auth";
+import { getCurrentUser } from "@/src/actions/auth";
 
 export default async function BlogPost({ post }: { post: TBlogPost }) {
     const date = new Date(post.createdAt).toDateString();
