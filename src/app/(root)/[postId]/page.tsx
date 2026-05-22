@@ -28,17 +28,11 @@ export default async function Page({ params }: { params: Promise<{ postId: strin
     const { postId } = await params;
 
     return (
-        <section>
-            <Container>
-                <div className="py-8">
-                    <div className="flex items-start gap-10">
-                        <BackButton />
-                        <Suspense fallback={<BlogPostDetailsSkeleton />}>
-                            <BlogPostDetails postId={postId} />
-                        </Suspense>
-                    </div>
-                </div>
-            </Container>
+        <section className="flex items-start gap-10">
+            <BackButton />
+            <Suspense fallback={<BlogPostDetailsSkeleton />}>
+                <BlogPostDetails postId={postId} />
+            </Suspense>
         </section>
     );
 }
