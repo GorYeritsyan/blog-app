@@ -17,7 +17,7 @@ export default async function Home(props: PageProps<"/">) {
                 </Link>
             </div>
             <div className="flex flex-col gap-4">
-                <Search />
+                <Search placeholder="Search for blog posts..." />
 
                 {/* Blog Posts */}
                 <BlogPosts query={query as string} page={+page} />

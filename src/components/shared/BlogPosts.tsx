@@ -17,7 +17,7 @@ export default async function BlogPosts({ query, page }: { query: string; page: 
                 <p className="text-center font-medium text-zinc-400">There is no blog posts</p>
             )}
 
-            {!!totalPages &&  blogPosts.length > 0 && (
+            {!!totalPages && blogPosts.length > 0 && (
                 <Pagination totalPages={totalPages} />
             )}
         </>

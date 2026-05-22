@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Input from "@/src/components/ui/Input";
 
-export default function Search() {
+export default function Search({ placeholder }: { placeholder: string }) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
@@ -36,6 +36,6 @@ export default function Search() {
     }
 
     return (
-        <Input placeholder="Search for blog posts..." value={query} onChange={handleSearch} />
+        <Input placeholder={placeholder} value={query} onChange={handleSearch} />
     );
 }

@@ -1,25 +1,19 @@
-import Container from "@/src/components/shared/Container";
 import Search from "@/src/components/shared/Search";
-import BlogPosts from "@/src/components/shared/BlogPosts";
-import {fetchInstance} from "@/src/actions";
+import Authors from "@/src/components/shared/authors/Authors";
 
-
-export default async function AuthorsPage() {
-    const { data } = await fetchInstance("/users");
-    const { items: users } = data;
+export default async function AuthorsPage({ searchParams }: PageProps<"/authors">) {
+    const { query, page = "1" } = await searchParams;
 
     return (
-        <section>
-            <Container>
-                <div className="flex flex-col gap-4">
-                    <Search />
+        <section className="flex flex-col gap-8">
+            <h1 className="text-4xl fon-semibold">Authors to connect</h1>
 
-                    {/* Authors */}
-                    {users.map(user => (
-                        <div>{user.name}</div>
-                    ))}
-                </div>
-            </Container>
+            <div className="flex flex-col gap-4">
+                <Search placeholder="Search for authors..." />
+
+                {/* Authors */}
+                <Authors query={query as string} page={+page} />
+            </div>
         </section>
     )
 }
