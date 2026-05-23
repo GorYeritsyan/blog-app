@@ -51,8 +51,8 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
                 <p className="text-red-600 font-medium">{error.message}</p>
             )}
 
-            <Button disabled={isPending} type="submit" className="w-full">
-                {isPending ? <Spinner className="text-2xl" /> : blogAction}
+            <Button disabled={isPending} loading={isPending} type="submit" className="w-full">
+                {blogAction}
             </Button>
         </Form>
     );

@@ -3,6 +3,17 @@ import { getCurrentUser, logout } from "@/src/actions/auth";
 import Button from "@/src/components/ui/Button";
 import Link from "next/link";
 
+const navLinks: { href: string; label: string }[] = [
+    {
+        href: "/authors",
+        label: "Authors",
+    },
+    {
+        href: "/notifications",
+        label: "Notifications",
+    }
+]
+
 export default async function Header() {
     const currentUser = await getCurrentUser();
 
@@ -15,12 +26,13 @@ export default async function Header() {
                             <Link href="/">Blog</Link>
                         </h1>
 
-                        <ul>
-                            <li>
-                                <Link href="/authors" className="font-medium">Authors</Link>
-                            </li>
+                        <ul className="flex items-center gap-10">
+                            {navLinks.map(link => (
+                                <li key={link.href}>
+                                    <Link className="font-medium" href={link.href}>{link.label}</Link>
+                                </li>
+                            ))}
                         </ul>
-
                     </div>
 
                     {/*<LogoutButton />*/}

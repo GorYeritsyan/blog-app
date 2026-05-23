@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Field from "@/src/components/ui/form/Field";
 import Input from "@/src/components/ui/Input";
 import Button from "@/src/components/ui/Button";
-import Spinner from "@/src/components/ui/Spinner";
 import Form from "@/src/components/ui/form/Form";
 import { registerUser } from "@/src/actions/auth";
 import { type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
@@ -58,8 +57,8 @@ export default function RegisterForm() {
                 <p className="text-red-600 font-medium">{error.message}</p>
             )}
 
-            <Button disabled={isPending} type="submit" className="w-full">
-                {isPending ? <Spinner className="text-2xl" /> : "Register"}
+            <Button disabled={isPending} loading={isPending} type="submit" className="w-full">
+                Register
             </Button>
         </Form>
     );

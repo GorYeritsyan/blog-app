@@ -3,6 +3,7 @@
 import {tryCatch} from "@/src/utils/utils";
 import {fetchInstance} from "@/src/actions/index";
 import {headers} from "next/headers";
+import {revalidatePath} from "next/cache";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -24,12 +25,18 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
     return { data: users, totalPages: pagination.totalPages };
 }
 
-export const sendFriendRequest = async (prevState: undefined, receiverId: number) => {
-    await fetchInstance(`/friends`, {
+export const sendFriendRequest = async (prevState: any, receiverId: number) => {
+    await new Promise(res => setTimeout(res, 3000));
+
+    const { error } = await tryCatch(fetchInstance(`/friends`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ receiverId }),
-    });
+    }));
+
+    if (error) return { message: error.message };
+
+    revalidatePath("/authors");
 }

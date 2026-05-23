@@ -5,6 +5,13 @@ export type TBlogPost = {
     author?: TUser;
     authorId: number;
     createdAt: Date;
+    tags?: Tag[];
+}
+
+export type Tag = {
+    id: number;
+    title: string;
+    posts?: TBlogPost[];
 }
 
 // Pagination type
@@ -22,7 +29,24 @@ export type TUser = {
     id: number;
     name: string;
     email: string;
+    posts?: TBlogPost[];
+    createdAt: Date;
+    sentFriendRequests?: TFriendRequest[];
+    receivedFriendRequests?: TFriendRequest[];
 }
+
+export type TFriendRequest = {
+    id: number;
+    status: TFriendRequestStatus;
+    createdAt: Date;
+    updatedAt: Date;
+    senderId: number;
+    sender?: TUser;
+    receiverId: number;
+    receiver?: TUser;
+}
+
+type TFriendRequestStatus = "pending" | "accepted" | "rejected";
 
 type ApiFailure = {
     success: false;

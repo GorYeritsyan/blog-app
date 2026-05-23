@@ -3,6 +3,7 @@
 import React, { type ButtonHTMLAttributes } from "react";
 import { cn } from "@/src/utils/utils";
 import { tv } from "tailwind-variants";
+import Spinner from "@/src/components/ui/Spinner";
 
 const button = tv({
     base: "font-semibold px-3 py-1.5 rounded-lg cursor-pointer flex items-center justify-center gap-3 active:translate-y-px duration-100",
@@ -24,17 +25,18 @@ export type TButtonVariants = "primary" | "ghost" | "danger" | "outline";
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: React.ReactNode;
     variant?: TButtonVariants;
+    loading?: boolean;
     className?: string;
 }
 
-export default function Button({ children, variant = "primary", disabled, className, ...props }: ButtonProps) {
+export default function Button({ children, variant = "primary", disabled, loading, className, ...props }: ButtonProps) {
     return (
         <button
             // className={cn("bg-zinc-900 hover:bg-zinc-800 text-white font-semibold px-3 py-1.5 rounded-md cursor-pointer flex items-center gap-3 active:translate-y-px duration-100", className)}
             className={cn(button({ color: variant, disabled }), className)}
             {...props}
         >
-            {children}
+            {loading ? <Spinner className="text-2xl" /> : children}
         </button>
     );
 }

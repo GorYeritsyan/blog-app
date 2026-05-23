@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 
 import { fetchBlogPostById } from "@/src/actions/actions";
-import Container from "@/src/components/shared/Container";
 import BackButton from "@/src/components/shared/BackButton";
 import BlogPostDetailsSkeleton from "@/src/components/shared/skeletons/BlogPostDetailsSkeleton";
 import BlogPostDetails from "@/src/components/shared/BlogPostDetails";

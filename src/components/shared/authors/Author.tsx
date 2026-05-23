@@ -1,15 +1,24 @@
 "use client";
 
-import { TUser } from "@/src/types/types";
+import { startTransition, useActionState } from "react";
+
+import type { TFriendRequest, TUser } from "@/src/types/types";
+import { sendFriendRequest } from "@/src/actions/users";
 import Button from "@/src/components/ui/Button";
-import {startTransition, useActionState} from "react";
-import {sendFriendRequest} from "@/src/actions/users";
 
-// TODO: Handle friend request logic
-export default function Author({ author }: { author: TUser }) {
+type AuthorProps = {
+    author: TUser;
+    sentFriendRequests: TFriendRequest[];
+}
 
-    const [state, dispatchAction, isPending] = useActionState(sendFriendRequest, undefined);
+export default function Author({ author, sentFriendRequests }: AuthorProps) {
+    const [error, dispatchAction, isPending] = useActionState(sendFriendRequest, undefined);
 
+    // Get author status - pending, accepted, rejected
+    const authorStatus = sentFriendRequests?.find(request => request.receiverId === author.id)?.status?.toLowerCase();
+    const isFollowing = authorStatus === "pending" || authorStatus === "accepted";
+
+    // action to follow author
     function followToAuthor(receiverId: number) {
         startTransition(() => {
             dispatchAction(receiverId);
@@ -23,8 +32,14 @@ export default function Author({ author }: { author: TUser }) {
                 <span className="text-zinc-500">{author.email}</span>
             </div>
 
-            <Button onClick={() => followToAuthor(author.id)} disabled={isPending}>
-                {isPending ? "Loading..." : "Follow"}
+            <Button
+                disabled={isPending || isFollowing}
+                loading={isPending}
+                onClick={() => followToAuthor(author.id)}
+                variant={isFollowing ? "outline" : "primary"}
+                className="capitalize"
+            >
+                {isFollowing ? authorStatus : "follow"}
             </Button>
         </div>
     );

@@ -1,4 +1,5 @@
 "use client";
+
 import { startTransition, useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +8,6 @@ import Form from "@/src/components/ui/form/Form";
 import Field from "@/src/components/ui/form/Field";
 import Input from "@/src/components/ui/Input";
 import Button from "@/src/components/ui/Button";
-import Spinner from "@/src/components/ui/Spinner";
 import { loginUser } from "@/src/actions/auth";
 import { type LoginFormValues, LoginSchema } from "@/src/lib/validations/auth";
 
@@ -43,8 +43,8 @@ export default function LoginForm() {
                 <p className="text-red-600 font-medium">{error.message}</p>
             )}
 
-            <Button disabled={isPending} type="submit" className="w-full">
-                {isPending ? <Spinner className="text-2xl" /> : "Login"}
+            <Button disabled={isPending} loading={isPending} type="submit" className="w-full">
+                Login
             </Button>
         </Form>
     );
