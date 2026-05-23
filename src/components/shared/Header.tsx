@@ -2,20 +2,19 @@ import Container from "@/src/components/shared/Container";
 import { getCurrentUser, logout } from "@/src/actions/auth";
 import Button from "@/src/components/ui/Button";
 import Link from "next/link";
+import Notifications from "@/src/components/shared/Notifications";
+import {getNotifications} from "@/src/actions/users";
 
 const navLinks: { href: string; label: string }[] = [
     {
         href: "/authors",
         label: "Authors",
-    },
-    {
-        href: "/notifications",
-        label: "Notifications",
     }
 ]
 
 export default async function Header() {
     const currentUser = await getCurrentUser();
+    const notifications = await getNotifications();
 
     return (
         <header className="border-b border-zinc-200 shadow-sm shadow-zinc-100">
@@ -37,6 +36,8 @@ export default async function Header() {
 
                     {/*<LogoutButton />*/}
                     <div className="flex items-center gap-4">
+                        <Notifications notifications={notifications} />
+
                         <span className="text-sm font-medium">{currentUser?.email}</span>
                         <form action={logout}>
                             <Button variant="danger">Logout</Button>

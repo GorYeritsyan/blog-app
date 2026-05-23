@@ -25,9 +25,12 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
     return { data: users, totalPages: pagination.totalPages };
 }
 
-export const sendFriendRequest = async (prevState: any, receiverId: number) => {
-    await new Promise(res => setTimeout(res, 3000));
+export const getNotifications = async () => {
+    const data = await fetchInstance("/friends/incoming");
+    return data?.data;
+}
 
+export const sendFriendRequest = async (prevState: any, receiverId: number) => {
     const { error } = await tryCatch(fetchInstance(`/friends`, {
         method: "POST",
         headers: {
