@@ -3,7 +3,7 @@
 import {tryCatch} from "@/src/utils/utils";
 import {fetchInstance} from "@/src/actions/index";
 import {headers} from "next/headers";
-import {revalidatePath} from "next/cache";
+import {cacheLife, cacheTag, revalidatePath, revalidateTag, updateTag} from "next/cache";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -26,7 +26,10 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
 }
 
 export const getNotifications = async () => {
-    const data = await fetchInstance("/friends/incoming");
+    const data = await fetchInstance("/friends/incoming", {
+        next: { tags: ["notifications"] },
+    });
+
     return data?.data;
 }
 
@@ -42,4 +45,15 @@ export const sendFriendRequest = async (prevState: any, receiverId: number) => {
     if (error) return { message: error.message };
 
     revalidatePath("/authors");
+}
+
+export const acceptFriendRequest = async (prevState: any, requestId: number) => {
+    await fetchInstance(`/friends/accept/${requestId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
+    updateTag("notifications");
 }

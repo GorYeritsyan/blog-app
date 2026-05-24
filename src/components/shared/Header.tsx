@@ -16,6 +16,8 @@ export default async function Header() {
     const currentUser = await getCurrentUser();
     const notifications = await getNotifications();
 
+    console.log("current user", currentUser);
+
     return (
         <header className="border-b border-zinc-200 shadow-sm shadow-zinc-100">
             <Container>

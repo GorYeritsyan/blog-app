@@ -2,10 +2,17 @@
 
 import { formatDistanceToNow } from "date-fns";
 import Button from "@/src/components/ui/Button";
-import {useActionState} from "react";
+import {startTransition, useActionState} from "react";
+import {acceptFriendRequest} from "@/src/actions/users";
 
 export default function Notification({ notification }) {
-    const [state, action, isPending] = useActionState()
+    const [state, dispatchAction, isPending] = useActionState(acceptFriendRequest, undefined);
+
+    function handleFollowBack(requestId: number) {
+        startTransition(() => {
+            dispatchAction(requestId);
+        });
+    }
 
     return (
         <div key={notification.id} className="px-4 py-3 hover:bg-zinc-50 flex items-center justify-between gap-3 border-b border-zinc-100">
@@ -16,7 +23,9 @@ export default function Notification({ notification }) {
                 <span className="text-sm text-zinc-500">{formatDistanceToNow(notification.createdAt, { addSuffix: true })}</span>
             </div>
 
-            <Button className="h-fit text-sm text-nowrap">Follow Back</Button>
+            <Button disabled={isPending} loading={isPending} onClick={() => handleFollowBack(notification.id)} className="h-fit text-sm text-nowrap">
+                Follow Back
+            </Button>
         </div>
     )
 }
