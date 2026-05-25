@@ -16,8 +16,11 @@ export default function Notifications({ notifications }: { notifications: TFrien
 
     return (
         <div className="relative">
-            <Button onClick={toggleDropdown} variant="outline" className="p-2">
+            <Button onClick={toggleDropdown} variant="outline" className="p-2 relative">
                 <FaRegBell />
+                {notifications.length > 0 && (
+                    <div className="size-2 rounded-full bg-red-400 absolute -top-px -right-px flex items-center justify-center"></div>
+                )}
             </Button>
 
             {isOpen && (
