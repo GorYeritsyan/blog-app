@@ -46,7 +46,7 @@ export type TFriendRequest = {
     receiver?: TUser;
 }
 
-type TFriendRequestStatus = "pending" | "accepted" | "rejected";
+export type TFriendRequestStatus = "pending" | "accepted" | "rejected";
 
 type ApiFailure = {
     success: false;

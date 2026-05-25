@@ -1,29 +1,20 @@
 "use client";
 
-import { startTransition, useActionState } from "react";
-
-import type { TFriendRequest, TUser } from "@/src/types/types";
-import { sendFriendRequest } from "@/src/actions/users";
-import Button from "@/src/components/ui/Button";
+import type { TFriendRequest, TFriendRequestStatus, TUser } from "@/src/types/types";
+import FriendRequestButtons from "@/src/components/shared/buttons/FriendRequestButtons";
+import FriendButton from "@/src/components/shared/buttons/FriendButton";
 
 type AuthorProps = {
     author: TUser;
     sentFriendRequests: TFriendRequest[];
+    receivedFriendRequests: TFriendRequest[];
 }
 
-export default function Author({ author, sentFriendRequests }: AuthorProps) {
-    const [error, dispatchAction, isPending] = useActionState(sendFriendRequest, undefined);
-
+//  TODO: Show error toast when something went wrong
+export default function Author({ author, sentFriendRequests, receivedFriendRequests }: AuthorProps) {
     // Get author status - pending, accepted, rejected
-    const authorStatus = sentFriendRequests?.find(request => request.receiverId === author.id)?.status?.toLowerCase();
-    const isFollowing = authorStatus === "pending" || authorStatus === "accepted";
-
-    // action to follow author
-    function followToAuthor(receiverId: number) {
-        startTransition(() => {
-            dispatchAction(receiverId);
-        });
-    }
+    const authorStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === author.id || request.senderId === author.id)?.status?.toLowerCase() as TFriendRequestStatus;
+    const friendRequest = receivedFriendRequests?.find(request => request.senderId === author.id && request.status === "PENDING");
 
     return (
         <div className="px-6 py-4 flex items-center justify-between hover:bg-zinc-50 rounded-md border border-zinc-200">
@@ -32,15 +23,11 @@ export default function Author({ author, sentFriendRequests }: AuthorProps) {
                 <span className="text-zinc-500">{author.email}</span>
             </div>
 
-            <Button
-                disabled={isPending || isFollowing}
-                loading={isPending}
-                onClick={() => followToAuthor(author.id)}
-                variant={isFollowing ? "outline" : "primary"}
-                className="capitalize"
-            >
-                {isFollowing ? authorStatus : "follow"}
-            </Button>
+            {!!friendRequest ? (
+                <FriendRequestButtons requestId={friendRequest.id} />
+            ) : (
+                <FriendButton friendId={author.id} friendStatus={authorStatus} />
+            )}
         </div>
     );
 }

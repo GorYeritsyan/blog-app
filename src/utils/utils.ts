@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
-import { ApiResponse, ApiSuccess } from "@/src/types/types";
-import {redirect} from "next/navigation";
+import { ApiResponse, ApiSuccess, TFriendRequestStatus } from "@/src/types/types";
 import {isRedirectError} from "next/dist/client/components/redirect-error";
 
 export const cn = (...classNames: ClassValue[]) => {
@@ -27,5 +26,17 @@ export const tryCatch = async <T = never, E = Error>(promise: Promise<ApiRespons
         // In case if error is NEXT_REDIRECT (redirect) throw error
         if (isRedirectError(error)) throw error;
         return { data: null, error: error as E };
+    }
+}
+
+// Utility function to return current friendship status
+export const getFriendStatus = (status: TFriendRequestStatus) => {
+    switch (status) {
+        case "pending":
+            return "pending";
+        case "accepted":
+            return "friends";
+        default:
+            return "add friend";
     }
 }

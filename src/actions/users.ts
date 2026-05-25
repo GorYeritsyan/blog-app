@@ -4,6 +4,7 @@ import {tryCatch} from "@/src/utils/utils";
 import {fetchInstance} from "@/src/actions/index";
 import {headers} from "next/headers";
 import {cacheLife, cacheTag, revalidatePath, revalidateTag, updateTag} from "next/cache";
+import {TFriendRequest} from "@/src/types/types";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -26,9 +27,9 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
 }
 
 export const getNotifications = async () => {
-    const data = await fetchInstance("/friends/incoming", {
+    const { data } = await tryCatch<TFriendRequest[]>(fetchInstance("/friends/incoming", {
         next: { tags: ["notifications"] },
-    });
+    }));
 
     return data?.data;
 }
@@ -56,4 +57,23 @@ export const acceptFriendRequest = async (prevState: any, requestId: number) => 
     });
 
     updateTag("notifications");
+}
+
+export const rejectFriendRequest = async (prevState: any, requestId: number) => {
+    await fetchInstance(`/friends/reject/${requestId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
+    updateTag("notifications");
+}
+
+export const removeFriend = async (prevState: any, friendId: number) => {
+    await fetchInstance(`/friends/${friendId}`, {
+        method: "DELETE",
+    });
+
+    revalidatePath("/authors");
 }

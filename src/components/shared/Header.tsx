@@ -16,7 +16,7 @@ export default async function Header() {
     const currentUser = await getCurrentUser();
     const notifications = await getNotifications();
 
-    console.log("current user", currentUser);
+    console.log("current user", notifications);
 
     return (
         <header className="border-b border-zinc-200 shadow-sm shadow-zinc-100">
@@ -38,7 +38,7 @@ export default async function Header() {
 
                     {/*<LogoutButton />*/}
                     <div className="flex items-center gap-4">
-                        <Notifications notifications={notifications} />
+                        <Notifications notifications={notifications || []} />
 
                         <span className="text-sm font-medium">{currentUser?.email}</span>
                         <form action={logout}>

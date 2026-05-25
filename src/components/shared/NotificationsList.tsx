@@ -1,19 +1,11 @@
 "use client";
 
-import {getNotifications} from "@/src/actions/users";
-import {useState} from "react";
-import {TFriendRequest} from "@/src/types/types";
-import Button from "@/src/components/ui/Button";
-import { formatDistanceToNow } from "date-fns";
+import { type TFriendRequest } from "@/src/types/types";
 import Notification from "@/src/components/shared/Notification";
 
-export default function NotificationsList({ notifications }) {
-    console.log("Rendered");
-
-    console.log("Notifications", notifications);
-
+export default function NotificationsList({ notifications }: { notifications: TFriendRequest[] }) {
     return (
-        <div className="flex flex-col absolute top-full right-0 mt-1.5 bg-white w-100 max-h-100 min-h-40 h-fit border border-zinc-100 shadow-xs shadow-zinc-100 rounded-md overflow-y-auto">
+        <div className="flex flex-col absolute top-full right-0 mt-1.5 bg-white w-100 max-h-100 min-h-20 h-fit border border-zinc-100 shadow-xs shadow-zinc-100 rounded-md overflow-y-auto">
             <h3 className="text-lg font-medium p-4">Notifications</h3>
 
             {notifications.length > 0 ? (
@@ -23,7 +15,7 @@ export default function NotificationsList({ notifications }) {
                     ))}
                 </div>
             ) : (
-                <div className="flex items-center justify-center flex-1  text-zinc-400">
+                <div className="flex items-center justify-center pb-4 flex-1 text-zinc-400 font-medium">
                     There is no notifications
                 </div>
             )}
