@@ -1,8 +1,8 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import FriendRequestButtons from "@/src/components/shared/buttons/FriendRequestButtons";
-import { type TFriendRequest } from "@/src/types/types";
+import FriendRequestButtons from "@/components/shared/buttons/FriendRequestButtons";
+import { type TFriendRequest } from "@/types/types";
 
 export default function Notification({ notification }: { notification: TFriendRequest }) {
     return (

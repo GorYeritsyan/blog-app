@@ -1,7 +1,7 @@
 "use client";
 
-import { type TFriendRequest } from "@/src/types/types";
-import Notification from "@/src/components/shared/Notification";
+import { type TFriendRequest } from "@/types/types";
+import Notification from "@/components/shared/Notification";
 
 export default function NotificationsList({ notifications }: { notifications: TFriendRequest[] }) {
     return (

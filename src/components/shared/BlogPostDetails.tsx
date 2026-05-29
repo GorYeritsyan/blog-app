@@ -1,4 +1,4 @@
-import { fetchBlogPostById } from "@/src/actions/actions";
+import { fetchBlogPostById } from "@/actions/actions";
 
 export default async function BlogPostDetails({ postId }: { postId: string }) {
     const blogPost = await fetchBlogPostById(postId);

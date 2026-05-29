@@ -1,9 +1,9 @@
-import Container from "@/src/components/shared/Container";
-import { getCurrentUser, logout } from "@/src/actions/auth";
-import Button from "@/src/components/ui/Button";
+import Container from "@/components/shared/Container";
+import { getCurrentUser, logout } from "@/actions/auth";
+import Button from "@/components/ui/Button";
 import Link from "next/link";
-import Notifications from "@/src/components/shared/Notifications";
-import {getNotifications} from "@/src/actions/users";
+import Notifications from "@/components/shared/Notifications";
+import {getNotifications} from "@/actions/users";
 
 const navLinks: { href: string; label: string }[] = [
     {

@@ -1,7 +1,8 @@
 import { twMerge } from "tailwind-merge";
-import clsx, { type ClassValue } from "clsx";
-import { ApiResponse, ApiSuccess, TFriendRequestStatus } from "@/src/types/types";
 import {isRedirectError} from "next/dist/client/components/redirect-error";
+import clsx, { type ClassValue } from "clsx";
+
+import { ApiResponse, ApiSuccess, TFriendRequestStatus } from "@/types/types";
 
 export const cn = (...classNames: ClassValue[]) => {
     return twMerge(clsx(...classNames));

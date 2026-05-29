@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import PaginationButton from "@/src/components/ui/pagination/PaginationButton";
-import Button from "@/src/components/ui/Button";
-import NextButton from "@/src/components/ui/pagination/NextButton";
-import PrevButton from "@/src/components/ui/pagination/PrevButton";
+import PaginationButton from "@/components/ui/pagination/PaginationButton";
+import Button from "@/components/ui/Button";
+import NextButton from "@/components/ui/pagination/NextButton";
+import PrevButton from "@/components/ui/pagination/PrevButton";
 
 type PaginationProps = {
     visibleButtonsNumber?: number;

@@ -1,8 +1,8 @@
 "use client";
 
 import { startTransition, useActionState } from "react";
-import { acceptFriendRequest, rejectFriendRequest } from "@/src/actions/users";
-import Button from "@/src/components/ui/Button";
+import { acceptFriendRequest, rejectFriendRequest } from "@/actions/users";
+import Button from "@/components/ui/Button";
 
 export default function FriendRequestButtons({ requestId }: { requestId: number }) {
     const [acceptError, acceptAction, isAccepting] = useActionState(acceptFriendRequest, undefined);

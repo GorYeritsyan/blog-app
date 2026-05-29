@@ -1,6 +1,6 @@
-import BlogPost from "@/src/components/shared/BlogPost";
-import Pagination from "@/src/components/ui/pagination";
-import { fetchBlogPosts } from "@/src/actions/actions";
+import BlogPost from "@/components/shared/BlogPost";
+import Pagination from "@/components/ui/pagination";
+import { fetchBlogPosts } from "@/actions/actions";
 
 export default async function BlogPosts({ query, page }: { query: string; page: number }) {
     const { data: blogPosts, totalPages } = await fetchBlogPosts({ query, page });

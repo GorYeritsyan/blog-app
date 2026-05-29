@@ -1,9 +1,9 @@
 "use client";
 
 import React, { type ButtonHTMLAttributes } from "react";
-import { cn } from "@/src/utils/utils";
 import { tv } from "tailwind-variants";
-import Spinner from "@/src/components/ui/Spinner";
+import { cn } from "@/utils/utils";
+import Spinner from "@/components/ui/Spinner";
 
 const button = tv({
     base: "font-semibold px-3 py-1.5 rounded-lg cursor-pointer flex items-center justify-center gap-3 active:translate-y-px duration-100",

@@ -3,7 +3,7 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import Input from "@/src/components/ui/Input";
+import Input from "@/components/ui/Input";
 
 export default function Search({ placeholder }: { placeholder: string }) {
     const searchParams = useSearchParams();

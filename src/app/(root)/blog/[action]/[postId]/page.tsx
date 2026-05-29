@@ -1,6 +1,6 @@
-import BlogForm from "@/src/components/shared/BlogForm";
-import { TBlogAction } from "@/src/types/types";
-import { fetchBlogPostById } from "@/src/actions/actions";
+import BlogForm from "@/components/shared/BlogForm";
+import { TBlogAction } from "@/types/types";
+import { fetchBlogPostById } from "@/actions/actions";
 
 export default async function Page({ params }: { params: Promise<{ action: TBlogAction; postId: string }>}) {
     const { postId } = await params;

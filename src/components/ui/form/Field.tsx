@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext } from "react";
-import { useForm } from "@/src/components/ui/form/Form";
+import { useForm } from "@/components/ui/form/Form";
 
 type TFieldContext = {
     errors?: { [key: string]: string } | null;

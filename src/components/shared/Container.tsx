@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { cn } from "@/src/utils/utils";
+import { cn } from "@/utils/utils";
 
 export default function Container({ children, className }: { children: ReactNode, className?: string }) {
     return (

@@ -1,4 +1,4 @@
-import BlogForm from "@/src/components/shared/BlogForm";
+import BlogForm from "@/components/shared/BlogForm";
 
 export default async function Page() {
     return (

@@ -1,10 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { type TBlogPost } from "@/src/types/types";
-import { fetchInstance } from "@/src/actions/index";
-import { tryCatch } from "@/src/utils/utils";
-import { type BlogPostFormValues, BlogPostSchema } from "@/src/lib/validations/blog";
+import { type TBlogPost } from "@/types/types";
+import { fetchInstance } from "@/actions/index";
+import { tryCatch } from "@/utils/utils";
+import { type BlogPostFormValues, BlogPostSchema } from "@/lib/validations/blog";
 
 // Fetch all blog posts and filter
 export const fetchBlogPosts = async ({ query, page = 1 }: { query?: string; page?: number }) => {
@@ -95,7 +95,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
         return { message: "Invalid data" };
     }
 
-    const { title, content, postId } = result.data;
+    const { title, content, tags, postId } = result.data;
 
     // Edit blog post
     if (postId) {
@@ -104,7 +104,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ title, content })
+            body: JSON.stringify({ title, content, tags })
         }));
 
         if (error) {

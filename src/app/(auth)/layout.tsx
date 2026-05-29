@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Container from "@/src/components/shared/Container";
+import Container from "@/components/shared/Container";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (

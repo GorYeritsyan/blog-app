@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 
-import { fetchBlogPostById } from "@/src/actions/actions";
-import BackButton from "@/src/components/shared/BackButton";
-import BlogPostDetailsSkeleton from "@/src/components/shared/skeletons/BlogPostDetailsSkeleton";
-import BlogPostDetails from "@/src/components/shared/BlogPostDetails";
+import { fetchBlogPostById } from "@/actions/actions";
+import BackButton from "@/components/shared/BackButton";
+import BlogPostDetailsSkeleton from "@/components/shared/skeletons/BlogPostDetailsSkeleton";
+import BlogPostDetails from "@/components/shared/BlogPostDetails";
 
 export const revalidate = 3600;
 

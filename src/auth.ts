@@ -1,9 +1,9 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import { LoginSchema } from "@/src/lib/validations/auth";
+import { LoginSchema } from "@/lib/validations/auth";
 import { authConfig } from "@/auth.config";
-import { fetchInstance } from "@/src/actions";
-import { tryCatch } from "@/src/utils/utils";
+import { fetchInstance } from "@/actions";
+import { tryCatch } from "@/utils/utils";
 
 export class InvalidLoginError extends CredentialsSignin {
     constructor(code: string) {

@@ -4,12 +4,12 @@ import { startTransition, useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Field from "@/src/components/ui/form/Field";
-import Input from "@/src/components/ui/Input";
-import Button from "@/src/components/ui/Button";
-import Form from "@/src/components/ui/form/Form";
-import { registerUser } from "@/src/actions/auth";
-import { type RegisterFormValues, RegisterSchema } from "@/src/lib/validations/auth";
+import Field from "@/components/ui/form/Field";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import Form from "@/components/ui/form/Form";
+import { registerUser } from "@/actions/auth";
+import { type RegisterFormValues, RegisterSchema } from "@/lib/validations/auth";
 
 export default function RegisterForm() {
     const [error, registerAction, isPending] = useActionState(registerUser, undefined);

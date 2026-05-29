@@ -2,7 +2,7 @@
 
 import { ReactNode, MouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { useModal } from "@/src/components/ui/modal/Modal";
+import { useModal } from "@/components/ui/modal/Modal";
 
 type ModalContentProps = {
     children: ReactNode;

@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
 import { Metadata } from "next";
 
-import Container from "@/src/components/shared/Container";
-import BackButton from "@/src/components/shared/BackButton";
-import { TBlogAction } from "@/src/types/types";
+import BackButton from "@/components/shared/BackButton";
+import { TBlogAction } from "@/types/types";
 
 type TLayoutProps = {
     children: ReactNode;

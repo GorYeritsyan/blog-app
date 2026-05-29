@@ -1,5 +1,5 @@
-import Search from "@/src/components/shared/Search";
-import Authors from "@/src/components/shared/authors/Authors";
+import Search from "@/components/shared/Search";
+import Authors from "@/components/shared/authors/Authors";
 
 export default async function AuthorsPage({ searchParams }: PageProps<"/authors">) {
     const { query, page = "1" } = await searchParams;

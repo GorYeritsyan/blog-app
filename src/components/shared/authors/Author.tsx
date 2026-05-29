@@ -1,8 +1,8 @@
 "use client";
 
-import type { TFriendRequest, TFriendRequestStatus, TUser } from "@/src/types/types";
-import FriendRequestButtons from "@/src/components/shared/buttons/FriendRequestButtons";
-import FriendButton from "@/src/components/shared/buttons/FriendButton";
+import type { TFriendRequest, TFriendRequestStatus, TUser } from "@/types/types";
+import FriendRequestButtons from "@/components/shared/buttons/FriendRequestButtons";
+import FriendButton from "@/components/shared/buttons/FriendButton";
 
 type AuthorProps = {
     author: TUser;

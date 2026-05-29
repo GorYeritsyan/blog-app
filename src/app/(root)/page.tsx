@@ -1,9 +1,8 @@
 import Link from "next/link";
 
-import Button from "@/src/components/ui/Button";
-import Container from "@/src/components/shared/Container";
-import Search from "@/src/components/shared/Search";
-import BlogPosts from "@/src/components/shared/BlogPosts";
+import Button from "@/components/ui/Button";
+import Search from "@/components/shared/Search";
+import BlogPosts from "@/components/shared/BlogPosts";
 
 export default async function Home(props: PageProps<"/">) {
     const { query, page = 1 } = await props.searchParams;

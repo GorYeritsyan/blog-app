@@ -1,10 +1,9 @@
 "use server";
 
-import {tryCatch} from "@/src/utils/utils";
-import {fetchInstance} from "@/src/actions/index";
-import {headers} from "next/headers";
 import {cacheLife, cacheTag, revalidatePath, revalidateTag, updateTag} from "next/cache";
-import {TFriendRequest} from "@/src/types/types";
+import {tryCatch} from "@/utils/utils";
+import {fetchInstance} from "@/actions/index";
+import {TFriendRequest} from "@/types/types";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;

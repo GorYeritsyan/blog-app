@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { FaRegBell } from "react-icons/fa6";
 
-import Button from "@/src/components/ui/Button";
-import NotificationsList from "@/src/components/shared/NotificationsList";
-import { type TFriendRequest } from "@/src/types/types";
+import Button from "@/components/ui/Button";
+import NotificationsList from "@/components/shared/NotificationsList";
+import { type TFriendRequest } from "@/types/types";
 
 export default function Notifications({ notifications }: { notifications: TFriendRequest[] }) {
     const [isOpen, setIsOpen] = useState(false);

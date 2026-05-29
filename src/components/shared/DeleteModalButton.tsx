@@ -1,11 +1,11 @@
 "use client";
 
-import ModalTrigger from "@/src/components/ui/modal/ModalTrigger";
-import ModalContent from "@/src/components/ui/modal/ModalContent";
-import ModalClose from "@/src/components/ui/modal/ModalClose";
-import ModalSubmit from "@/src/components/ui/modal/ModalSubmit";
-import Modal from "@/src/components/ui/modal/Modal";
-import { deleteBlogPost } from "@/src/actions/actions";
+import ModalTrigger from "@/components/ui/modal/ModalTrigger";
+import ModalContent from "@/components/ui/modal/ModalContent";
+import ModalClose from "@/components/ui/modal/ModalClose";
+import ModalSubmit from "@/components/ui/modal/ModalSubmit";
+import Modal from "@/components/ui/modal/Modal";
+import { deleteBlogPost } from "@/actions/actions";
 
 export default function DeleteModalButton({ postId }: { postId: string }) {
 

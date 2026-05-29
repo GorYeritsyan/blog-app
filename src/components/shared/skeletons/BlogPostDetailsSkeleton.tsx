@@ -1,4 +1,4 @@
-import Skeleton from "@/src/components/ui/Skeleton";
+import Skeleton from "@/components/ui/Skeleton";
 
 export default function BlogPostDetailsSkeleton() {
     return (

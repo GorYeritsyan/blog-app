@@ -1,7 +1,7 @@
 "use client";
 
 import { FaAngleLeft } from "react-icons/fa6";
-import Button from "@/src/components/ui/Button";
+import Button from "@/components/ui/Button";
 
 type PrevButtonProps = {
     onDecrementPage: () => void;

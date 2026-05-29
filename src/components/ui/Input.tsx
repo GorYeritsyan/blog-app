@@ -1,8 +1,8 @@
 "use client";
 
 import { InputHTMLAttributes } from "react";
-import { cn } from "@/src/utils/utils";
-import { useField } from "@/src/components/ui/form/Field";
+import { cn } from "@/utils/utils";
+import { useField } from "@/components/ui/form/Field";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     className?: string;

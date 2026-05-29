@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "@/src/components/ui/Button";
-import {getFriendStatus} from "@/src/utils/utils";
+import Button from "@/components/ui/Button";
+import {getFriendStatus} from "@/utils/utils";
 import {startTransition, useActionState} from "react";
-import {removeFriend, sendFriendRequest} from "@/src/actions/users";
-import {TFriendRequestStatus} from "@/src/types/types";
+import {removeFriend, sendFriendRequest} from "@/actions/users";
+import {TFriendRequestStatus} from "@/types/types";
 
 export default function FriendButton({ friendStatus, friendId }: { friendId: number; friendStatus: TFriendRequestStatus }) {
     const [error, sendAction, isSending] = useActionState(sendFriendRequest, undefined);

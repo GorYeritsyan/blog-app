@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse } from "@/src/types/types";
+import { ApiResponse } from "@/types/types";
 import { auth } from "@/auth";
 import {redirect} from "next/navigation";
 

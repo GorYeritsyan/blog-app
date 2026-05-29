@@ -1,8 +1,8 @@
 "use client";
 
-import Button, { TButtonVariants } from "@/src/components/ui/Button";
+import Button, { TButtonVariants } from "@/components/ui/Button";
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import { useModal } from "@/src/components/ui/modal/Modal";
+import { useModal } from "@/components/ui/modal/Modal";
 
 type ModalCloseProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;

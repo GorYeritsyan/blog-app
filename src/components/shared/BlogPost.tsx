@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { type TBlogPost } from "@/src/types/types";
-import Button from "@/src/components/ui/Button";
-import DeleteModalButton from "@/src/components/shared/DeleteModalButton";
-import { getCurrentUser } from "@/src/actions/auth";
+import { type TBlogPost } from "@/types/types";
+import Button from "@/components/ui/Button";
+import DeleteModalButton from "@/components/shared/DeleteModalButton";
+import { getCurrentUser } from "@/actions/auth";
 
 export default async function BlogPost({ post }: { post: TBlogPost }) {
     const date = new Date(post.createdAt).toDateString();
@@ -12,7 +12,16 @@ export default async function BlogPost({ post }: { post: TBlogPost }) {
     return (
         <div className="flex flex-col gap-4 px-6 py-4 hover:bg-zinc-50 border-b border-b-zinc-200">
             <div className="flex flex-col gap-1">
-                <p className="text-zinc-400">Published <span>{date}</span></p>
+                <div className="flex items-center gap-6">
+                    <p className="text-zinc-400">Published <span>{date}</span></p>
+                    <div className="flex items-center gap-1.5">
+                        {post.tags?.map(tag => (
+                            <div className="bg-zinc-900 text-white font-medium px-2 py-0.5 flex items-center justify-center rounded-md border border-zinc-100 text-xs" key={tag.id}>
+                                {tag.title}
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
                 <div className="flex flex-col gap-3">
                     <Link className="text-2xl font-semibold hover:underline capitalize" href={`/${post.id}`}>

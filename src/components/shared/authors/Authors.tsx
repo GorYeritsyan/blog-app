@@ -1,8 +1,8 @@
-import {getAllUsers, getNotifications} from "@/src/actions/users";
-import Pagination from "@/src/components/ui/pagination";
-import Author from "@/src/components/shared/authors/Author";
-import { getCurrentUser } from "@/src/actions/auth";
-import { TUser } from "@/src/types/types";
+import {getAllUsers, getNotifications} from "@/actions/users";
+import Pagination from "@/components/ui/pagination";
+import Author from "@/components/shared/authors/Author";
+import { getCurrentUser } from "@/actions/auth";
+import { TUser } from "@/types/types";
 
 export default async function Authors({ query, page }: { query?: string; page: number }) {
     const { data: users, totalPages } = await getAllUsers({ query, page });
