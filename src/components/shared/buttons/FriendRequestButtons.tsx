@@ -2,7 +2,8 @@
 
 import { startTransition, useActionState } from "react";
 import { acceptFriendRequest, rejectFriendRequest } from "@/actions/users";
-import Button from "@/components/ui/Button";
+import {Button} from "@/components/shadcn/button";
+import {Spinner} from "@/components/shadcn/spinner";
 
 export default function FriendRequestButtons({ requestId }: { requestId: number }) {
     const [acceptError, acceptAction, isAccepting] = useActionState(acceptFriendRequest, undefined);
@@ -25,21 +26,21 @@ export default function FriendRequestButtons({ requestId }: { requestId: number 
             {/* Decline friend request button */}
             <Button
                 disabled={isDeclining}
-                loading={isDeclining}
                 onClick={() => handleDecline(requestId)}
                 variant="ghost"
+                className="min-w-18"
             >
-                Decline
+                {isDeclining ? <Spinner /> : "Decline"}
             </Button>
 
             {/* Accept friend request button */}
             <Button
                 disabled={isAccepting}
-                loading={isAccepting}
                 onClick={() => handleAccept(requestId)}
-                className="h-fit text-sm text-nowrap"
+                className="min-w-18"
+                // className="h-fit text-sm text-nowrap"
             >
-                Accept
+                {isAccepting ? <Spinner /> : "Accept"}
             </Button>
         </div>
     );

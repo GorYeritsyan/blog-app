@@ -1,6 +1,7 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+
+import { Button } from "@/components/shadcn/button";
 
 type PaginationButtonProps = {
     page: number;
@@ -11,8 +12,9 @@ type PaginationButtonProps = {
 export default function PaginationButton({ page, currentPage, onChangePage }: PaginationButtonProps) {
     return (
         <Button
+            size="icon-lg"
             onClick={() => onChangePage(page)}
-            variant={currentPage === page ? "primary" : "ghost"}
+            variant={currentPage === page ? "default" : "ghost"}
         >
             {page}
         </Button>

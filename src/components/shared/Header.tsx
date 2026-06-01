@@ -1,9 +1,10 @@
 import Container from "@/components/shared/Container";
 import { getCurrentUser, logout } from "@/actions/auth";
-import Button from "@/components/ui/Button";
+// import Button from "@/components/ui/Button";
 import Link from "next/link";
 import Notifications from "@/components/shared/Notifications";
 import {getNotifications} from "@/actions/users";
+import {Button} from "@/components/shadcn/button";
 
 const navLinks: { href: string; label: string }[] = [
     {
@@ -42,7 +43,7 @@ export default async function Header() {
 
                         <span className="text-sm font-medium">{currentUser?.email}</span>
                         <form action={logout}>
-                            <Button variant="danger">Logout</Button>
+                            <Button variant="destructive" size="lg" className="px-3 text-base">Logout</Button>
                         </form>
                     </div>
                 </div>

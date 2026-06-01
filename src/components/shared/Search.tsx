@@ -2,8 +2,10 @@
 
 import { ChangeEvent, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SearchIcon } from "lucide-react";
 
-import Input from "@/components/ui/Input";
+import { Input } from "@/components/shadcn/input";
+
 
 export default function Search({ placeholder }: { placeholder: string }) {
     const searchParams = useSearchParams();
@@ -36,6 +38,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
     }
 
     return (
-        <Input placeholder={placeholder} value={query} onChange={handleSearch} />
+        <div className="relative">
+            <SearchIcon className="absolute top-1/2 left-2 text-zinc-600 -translate-y-1/2 size-4" />
+            <Input placeholder={placeholder} value={query} onChange={handleSearch} className="pl-8 pr-3 py-1.5 text-base" />
+        </div>
     );
 }

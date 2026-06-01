@@ -1,4 +1,5 @@
 import { fetchBlogPostById } from "@/actions/actions";
+import Tags from "@/components/shared/blog/Tags";
 
 export default async function BlogPostDetails({ postId }: { postId: string }) {
     const blogPost = await fetchBlogPostById(postId);
@@ -14,6 +15,12 @@ export default async function BlogPostDetails({ postId }: { postId: string }) {
                 <p className="text-gray-400">
                     Created by <span className="font-medium text-zinc-900">{blogPost?.author?.name}</span>
                 </p>
+
+                <div className="max-w-120">
+                    {blogPost?.tags && blogPost.tags.length > 0 && (
+                        <Tags tags={blogPost.tags} />
+                    )}
+                </div>
             </div>
 
             <p className="leading-tight text-lg text-center">{blogPost?.content}</p>

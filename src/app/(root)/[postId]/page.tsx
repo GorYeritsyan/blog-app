@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { fetchBlogPostById } from "@/actions/actions";
 import BackButton from "@/components/shared/BackButton";
 import BlogPostDetailsSkeleton from "@/components/shared/skeletons/BlogPostDetailsSkeleton";
-import BlogPostDetails from "@/components/shared/BlogPostDetails";
+import BlogPostDetails from "@/components/shared/blog/BlogPostDetails";
 
 export const revalidate = 3600;
 

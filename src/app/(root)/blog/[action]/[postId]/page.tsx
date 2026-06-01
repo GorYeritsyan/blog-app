@@ -1,4 +1,4 @@
-import BlogForm from "@/components/shared/BlogForm";
+import BlogForm from "@/components/shared/blog/BlogForm";
 import { TBlogAction } from "@/types/types";
 import { fetchBlogPostById } from "@/actions/actions";
 

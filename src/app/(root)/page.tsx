@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import Button from "@/components/ui/Button";
 import Search from "@/components/shared/Search";
-import BlogPosts from "@/components/shared/BlogPosts";
+import BlogPosts from "@/components/shared/blog/BlogPosts";
+import { Button } from "@/components/shadcn/button";
 
 export default async function Home(props: PageProps<"/">) {
     const { query, page = 1 } = await props.searchParams;
@@ -10,9 +10,9 @@ export default async function Home(props: PageProps<"/">) {
     return (
         <section className="flex flex-col gap-8">
             <div className="flex items-center justify-between w-full">
-                <h1 className="text-4xl font-bold">Blog Posts</h1>
+                <h1 className="text-4xl font-semibold">Posts</h1>
                 <Link href="/blog/create">
-                    <Button>Create Post</Button>
+                    <Button size="lg" className="px-3">Create Post</Button>
                 </Link>
             </div>
             <div className="flex flex-col gap-4">

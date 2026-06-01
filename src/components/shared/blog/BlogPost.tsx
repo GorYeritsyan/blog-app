@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 import { type TBlogPost } from "@/types/types";
-import Button from "@/components/ui/Button";
 import DeleteModalButton from "@/components/shared/DeleteModalButton";
 import { getCurrentUser } from "@/actions/auth";
+import { Button } from "@/components/shadcn/button";
+import Tags from "@/components/shared/blog/Tags";
 
 export default async function BlogPost({ post }: { post: TBlogPost }) {
     const date = new Date(post.createdAt).toDateString();
@@ -14,13 +15,9 @@ export default async function BlogPost({ post }: { post: TBlogPost }) {
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-6">
                     <p className="text-zinc-400">Published <span>{date}</span></p>
-                    <div className="flex items-center gap-1.5">
-                        {post.tags?.map(tag => (
-                            <div className="bg-zinc-900 text-white font-medium px-2 py-0.5 flex items-center justify-center rounded-md border border-zinc-100 text-xs" key={tag.id}>
-                                {tag.title}
-                            </div>
-                        ))}
-                    </div>
+                    {post?.tags && post.tags.length > 0 && (
+                        <Tags limit={6} tags={post.tags} />
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-3">
@@ -38,9 +35,9 @@ export default async function BlogPost({ post }: { post: TBlogPost }) {
 
                 {/* Show edit and delete buttons if current user same post author */}
                 {currentUser?.id === post?.authorId && (
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                         <Link href={`/blog/edit/${post.id}`}>
-                            <Button>Edit</Button>
+                            <Button size="lg" className="text-base px-3">Edit</Button>
                         </Link>
 
                         {/* Modal Button to delete blog post */}

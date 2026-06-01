@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
     Control,
     Controller,
@@ -5,11 +6,9 @@ import {
     ControllerRenderProps,
     FieldPath,
     FieldValues,
-    useController
 } from "react-hook-form";
-import {Field, FieldError, FieldLabel} from "@/components/shadcn/field";
-import {Input} from "@/components/shadcn/input";
-import {ReactNode} from "react";
+
+import { Field, FieldError, FieldLabel } from "@/components/shadcn/field";
 
 type FormFieldProps<T extends FieldValues> = {
     name: FieldPath<T>;

@@ -1,10 +1,11 @@
 "use client";
 
-import Button from "@/components/ui/Button";
 import {getFriendStatus} from "@/utils/utils";
 import {startTransition, useActionState} from "react";
 import {removeFriend, sendFriendRequest} from "@/actions/users";
 import {TFriendRequestStatus} from "@/types/types";
+import {Button} from "@/components/shadcn/button";
+import {Spinner} from "@/components/shadcn/spinner";
 
 export default function FriendButton({ friendStatus, friendId }: { friendId: number; friendStatus: TFriendRequestStatus }) {
     const [error, sendAction, isSending] = useActionState(sendFriendRequest, undefined);
@@ -30,13 +31,13 @@ export default function FriendButton({ friendStatus, friendId }: { friendId: num
 
     return (
         <Button
-            disabled={isSending || isRemoving || friendStatus === "pending"}
-            loading={isSending || isRemoving}
             onClick={() => handleButtonClick(friendId)}
-            variant={friendStatus === "pending" || isFriends ? "outline" : "primary"}
-            className="capitalize min-w-24"
+            disabled={isSending || isRemoving || friendStatus === "pending"}
+            {...((friendStatus === "pending" || isFriends) && { variant: "outline" } )}
+            size="lg"
+            className="capitalize min-w-24 text-base"
         >
-            {getFriendStatus(friendStatus)}
+            {isSending || isRemoving ? <Spinner className="size-5" /> : getFriendStatus(friendStatus)}
         </Button>
     )
 }

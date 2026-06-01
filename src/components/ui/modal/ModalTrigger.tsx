@@ -2,7 +2,8 @@
 
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { useModal } from "@/components/ui/modal/Modal";
-import Button, { TButtonVariants } from "@/components/ui/Button";
+import { TButtonVariants } from "@/components/ui/Button";
+import {Button} from "@/components/shadcn/button";
 
 type ModalTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;

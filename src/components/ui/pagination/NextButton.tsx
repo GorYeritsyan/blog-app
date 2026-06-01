@@ -1,7 +1,7 @@
 "use client";
 
-import { FaAngleRight } from "react-icons/fa6";
-import Button from "@/components/ui/Button";
+import { ChevronRight } from "lucide-react";
+import { Button } from "@/components/shadcn/button";
 
 type NextButtonProps = {
     onIncrementPage: () => void;
@@ -13,11 +13,13 @@ export default function NextButton({ onIncrementPage, currentPage, totalPages }:
     return (
         <Button
             variant="ghost"
+            size="lg"
+            className="text-base px-3"
             disabled={currentPage === totalPages}
             onClick={onIncrementPage}
         >
             Next
-            <FaAngleRight />
+            <ChevronRight className="size-5" />
         </Button>
     )
 }

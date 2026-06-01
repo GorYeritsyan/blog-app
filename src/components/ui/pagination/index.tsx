@@ -12,7 +12,7 @@ type PaginationProps = {
     totalPages: number;
 }
 
-const Index = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }: PaginationProps) => {
+const Pagination = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }: PaginationProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -100,4 +100,4 @@ const Index = ({ visibleButtonsNumber = 10, isEllipsis = true, totalPages }: Pag
     );
 }
 
-export default Index;
+export default Pagination;
