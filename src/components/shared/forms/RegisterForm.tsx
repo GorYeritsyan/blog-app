@@ -1,16 +1,36 @@
 "use client";
 
-import { startTransition, useActionState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {startTransition, useActionState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 
-import { registerUser } from "@/actions/auth";
-import { type RegisterFormValues, RegisterSchema } from "@/lib/validations/auth";
+import {type RegisterFormValues, RegisterSchema} from "@/lib/validations/auth";
+import {registerUser} from "@/actions/auth";
 import FormField from "@/components/shared/forms/FormField";
+
 import {FieldGroup} from "@/components/shadcn/field";
 import {Input} from "@/components/shadcn/input";
 import {Button} from "@/components/shadcn/button";
 import {Spinner} from "@/components/shadcn/spinner";
+
+const formFields: { name: "name" | "email" | "password" | "confirmPassword"; label?: string; type?: string }[] = [
+    {
+        name: "name",
+        label: "Full Name"
+    },
+    {
+        name: "email",
+    },
+    {
+        name: "password",
+        type: "password",
+    },
+    {
+        name: "confirmPassword",
+        label: "Confirm Password",
+        type: "password",
+    }
+];
 
 export default function RegisterForm() {
     const [error, registerAction, isPending] = useActionState(registerUser, undefined);
@@ -34,65 +54,24 @@ export default function RegisterForm() {
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-100">
             <FieldGroup className="gap-4">
-                {/* Name */}
-                <FormField
-                    name="name"
-                    label="Full Name"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
-
-                {/*Email*/}
-                <FormField
-                    name="email"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
-
-                {/*Password*/}
-                <FormField
-                    name="password"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            type="password"
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
-
-                {/*Confirm Password*/}
-                <FormField
-                    name="confirmPassword"
-                    label="Confirm Password"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            type="password"
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
+                {/* Register Form Fields */}
+                {formFields.map(formField => (
+                    <FormField
+                        key={formField.name}
+                        name={formField.name}
+                        {...(formField.label && { label: formField.label })}
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Input
+                                {...field}
+                                id={field.name}
+                                aria-invalid={fieldState.invalid}
+                                className="py-1.5 h-fit"
+                                {...(formField.type && { type: formField.type })}
+                            />
+                        )}
+                    />
+                ))}
 
                 {/* If something went wrong in the server */}
                 {error && (

@@ -12,6 +12,16 @@ import {FieldGroup} from "@/components/shadcn/field";
 import {Button} from "@/components/shadcn/button";
 import {Spinner} from "@/components/shadcn/spinner";
 
+const formFields: { name: "email" | "password"; type?: string }[] = [
+    {
+        name: "email",
+    },
+    {
+        name: "password",
+        type: "password",
+    }
+]
+
 export default function LoginForm() {
     const [error, loginAction, isPending] = useActionState(loginUser, undefined);
 
@@ -32,32 +42,25 @@ export default function LoginForm() {
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-100">
             <FieldGroup className="gap-4">
-                <FormField
-                    name="email"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
 
-                <FormField
-                    name="password"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Input
-                            {...field}
-                            id={field.name}
-                            type="password"
-                            aria-invalid={fieldState.invalid}
-                            className="py-1.5 h-fit"
-                        />
-                    )}
-                />
+                {/* Email and Password form fields */}
+                {formFields.map(formField => (
+                    <FormField
+                        key={formField.name}
+                        name={formField.name}
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Input
+                                {...field}
+                                id={field.name}
+                                aria-invalid={fieldState.invalid}
+                                className="py-1.5 h-fit"
+
+                                {...(formField.type && { type: formField.type })}
+                            />
+                        )}
+                    />
+                ))}
 
                 {/* If something went wrong in the server */}
                 {error && (
