@@ -4,12 +4,13 @@ import { startTransition, useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Form from "@/components/ui/form/Form";
-import Field from "@/components/ui/form/Field";
-import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
 import { loginUser } from "@/actions/auth";
 import { type LoginFormValues, LoginSchema } from "@/lib/validations/auth";
+import FormField from "@/components/shared/forms/FormField";
+import {Input} from "@/components/shadcn/input";
+import {FieldGroup} from "@/components/shadcn/field";
+import {Button} from "@/components/shadcn/button";
+import {Spinner} from "@/components/shadcn/spinner";
 
 export default function LoginForm() {
     const [error, loginAction, isPending] = useActionState(loginUser, undefined);
@@ -29,23 +30,44 @@ export default function LoginForm() {
     };
 
     return (
-        <Form onSubmit={form.handleSubmit(onSubmit)} errors={form.formState.errors} className="max-w-100 space-y-4">
-            <Field name="email" label="Email">
-                <Input {...form.register("email")} />
-            </Field>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-100">
+            <FieldGroup className="gap-4">
+                <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Input
+                            {...field}
+                            id={field.name}
+                            aria-invalid={fieldState.invalid}
+                            className="py-1.5 h-fit"
+                        />
+                    )}
+                />
 
-            <Field name="password" label="Password">
-                <Input {...form.register("password")} type="password" />
-            </Field>
+                <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Input
+                            {...field}
+                            id={field.name}
+                            type="password"
+                            aria-invalid={fieldState.invalid}
+                            className="py-1.5 h-fit"
+                        />
+                    )}
+                />
 
-            {/* If something went wrong in the server */}
-            {error && (
-                <p className="text-red-600 font-medium">{error.message}</p>
-            )}
+                {/* If something went wrong in the server */}
+                {error && (
+                    <p className="text-red-600 font-medium">{error.message}</p>
+                )}
 
-            <Button disabled={isPending} loading={isPending} type="submit" className="w-full">
-                Login
-            </Button>
-        </Form>
+                <Button disabled={isPending} size="lg" type="submit" className="w-full text-base">
+                    {isPending ? <Spinner className="size-5" /> : "Login"}
+                </Button>
+            </FieldGroup>
+        </form>
     );
 }
