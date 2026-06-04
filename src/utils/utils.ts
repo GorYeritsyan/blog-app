@@ -31,7 +31,7 @@ export const tryCatch = async <T = never, E = Error>(promise: Promise<ApiRespons
 }
 
 // Utility function to return current friendship status
-export const getFriendStatus = (status: TFriendRequestStatus) => {
+export const getFriendStatus = (status: Lowercase<TFriendRequestStatus>) => {
     switch (status) {
         case "pending":
             return "pending";

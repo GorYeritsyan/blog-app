@@ -8,8 +8,12 @@ import {Button} from "@/components/shadcn/button";
 
 const navLinks: { href: string; label: string }[] = [
     {
-        href: "/authors",
-        label: "Authors",
+        href: "/users",
+        label: "Users",
+    },
+    {
+        href: "/messages",
+        label: "Messages",
     }
 ]
 
@@ -28,7 +32,7 @@ export default async function Header() {
                             <Link href="/">Blog</Link>
                         </h1>
 
-                        <ul className="flex items-center gap-10">
+                        <ul className="flex items-center gap-8">
                             {navLinks.map(link => (
                                 <li key={link.href}>
                                     <Link className="font-medium" href={link.href}>{link.label}</Link>

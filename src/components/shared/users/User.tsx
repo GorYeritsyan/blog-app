@@ -4,29 +4,29 @@ import type { TFriendRequest, TFriendRequestStatus, TUser } from "@/types/types"
 import FriendRequestButtons from "@/components/shared/buttons/FriendRequestButtons";
 import FriendButton from "@/components/shared/buttons/FriendButton";
 
-type AuthorProps = {
-    author: TUser;
+type UserProps = {
+    user: TUser;
     sentFriendRequests: TFriendRequest[];
     receivedFriendRequests: TFriendRequest[];
 }
 
 //  TODO: Show error toast when something went wrong
-export default function Author({ author, sentFriendRequests, receivedFriendRequests }: AuthorProps) {
+export default function User({ user, sentFriendRequests, receivedFriendRequests }: UserProps) {
     // Get author status from all sent and received friend requests - pending, accepted, rejected
-    const authorStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === author.id || request.senderId === author.id)?.status?.toLowerCase() as TFriendRequestStatus;
-    const friendRequest = receivedFriendRequests?.find(request => request.senderId === author.id && request.status === "PENDING");
+    const  userStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === user.id || request.senderId === user.id)?.status?.toLowerCase() as TFriendRequestStatus;
+    const friendRequest = receivedFriendRequests?.find(request => request.senderId === user.id && request.status === "PENDING");
 
     return (
         <div className="px-6 py-4 flex items-center justify-between hover:bg-zinc-50 rounded-md border border-zinc-200">
             <div className="flex flex-col gap-1">
-                <h3 className="text-lg font-medium">{author.name}</h3>
-                <span className="text-zinc-500">{author.email}</span>
+                <h3 className="text-lg font-medium">{user.name}</h3>
+                <span className="text-zinc-500">{user.email}</span>
             </div>
 
             {!!friendRequest ? (
                 <FriendRequestButtons requestId={friendRequest.id} />
             ) : (
-                <FriendButton friendId={author.id} friendStatus={authorStatus} />
+                <FriendButton friendId={user.id} friendStatus={userStatus} />
             )}
         </div>
     );

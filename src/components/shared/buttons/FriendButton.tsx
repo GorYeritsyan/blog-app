@@ -7,7 +7,7 @@ import {TFriendRequestStatus} from "@/types/types";
 import {Button} from "@/components/shadcn/button";
 import {Spinner} from "@/components/shadcn/spinner";
 
-export default function FriendButton({ friendStatus, friendId }: { friendId: number; friendStatus: TFriendRequestStatus }) {
+export default function FriendButton({ friendStatus, friendId }: { friendId: number; friendStatus: Lowercase<TFriendRequestStatus> }) {
     const [error, sendAction, isSending] = useActionState(sendFriendRequest, undefined);
     const [removeError, removeAction, isRemoving] = useActionState(removeFriend, undefined);
     const isFriends = friendStatus === "accepted";

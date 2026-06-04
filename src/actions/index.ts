@@ -1,8 +1,6 @@
-"use server";
-
+import { redirect } from "next/navigation";
 import { ApiResponse } from "@/types/types";
 import { auth } from "@/auth";
-import {redirect} from "next/navigation";
 
 export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
     const token = (await auth())?.accessToken;
