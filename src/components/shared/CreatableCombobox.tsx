@@ -1,3 +1,7 @@
+"use client";
+
+import { useState, KeyboardEvent } from "react";
+import { ControllerFieldState, ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 import {
     Combobox,
     ComboboxChip,
@@ -6,15 +10,33 @@ import {
     ComboboxContent, ComboboxEmpty, ComboboxItem, ComboboxList,
     ComboboxValue
 } from "@/components/shadcn/combobox";
-import {ControllerFieldState, ControllerRenderProps, FieldPath, FieldValues} from "react-hook-form";
 
 type CreatableComboboxProps<T extends FieldValues> = {
     field: ControllerRenderProps<T, FieldPath<T>>;
     fieldState: ControllerFieldState;
+    onCreate: (value: string) => void;
     items: string[];
 }
 
-export default function CreatableCombobox<T extends FieldValues>({ field, fieldState, items }: CreatableComboboxProps<T>) {
+export default function CreatableCombobox<T extends FieldValues>({ field, fieldState, onCreate, items }: CreatableComboboxProps<T>) {
+    const [inputValue, setInputValue] = useState("");
+
+    // Create combobox chip when triggering Enter or Comma
+    function createComboboxChip(e: KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Enter" || e.key === ",") {
+            e.preventDefault();
+
+            const fieldValueExists = field.value.includes(inputValue.trim());
+
+            if (!inputValue.trim() || fieldValueExists) {
+                return;
+            }
+
+            onCreate(inputValue);
+            setInputValue("");
+        }
+    }
+
     return (
         <Combobox
             {...field}
@@ -30,7 +52,12 @@ export default function CreatableCombobox<T extends FieldValues>({ field, fieldS
                         <ComboboxChip key={item}>{item}</ComboboxChip>
                     ))}
                 </ComboboxValue>
-                <ComboboxChipsInput aria-invalid={fieldState.invalid} />
+                <ComboboxChipsInput
+                    value={inputValue}
+                    onChange={e => setInputValue(e.target.value)}
+                    onKeyDown={createComboboxChip}
+                    aria-invalid={fieldState.invalid}
+                />
             </ComboboxChips>
 
             <ComboboxContent align="center">

@@ -1,3 +1,4 @@
+
 import BlogPost from "@/components/shared/blog/BlogPost";
 import Pagination from "@/components/ui/pagination";
 import { fetchBlogPosts } from "@/actions/actions";

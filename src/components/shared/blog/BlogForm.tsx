@@ -8,7 +8,7 @@ import { type TBlogPost } from "@/types/types";
 import { saveOrCreateBlogPost } from "@/actions/actions";
 import { type BlogPostFormValues, BlogPostSchema } from "@/lib/validations/blog";
 import { FieldGroup } from "@/components/shadcn/field";
-import { Input} from "@/components/shadcn/input";
+import { Input } from "@/components/shadcn/input";
 import { Textarea } from "@/components/shadcn/textarea";
 import { Button } from "@/components/shadcn/button";
 import Spinner from "@/components/ui/Spinner";
@@ -31,6 +31,11 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     });
 
     const [error, blogFormAction, isPending] = useActionState(saveOrCreateBlogPost, undefined);
+
+    // Add new combobox chip
+    function handleAddTag(value: string) {
+        form.setValue("tags", [...(form.getValues("tags") ?? []), value]);
+    }
 
     // Handle form submit
     const onSubmit = (values: BlogPostFormValues) => {
@@ -75,9 +80,10 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
                 {/* TODO: Implement logic to create new tags */}
                 <FormField
                     name="tags"
+                    label="Tags (Optional)"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                        <CreatableCombobox field={field} fieldState={fieldState} items={tags} />
+                        <CreatableCombobox field={field} fieldState={fieldState} onCreate={handleAddTag} items={tags} />
                     )}
                 />
 

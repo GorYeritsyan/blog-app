@@ -12,7 +12,7 @@ type AuthorProps = {
 
 //  TODO: Show error toast when something went wrong
 export default function Author({ author, sentFriendRequests, receivedFriendRequests }: AuthorProps) {
-    // Get author status - pending, accepted, rejected
+    // Get author status from all sent and received friend requests - pending, accepted, rejected
     const authorStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === author.id || request.senderId === author.id)?.status?.toLowerCase() as TFriendRequestStatus;
     const friendRequest = receivedFriendRequests?.find(request => request.senderId === author.id && request.status === "PENDING");
 
