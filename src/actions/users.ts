@@ -76,3 +76,9 @@ export const removeFriend = async (prevState: any, friendId: number) => {
 
     revalidatePath("/authors");
 }
+
+export const getFriends = async () => {
+    const { data } = await fetchInstance("/friends/accepted");
+
+    return data;
+}
