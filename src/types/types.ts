@@ -63,3 +63,14 @@ export type ApiSuccess<T> = {
 
 // API Response type
 export type ApiResponse<T = never> = ApiSuccess<T> | ApiFailure;
+
+// Messages
+export type TMessage = {
+    id: number;
+    content: string;
+    sender: TUser;
+    senderId: number;
+    receiverId: number;
+    createdAt: Date;
+    updatedAt: Date;
+}

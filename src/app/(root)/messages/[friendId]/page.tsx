@@ -6,6 +6,7 @@ import {Textarea} from "@/components/shadcn/textarea";
 import {Send} from "lucide-react";
 import {getCurrentUser} from "@/actions/auth";
 import  MessagesContent from "@/components/shared/messages/MessagesContent";
+import MessagesInput from "@/components/shared/messages/MessagesInput";
 
 export default async function Page({ params }: PageProps<"/messages/[friendId]">) {
     const { friendId } = await params;
@@ -21,14 +22,7 @@ export default async function Page({ params }: PageProps<"/messages/[friendId]">
             <MessagesContent messages={messages} />
 
             {/*Input*/}
-            <div className="w-full min-h-14 border-t border-zinc-200 px-4 py-3 flex items-end">
-                <div className="flex items-center justify-center gap-2 w-full">
-                    <Input placeholder="Send message..." className="py-1.5 h-fit" />
-                    <Button size="lg" className="px-3 text-base">
-                        Send
-                    </Button>
-                </div>
-            </div>
+            <MessagesInput friendId={+friendId} />
         </section>
     )
 }

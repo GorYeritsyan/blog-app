@@ -1,7 +1,27 @@
+"use server";
+
 import {fetchInstance} from "@/actions/index";
+import { TMessage} from "@/types/types";
+import {tryCatch} from "@/utils/utils";
+import {toast} from "sonner";
+import {revalidatePath} from "next/cache";
 
 export const getMessages = async (friendId: number) => {
-    const { data } = await fetchInstance(`/messages/${friendId}`);
-    console.log("data", data);
-    return data;
+    const { data, error } = await tryCatch<TMessage[]>(fetchInstance(`/messages/${friendId}`));
+
+    return data?.data;
+}
+
+export const sendMessage = async (prevState: any, payload: { friendId: number, content: string }) => {
+    const { friendId, content } = payload;
+
+    await fetchInstance(`/messages/${friendId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+    });
+
+    revalidatePath(`/messages/${friendId}`);
 }
