@@ -7,7 +7,7 @@ export default async function MessagesSidebar() {
     console.log(friends);
 
     return (
-        <div className="min-w-100 overflow-y-auto border-r border-zinc-200">
+        <div className="min-w-100 overflow-y-auto rounded-l-xl border-r border-zinc-200">
             <div>
                 {friends.map((friend: TUser) => (
                     <Link href={`/messages/${friend.id}`} key={friend.id}>
