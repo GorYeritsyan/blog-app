@@ -6,7 +6,7 @@ export default async function MessagesContent({ messages }: { messages: TMessage
     const currentUser = await getCurrentUser();
 
     return (
-        <div id="message-content" className="flex-1 h-full flex flex-col gap-3 p-6 overflow-y-auto">
+        <div id="message-content" className="flex-1 h-full flex flex-col justify-end gap-3 p-6 overflow-y-auto">
             {messages.map(message => (
                 <Message key={message.id} message={message} currentUser={currentUser} />
             ))}

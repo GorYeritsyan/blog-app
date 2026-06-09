@@ -3,6 +3,7 @@ import {TUser} from "@/types/types";
 import Link from "next/link";
 import {Input} from "@/components/shadcn/input";
 import Search from "@/components/shared/Search";
+import {cn} from "@/lib/utils";
 
 export default async function MessagesSidebar() {
     const friends = await getFriends();
