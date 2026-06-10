@@ -4,10 +4,11 @@ import Link from "next/link";
 import {Input} from "@/components/shadcn/input";
 import Search from "@/components/shared/Search";
 import {cn} from "@/lib/utils";
+import ChatList from "@/components/shared/messages/ChatList";
+import {Button} from "@/components/shadcn/button";
 
 export default async function MessagesSidebar() {
     const friends = await getFriends();
-    console.log(friends);
 
     return (
         <div className="min-w-100 rounded-l-xl border-r border-zinc-200 overflow-hidden">
@@ -15,16 +16,20 @@ export default async function MessagesSidebar() {
                 <div className=" bg-white px-4 py-3">
                     <Search placeholder="Search" />
                 </div>
-                <div className="flex flex-col h-full overflow-y-auto">
-                    {friends.map((friend: TUser) => (
-                        <Link href={`/messages/${friend.id}`} key={friend.id}>
-                            <div className="px-4 pl-6 py-3 hover:bg-zinc-100 cursor-pointer flex flex-col">
-                                <h4 className="text-lg font-medium">{friend.name}</h4>
-                                <p className="text-zinc-500">{friend.email}</p>
-                            </div>
+
+                {friends.length > 0 ? (
+                    <ChatList friends={friends} />
+                ) : (
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="flex flex-col items-center justify-center text-center text-zinc-500">
+                            <p>Your chat list is empty.</p>
+                            <p>Try adding some friends to start chatting!</p>
+                        </div>
+                        <Link href="/users">
+                            <Button>Find friends</Button>
                         </Link>
-                    ))}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     )

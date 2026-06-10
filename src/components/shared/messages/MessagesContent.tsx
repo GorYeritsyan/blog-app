@@ -7,9 +7,13 @@ export default async function MessagesContent({ messages }: { messages: TMessage
 
     return (
         <div id="message-content" className="flex-1 min-h-0 flex flex-col gap-3 p-6 overflow-y-auto">
-            {messages.map(message => (
-                <Message key={message.id} message={message} currentUser={currentUser} />
-            ))}
+            {messages.length > 0 ? (
+                messages.map(message => (
+                    <Message key={message.id} message={message} currentUser={currentUser} />
+                ))
+            ) : (
+                <p className="text-zinc-500 text-center">Send message to start conversation</p>
+            )}
         </div>
     )
 }
