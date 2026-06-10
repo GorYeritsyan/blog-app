@@ -15,7 +15,7 @@ const navLinks: { href: string; label: string }[] = [
         href: "/messages",
         label: "Messages",
     }
-]
+];
 
 export default async function Header() {
     const currentUser = await getCurrentUser();
