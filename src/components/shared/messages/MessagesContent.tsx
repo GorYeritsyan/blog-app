@@ -1,11 +1,10 @@
 "use client";
 
-import {getCurrentUser} from "@/actions/auth";
+import {useState} from "react";
+import {useInfiniteScroll} from "react-infinite-scroll-component";
+
 import Message from "@/components/shared/messages/Message";
 import {TMessage, TUser} from "@/types/types";
-import {useMessages} from "@/providers/MessageProvider";
-import {useRef, useState} from "react";
-import InfiniteScroll, {useInfiniteScroll} from "react-infinite-scroll-component";
 import {getMessages} from "@/actions/messages";
 
 export default function MessagesContent({ friendId, messages, currentUser }: { messages: TMessage[]; currentUser: TUser[] }) {
@@ -18,10 +17,10 @@ export default function MessagesContent({ friendId, messages, currentUser }: { m
         const nextPage = page + 1;
         const { data: messagesHistory, hasNext } = await getMessages(friendId, nextPage);
 
-        // if (!hasNext) {
-        //     setHasMore(false);
-        //     return;
-        // }
+        if (!hasNext) {
+            setHasMore(false);
+            return;
+        }
 
         setMessagesList(prev => [...prev, ...messagesHistory]);
         setPage(nextPage);
@@ -29,7 +28,7 @@ export default function MessagesContent({ friendId, messages, currentUser }: { m
 
     const { sentinelRef, isLoading } = useInfiniteScroll({
         next: fetchMessagesHistory,
-        hasMore: true,
+        hasMore,
         dataLength: messagesList.length,
     });
 
