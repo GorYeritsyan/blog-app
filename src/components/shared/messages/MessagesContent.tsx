@@ -53,6 +53,7 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
 
             // 👇 Snapshot scroll position BEFORE fetching
             const prevScrollHeight = container?.scrollHeight ?? 0;
+            const prevScrollTop = container?.scrollTop ?? 0;
 
             const nextPage = page + 1;
 
@@ -70,13 +71,16 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
                 }
                 setHasMore(hasNext);
 
-                // 👇 Restore scroll position AFTER DOM updates
-                requestAnimationFrame(() => {
-                    if (container) {
-                        const newScrollHeight = container.scrollHeight;
-                        container.scrollTop = (container.scrollTop + (newScrollHeight - prevScrollHeight));
-                    }
-                });
+                // // 👇 Restore scroll position AFTER DOM updates
+                // requestAnimationFrame(() => {
+                //     if (container) {
+                //         const newScrollHeight = container.scrollHeight;
+                //
+                //         const heightDifference = newScrollHeight - prevScrollHeight;
+                //
+                //         container.scrollTop = (prevScrollHeight + heightDifference);
+                //     }
+                // });
             } catch (error) {
                 console.error(error);
                 fetchedPages.current.delete(nextPage);
