@@ -6,26 +6,29 @@ import {useInfiniteScroll} from "react-infinite-scroll-component";
 import Message from "@/components/shared/messages/Message";
 import {TMessage, TUser} from "@/types/types";
 import {getMessages} from "@/actions/messages";
+import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
 
-export default function MessagesContent({ friendId, messages, currentUser }: { messages: TMessage[]; currentUser: TUser[] }) {
+type MessageContentProps = {
+    friendId: number;
+    messages: TMessage[];
+    currentUser: TUser;
+}
+
+export default function MessagesContent({ friendId, messages, currentUser }: MessageContentProps) {
     const [page, setPage] = useState(1);
     const [messagesList, setMessagesList] = useState(messages);
     const [hasMore, setHasMore] = useState(true);
-    console.log("list", messagesList);
 
     async function fetchMessagesHistory() {
         const nextPage = page + 1;
         const { data: messagesHistory, hasNext } = await getMessages(friendId, nextPage);
 
-        if (!hasNext) {
-            setHasMore(false);
-            return;
-        }
-
         setMessagesList(prev => [...prev, ...messagesHistory]);
         setPage(nextPage);
+        setHasMore(hasNext);
     }
 
+    // Hook for infinite scroll logic
     const { sentinelRef, isLoading } = useInfiniteScroll({
         next: fetchMessagesHistory,
         hasMore,
@@ -42,6 +45,10 @@ export default function MessagesContent({ friendId, messages, currentUser }: { m
                 <p className="text-zinc-500 text-center">Send message to start conversation</p>
             )}
             <div ref={sentinelRef} aria-hidden={true} />
+
+            {hasMore && isLoading &&  (
+                <MessagesSkeleton />
+            )}
         </div>
     )
 }

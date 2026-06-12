@@ -12,7 +12,7 @@ export const getMessages = async (friendId: number, page?: number) => {
 
     console.log("messages", data);
 
-    return { data: messages, totalPages: data?.data?.pagination, hasNext: data?.data?.hasNext };
+    return { data: messages, totalPages: data?.data?.pagination?.totalPages, hasNext: data?.data?.pagination?.hasNext };
 }
 
 export const sendMessage = async (prevState: any, payload: { friendId: number, content: string }) => {
