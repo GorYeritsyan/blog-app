@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useInfiniteScroll} from "react-infinite-scroll-component";
 
 import Message from "@/components/shared/messages/Message";
@@ -11,29 +11,57 @@ import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
 type MessageContentProps = {
     friendId: number;
     messages: TMessage[];
-    currentUser: TUser;
+    currentUser?: TUser;
 }
 
 export default function MessagesContent({ friendId, messages, currentUser }: MessageContentProps) {
     const [page, setPage] = useState(1);
-    const [messagesList, setMessagesList] = useState(messages);
+    const [history , setHistory] = useState([]);
     const [hasMore, setHasMore] = useState(true);
+    const scrollTrigger = useRef(null);
 
-    async function fetchMessagesHistory() {
-        const nextPage = page + 1;
-        const { data: messagesHistory, hasNext } = await getMessages(friendId, nextPage);
+    const messagesList = [...messages, ...history];
 
-        setMessagesList(prev => [...prev, ...messagesHistory]);
-        setPage(nextPage);
-        setHasMore(hasNext);
-    }
+    useEffect(() => {
+        if (typeof window === "undefined" || !window.IntersectionObserver) return;
+
+        const observer = new IntersectionObserver(async (entries) => {
+            if (entries[0].isIntersecting) {
+                const nextPage = page + 1;
+                const { data: messagesHistory, hasNext } = await getMessages(friendId, nextPage);
+                setHistory(prev => [...prev, ...messagesHistory]);
+                setPage(nextPage);
+                setHasMore(hasNext);
+            }
+        });
+
+        if (scrollTrigger.current) {
+            observer.observe(scrollTrigger.current);
+        }
+
+        // Cleanup
+        return () => {
+            if (scrollTrigger.current) {
+                observer.unobserve(scrollTrigger.current);
+            }
+        }
+    }, [hasMore, page]);
+    //
+    // async function fetchMessagesHistory() {
+    //     const nextPage = page + 1;
+    //     const { data: messagesHistory, hasNext } = await getMessages(friendId, nextPage);
+    //
+    //     setMessagesList(prev => [...prev, ...messagesHistory]);
+    //     setPage(nextPage);
+    //     setHasMore(hasNext);
+    // }
 
     // Hook for infinite scroll logic
-    const { sentinelRef, isLoading } = useInfiniteScroll({
-        next: fetchMessagesHistory,
-        hasMore,
-        dataLength: messagesList.length,
-    });
+    // const { sentinelRef, isLoading } = useInfiniteScroll({
+    //     next: fetchMessagesHistory,
+    //     hasMore,
+    //     dataLength: messagesList.length,
+    // });
 
     return (
         <div id="message-content" className="flex-1 min-h-0 flex flex-col-reverse gap-3 p-6 overflow-y-auto">
@@ -44,10 +72,12 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
             ) : (
                 <p className="text-zinc-500 text-center">Send message to start conversation</p>
             )}
-            <div ref={sentinelRef} aria-hidden={true} />
+            {/*<div ref={sentinelRef} aria-hidden={true} />*/}
 
-            {hasMore && isLoading &&  (
-                <MessagesSkeleton />
+            {hasMore &&  (
+                <div ref={scrollTrigger}>
+                    <MessagesSkeleton />
+                </div>
             )}
         </div>
     )

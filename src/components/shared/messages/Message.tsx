@@ -1,6 +1,6 @@
-import {format} from "date-fns";
-import {cn} from "@/lib/utils";
-import {TMessage, TUser} from "@/types/types";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { TMessage, TUser } from "@/types/types";
 
 export default function Message({ message, currentUser }: { message: TMessage; currentUser?: TUser }) {
     const isCurrentUserMessage = currentUser?.id === message.sender.id;
