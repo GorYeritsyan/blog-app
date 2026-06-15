@@ -1,36 +1,14 @@
 "use client";
 
-import {startTransition, useActionState, useEffect, useState} from "react";
-import {Input} from "@/components/shadcn/input";
-import {Button} from "@/components/shadcn/button";
-import {sendMessage} from "@/actions/messages";
-import {Spinner} from "@/components/shadcn/spinner";
-import {Textarea} from "@/components/shadcn/textarea";
+import { startTransition, useActionState, useState } from "react";
+import { Button } from "@/components/shadcn/button";
+import { sendMessage } from "@/actions/messages";
+import { Spinner } from "@/components/shadcn/spinner";
+import { Textarea } from "@/components/shadcn/textarea";
 
 export default function MessagesInput({ friendId }: { friendId: number }) {
     const [value, setValue] = useState("");
     const [state, sendMessageAction, isSending] = useActionState(sendMessage, undefined);
-
-    // useEffect(() => {
-    //     const content = document.getElementById("message-content");
-    //     content.scrollTop = content?.scrollHeight;
-    // }, []);
-
-    // scroll to bottom
-    function setupScrollObserver(containerSelector) {
-        const container = document.querySelector(containerSelector);
-
-        const observer = new MutationObserver(() => {
-            container.scrollTop = container.scrollHeight;
-        });
-
-        observer.observe(container, {
-            childList: true,
-            subtree: true
-        });
-
-        return observer;
-    }
 
     function handleSendMessage() {
         startTransition(() => {
@@ -38,9 +16,6 @@ export default function MessagesInput({ friendId }: { friendId: number }) {
         });
 
         setValue("");
-
-        // scroll to bottom
-        setupScrollObserver("#message-content");
     }
 
     return (
