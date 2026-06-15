@@ -3,8 +3,11 @@ import { cn } from "@/lib/utils";
 import { TMessage, TUser } from "@/types/types";
 
 export default function Message({ message, currentUser }: { message: TMessage; currentUser?: TUser }) {
-    const isCurrentUserMessage = currentUser?.id === message.sender.id;
+    const isCurrentUserMessage = currentUser?.id === message.senderId;
     const currentDay = new Date().getDay();
+
+    console.log("currentUser", currentUser);
+    console.log("message", message);
 
     // Show only hours if message was send current day, otherwise show hours with month day
     const messageDateFormat = new Date(message.createdAt).getDay() === currentDay ? "HH:mm" : "MMM d 'at' HH:mm";

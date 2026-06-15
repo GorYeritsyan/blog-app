@@ -82,3 +82,8 @@ export const getFriends = async () => {
 
     return data;
 }
+
+export const getRooms = async () => {
+    const { data } = await fetchInstance("/rooms");
+    return data;
+}

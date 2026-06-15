@@ -28,3 +28,4 @@ export const sendMessage = async (prevState: any, payload: { friendId: number, c
 
     revalidatePath(`/messages/${friendId}`);
 }
+

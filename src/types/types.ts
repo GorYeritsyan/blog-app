@@ -70,7 +70,26 @@ export type TMessage = {
     content: string;
     sender: TUser;
     senderId: number;
-    receiverId: number;
+    roomId: number;
     createdAt: Date;
     updatedAt: Date;
+}
+
+// Room
+export type TRoom = {
+    id: number;
+    type: "DM" | "GROUP",
+    name?: string;
+    members?: TMember[];
+    messages?: TMessage[];
+    createdAt: Date;
+}
+
+export type TMember = {
+    id: number;
+    roomId: number;
+    userId: number;
+    room?: TRoom;
+    user?: TUser;
+    createdAt: Date;
 }

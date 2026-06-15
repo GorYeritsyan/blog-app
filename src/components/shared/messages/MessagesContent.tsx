@@ -21,7 +21,6 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
     const containerRef = useRef<HTMLDivElement>(null);
     const isFetching = useRef(false);
     const fetchedPages = useRef(new Set<number>([1]));
-    const currentFriendId = useRef(friendId);
 
     // 👇 Deduplicate and merge messages
     const combined = [...messages, ...history];
@@ -38,7 +37,7 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
         }
     }, [messages]);
 
-    // 👇 Infinite scroll observer
+    // Infinite scroll observer
     useEffect(() => {
         if (typeof window === "undefined" || !window.IntersectionObserver) return;
 
@@ -54,7 +53,7 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
 
             try {
                 const { data: messagesHistory, hasNext } = await getMessages(
-                    currentFriendId.current,
+                    friendId,
                     nextPage
                 );
 
