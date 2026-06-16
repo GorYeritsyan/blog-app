@@ -83,6 +83,7 @@ export type TRoom = {
     members?: TMember[];
     messages?: TMessage[];
     createdAt: Date;
+    updatedAt: Date;
 }
 
 export type TMember = {
