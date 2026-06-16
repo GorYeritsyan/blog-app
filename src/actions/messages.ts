@@ -10,8 +10,6 @@ export const getMessages = async (friendId: number, page?: number) => {
 
     const messages = (data?.data?.items && data?.data.items.length > 0) ? data.data.items : [];
 
-    console.log("messages", data);
-
     return { data: messages, totalPages: data?.data?.pagination?.totalPages, hasNext: data?.data?.pagination?.hasNext };
 }
 

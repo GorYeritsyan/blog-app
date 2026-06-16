@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {use, useEffect, useRef, useState} from "react";
 
 import Message from "@/components/shared/messages/Message";
 import { TMessage, TUser } from "@/types/types";
@@ -9,11 +9,11 @@ import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
 
 type MessageContentProps = {
     friendId: number;
-    messages: TMessage[];
+    messagesPromise: Promise<{ data: TMessage[]; totalPages: number; hasNext: boolean }>;
     currentUser?: TUser;
 }
 
-export default function MessagesContent({ friendId, messages, currentUser }: MessageContentProps) {
+export default function MessagesContent({ friendId, messagesPromise, currentUser }: MessageContentProps) {
     const [page, setPage] = useState(1);
     const [history, setHistory] = useState([]);
     const [hasMore, setHasMore] = useState(true);
@@ -21,8 +21,9 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
     const containerRef = useRef<HTMLDivElement>(null);
     const isFetching = useRef(false);
     const fetchedPages = useRef(new Set<number>([1]));
+    const { data: messages } = use(messagesPromise);
 
-    // 👇 Deduplicate and merge messages
+    // Deduplicate and merge messages
     const combined = [...messages, ...history];
     const uniqueMap = new Map();
     combined.forEach(msg => {
@@ -80,7 +81,7 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
         <div
             ref={containerRef}
             id="message-content"
-            className="flex-1 min-h-0 flex flex-col-reverse gap-3 p-6 overflow-y-auto"
+            className="flex-1 min-h-0 h-full flex flex-col-reverse gap-3 p-6 overflow-y-auto"
         >
             {messagesList.length > 0 ? (
                 messagesList.map(message => (
@@ -90,11 +91,14 @@ export default function MessagesContent({ friendId, messages, currentUser }: Mes
                 <p className="text-zinc-500 text-center">Send message to start conversation</p>
             )}
 
-            {hasMore && (
+            {hasMore && messagesList.length > 0 && (
                 <div
                     ref={scrollTrigger}
                     // className={isFetchingOld ? "[overflow-anchor:auto]" : "[overflow-anchor:none]"}
                 >
+                    {/*<div className="flex justify-center items-center p-3">*/}
+                    {/*    <Spinner className="size-6" />*/}
+                    {/*</div>*/}
                     <MessagesSkeleton />
                 </div>
             )}
