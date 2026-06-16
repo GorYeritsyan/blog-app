@@ -1,13 +1,16 @@
-import { getRooms } from "@/actions/users";
+import {getFriends, getRooms} from "@/actions/users";
 import Search from "@/components/shared/Search";
 import ChatList from "@/components/shared/messages/ChatList";
 import EmptyChatList from "@/components/empty/EmptyChatList";
 import { getCurrentUser } from "@/actions/auth";
-import {Button} from "@/components/shadcn/button";
+import {GroupChatDialog} from "@/components/shared/dialogs/GroupChatDialog";
 
 export default async function MessagesSidebar() {
     const rooms = await getRooms();
     const currentUser = await getCurrentUser();
+    const friends = await getFriends();
+
+    console.log("Friends", friends);
 
     return (
         <div className="max-w-100 w-full rounded-l-xl border-r border-zinc-200 overflow-hidden">
@@ -16,7 +19,8 @@ export default async function MessagesSidebar() {
                     <div className="w-full">
                         <Search placeholder="Search" />
                     </div>
-                    <Button className="w-fit">Create Chat</Button>
+                    {/*<Button className="w-fit">Create Chat</Button>*/}
+                    <GroupChatDialog members={friends} />
                 </div>
 
                 {rooms.length > 0 ? (
