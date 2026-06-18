@@ -36,7 +36,7 @@ export default function LoginForm() {
     const onSubmit = async (values: LoginFormValues) => {
         startTransition(() => {
             loginAction(values);
-        })
+        });
     };
 
     return (

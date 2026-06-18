@@ -4,6 +4,8 @@ import {revalidatePath} from "next/cache";
 import {fetchInstance} from "@/actions/index";
 import { TMessage} from "@/types/types";
 import {tryCatch} from "@/utils/utils";
+import {toast} from "sonner";
+import {redirect} from "next/navigation";
 
 export const getMessages = async (friendId: number, page?: number) => {
     const { data, error } = await tryCatch<{ items: TMessage[]; totalPages: number }>(fetchInstance(`/messages/${friendId}?page=${page || 1}`));
@@ -37,4 +39,15 @@ export const createGroupChat = async ({ name, memberIds }: { name: string; membe
     });
 
     revalidatePath("/messages");
+}
+
+export const getChatById = async (roomId: number) => {
+    const { data, error } = await tryCatch(fetchInstance(`/rooms/${roomId}`));
+
+    if (error) {
+        toast.error(error.message);
+        redirect("/messages");
+    }
+
+    return data.data;
 }
