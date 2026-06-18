@@ -1,6 +1,7 @@
 "use client"
 
-import * as React from "react"
+import {useMemo} from "react";
+import {ControllerFieldState, ControllerRenderProps, FieldPath, FieldValues} from "react-hook-form";
 
 import {
     Combobox,
@@ -12,40 +13,43 @@ import {
     ComboboxItem,
     ComboboxList,
     ComboboxValue,
-} from "@/components/shadcn/combobox"
+} from "@/components/shadcn/combobox";
+import {TUser} from "@/types/types";
 
-const frameworks = [
-    "Next.js",
-    "SvelteKit",
-    "Nuxt.js",
-    "Remix",
-    "Astro",
-] as const
+type MembersComboboxProps<T extends FieldValues> = {
+    field: ControllerRenderProps<T, FieldPath<T>>;
+    fieldState: ControllerFieldState;
+    members?: TUser[];
+}
 
-export default function MembersCombobox({ field, fieldState, onCreate, members }) {
+export default function MembersCombobox<T extends FieldValues>({ field, fieldState, members }: MembersComboboxProps<T>) {
+    const items = typeof members !== "undefined" && members.length > 0 ? members.map(member => ({ value: member.id, label: member.name })) : [];
+
+    const labelsMap = useMemo(() => Object.fromEntries(items.map(item => [item.value, item.label])), [members]);
+
     return (
         <Combobox
             {...field}
             id={field.name}
-            items={members}
+            items={items}
             multiple
             value={field.value}
             onValueChange={field.onChange}
         >
-            <ComboboxChips className="w-full max-w-xs">
+            <ComboboxChips className="py-1.5 h-fit">
                 <ComboboxValue>
-                    {field.value.map((item: string) => (
-                        <ComboboxChip key={item}>{item}</ComboboxChip>
+                    {field.value.map((id: number) => (
+                        <ComboboxChip key={id}>{labelsMap[id]}</ComboboxChip>
                     ))}
                 </ComboboxValue>
-                <ComboboxChipsInput />
+                <ComboboxChipsInput aria-invalid={fieldState.invalid} />
             </ComboboxChips>
             <ComboboxContent align="center">
                 <ComboboxEmpty>No items found.</ComboboxEmpty>
                 <ComboboxList>
                     {(item) => (
-                        <ComboboxItem key={item.id} value={item.id}>
-                            {item.name}
+                        <ComboboxItem key={item.value} value={item.value} className="pointer-events-auto">
+                            {item.label}
                         </ComboboxItem>
                     )}
                 </ComboboxList>

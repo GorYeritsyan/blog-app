@@ -27,3 +27,14 @@ export const sendMessage = async (prevState: any, payload: { friendId: number, c
     revalidatePath(`/messages/${friendId}`);
 }
 
+export const createGroupChat = async ({ name, memberIds }: { name: string; memberIds: number[] }) => {
+    await fetchInstance("/rooms", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, memberIds })
+    });
+
+    revalidatePath("/messages");
+}

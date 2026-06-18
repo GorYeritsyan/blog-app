@@ -42,8 +42,6 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
         startTransition(() => {
             blogFormAction({ ...values, postId: blogPost?.id });
         });
-
-        console.log("Form Values", values);
     };
 
     return (
