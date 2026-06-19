@@ -1,8 +1,8 @@
+import {Suspense} from "react";
 import {getChatById, getMessages} from "@/actions/messages";
 import  MessagesContent from "@/components/shared/messages/MessagesContent";
 import MessagesInput from "@/components/shared/messages/MessagesInput";
 import {getCurrentUser} from "@/actions/auth";
-import {Suspense} from "react";
 import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
 import ChatHeader from "@/components/shared/messages/ChatHeader";
 

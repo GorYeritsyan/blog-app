@@ -1,12 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { cn } from "@/lib/utils";
+import {useSocket} from "@/providers/SocketProvider";
 
 export default function ChatHeader({ chatDetails, currentUserId }) {
     const [isOnline, setIsOnline] = useState(false);
 
+
     const chatTitle = chatDetails.type === "GROUP" ? chatDetails.name : chatDetails.members.find(member => member.userId !== currentUserId).user.name;
+
+    // useEffect(() => {
+    //     socket.on("connect", () => {
+    //         console.log("user connected");
+    //     })
+    //
+    //     return () => {
+    //         socket.off("connect");
+    //         socket.disconnect();
+    //     }
+    // }, []);
 
     return (
         <div className="border-b border-b-zinc-200 px-4 py-3 flex flex-col gap-px">

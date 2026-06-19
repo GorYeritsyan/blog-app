@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
 import { Toaster } from "@/components/shadcn/sonner";
@@ -35,8 +36,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <main>{children}</main>
-        <Toaster position="top-right" richColors closeButton />
+        <SessionProvider>
+          <main>{children}</main>
+          <Toaster position="top-right" richColors closeButton />
+        </SessionProvider>
       </body>
     </html>
   );
