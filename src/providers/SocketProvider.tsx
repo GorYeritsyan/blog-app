@@ -13,12 +13,17 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        if (!session?.accessToken) return;
+        if (!session?.accessToken) {
+            disconnectSocket();
+            setSocket(null);
+            return
+        }
 
         const socket = getSocket(session.accessToken);
         setSocket(socket);
 
         return () => {
+            console.log("disconnect");
             disconnectSocket();
         }
     }, [session?.accessToken]);
@@ -32,7 +37,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
 
 export const useSocket = () => {
     const context = useContext(SocketContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error("useSocket must be used within SocketProvider");
     }
     return context;

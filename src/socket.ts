@@ -9,6 +9,8 @@ export function getSocket(token: string) {
         socket = io("http://localhost:8080", {
             auth: { token },
             autoConnect: true,
+            forceNew: true,
+            withCredentials: true
         });
     }
 

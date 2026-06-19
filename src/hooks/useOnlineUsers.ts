@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSocket } from "@/providers/SocketProvider";
+import {useSocket} from "@/providers/SocketProvider";
 
 export const useOnlineUsers = () => {
     const socket = useSocket();

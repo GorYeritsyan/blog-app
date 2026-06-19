@@ -5,13 +5,16 @@ import { Button } from "@/components/shadcn/button";
 import { sendMessage } from "@/actions/messages";
 import { Spinner } from "@/components/shadcn/spinner";
 import { Textarea } from "@/components/shadcn/textarea";
+import {useSocket} from "@/providers/SocketProvider";
 
 export default function MessagesInput({ friendId }: { friendId: number }) {
     const [value, setValue] = useState("");
     const [state, sendMessageAction, isSending] = useActionState(sendMessage, undefined);
+    const socket = useSocket();
 
     function handleSendMessage() {
         startTransition(() => {
+            socket?.emit("send_message", { friendId, content: value });
             sendMessageAction({ friendId, content: value });
         });
 
