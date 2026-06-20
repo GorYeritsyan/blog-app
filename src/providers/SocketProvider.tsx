@@ -1,32 +1,35 @@
 "use client";
 
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {useSession} from "next-auth/react";
-import {Socket} from "socket.io-client";
-
-import {disconnectSocket, getSocket} from "@/socket";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 const SocketContext = createContext<Socket | null>(null);
 
-export default function SocketProvider({ children }: { children: ReactNode }) {
-    const { data: session } = useSession();
+export default function SocketProvider({ children, token }: { children: ReactNode; token: string }) {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        if (!session?.accessToken) {
-            disconnectSocket();
-            setSocket(null);
-            return
-        }
+        if (!token || socket) return;
 
-        const socket = getSocket(session.accessToken);
-        setSocket(socket);
+        const socketInstance = io("http://localhost:8080", {
+            auth: { token },
+            autoConnect: true,
+            withCredentials: true,
+        });
+
+        socketInstance.on("connect", () => console.log("Socket connected"));
+        socketInstance.on("connect_error", (err) => console.error("Socket error:", err.message));
+
+        // socketRef.current = socketInstance;
+        setSocket(socketInstance);
 
         return () => {
-            console.log("disconnect");
-            disconnectSocket();
-        }
-    }, [session?.accessToken]);
+            socketInstance.disconnect();
+            // socketRef.current = null;
+            setSocket(null);
+        };
+    }, [token]);
+
 
     return (
         <SocketContext.Provider value={socket}>

@@ -10,8 +10,6 @@ export default async function MessagesSidebar() {
     const currentUser = await getCurrentUser();
     const friends = await getFriends();
 
-    console.log("Friends", friends);
-
     return (
         <div className="max-w-90 w-full rounded-l-xl border-r border-zinc-200 overflow-hidden">
             <div className="flex flex-col h-full">
