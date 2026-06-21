@@ -23,10 +23,13 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
     const isFetching = useRef(false);
     const fetchedPages = useRef(new Set<number>([1]));
     const { data: messages, hasNext } = use(messagesPromise);
+
+    const [socketMessages, setSocketMessages] = useState([]);
+
     const [hasMore, setHasMore] = useState(hasNext);
 
     // Deduplicate and merge messages
-    const combined = [...history, ...messages];
+    const combined = [...socketMessages, ...messages, ...history];
     const uniqueMap = new Map();
     combined.forEach(msg => {
         if (msg?.id) uniqueMap.set(msg.id, msg);
@@ -61,7 +64,7 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
                 );
 
                 if (messagesHistory && messagesHistory.length > 0) {
-                    setHistory(prev => [ ...messagesHistory, ...prev]);
+                    setHistory(prev => [...prev, ...messagesHistory]);
                     setPage(nextPage);
                 }
                 setHasMore(hasNext);
@@ -90,7 +93,7 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
 
         socket.on("message", (sentMessage) => {
             console.log("sent message", sentMessage)
-            setHistory(prev => [sentMessage, ...prev]);
+            setSocketMessages(prev => [sentMessage, ...prev]);
         });
 
         return () => {
