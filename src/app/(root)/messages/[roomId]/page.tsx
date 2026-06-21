@@ -28,7 +28,7 @@ export default async function Page({ params }: PageProps<"/messages/[roomId]">) 
             </Suspense>
 
             {/*Input*/}
-            <MessagesInput roomId={+roomId} />
+            <MessagesInput roomId={+roomId} currentUser={currentUser} />
         </section>
     )
 }
