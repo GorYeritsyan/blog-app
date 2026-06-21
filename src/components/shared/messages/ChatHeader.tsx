@@ -2,13 +2,15 @@
 
 import {useEffect, useState} from "react";
 import { cn } from "@/lib/utils";
-import {useSocket} from "@/providers/SocketProvider";
+import {useOnlineUsers} from "@/hooks/useOnlineUsers";
 
 export default function ChatHeader({ chatDetails, currentUserId }) {
-    const [isOnline, setIsOnline] = useState(false);
-
+    // const [isOnline, setIsOnline] = useState(false);
+    const onlineUsers = useOnlineUsers();
 
     const chatTitle = chatDetails.type === "GROUP" ? chatDetails.name : chatDetails.members.find(member => member.userId !== currentUserId).user.name;
+    const isOnline = chatDetails.type === "DM" ? chatDetails.members.find(member => member.userId !== currentUserId && onlineUsers.includes(member.userId)) : false;
+
 
     // useEffect(() => {
     //     socket.on("connect", () => {

@@ -7,13 +7,13 @@ import { tryCatch } from "@/utils/utils";
 
 export class InvalidLoginError extends CredentialsSignin {
     constructor(code: string) {
-        super();
+        super(code);
         this.code = code;
     }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    ...authConfig,
+    ...authConfig   ,
     providers: [
         Credentials({
             authorize: async (credentials) => {

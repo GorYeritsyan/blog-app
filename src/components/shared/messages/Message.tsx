@@ -13,7 +13,7 @@ export default function Message({ message, currentUser }: { message: TMessage; c
         <div className={cn("flex gap-0.5 w-full", isCurrentUserMessage && "justify-end")}>
             <div className={cn("flex flex-col gap-0.5 w-fit", isCurrentUserMessage && "items-end")}>
                 {/* Name of user who sent message */}
-                <span className="font-medium">{isCurrentUserMessage ? "Me" : message.sender.name}</span>
+                <span className="font-medium">{isCurrentUserMessage ? "Me" : message?.sender?.name}</span>
                 <div className={cn("px-3 py-1.5 rounded-lg border border-zinc-200 bg-zinc-100 max-w-90 w-fit h-fit wrap-break-word rounded-tl-none",
                     isCurrentUserMessage && "bg-zinc-800 border-zinc-800 text-white rounded-tr-none rounded-tl-lg"
                 )}>

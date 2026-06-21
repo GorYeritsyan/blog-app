@@ -15,6 +15,9 @@ export default function SocketProvider({ children, token }: { children: ReactNod
             auth: { token },
             autoConnect: true,
             withCredentials: true,
+            reconnection: true,
+            reconnectionAttempts: 3,
+            reconnectionDelay: 2000,
         });
 
         socketInstance.on("connect", () => console.log("Socket connected"));
@@ -24,6 +27,8 @@ export default function SocketProvider({ children, token }: { children: ReactNod
         setSocket(socketInstance);
 
         return () => {
+            socketInstance.off("connect");
+            socketInstance.off("connect_error");
             socketInstance.disconnect();
             // socketRef.current = null;
             setSocket(null);

@@ -6,25 +6,27 @@ import Message from "@/components/shared/messages/Message";
 import { TMessage, TUser } from "@/types/types";
 import { getMessages } from "@/actions/messages";
 import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
+import {useSocket} from "@/providers/SocketProvider";
 
 type MessageContentProps = {
-    friendId: number;
+    roomId: number;
     messagesPromise: Promise<{ data: TMessage[]; totalPages: number; hasNext: boolean }>;
     currentUser?: TUser;
 }
 
-export default function MessagesContent({ friendId, messagesPromise, currentUser }: MessageContentProps) {
+export default function MessagesContent({ roomId, messagesPromise, currentUser }: MessageContentProps) {
+    const socket = useSocket();
     const [page, setPage] = useState(1);
     const [history, setHistory] = useState([]);
-    const [hasMore, setHasMore] = useState(true);
     const scrollTrigger = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isFetching = useRef(false);
     const fetchedPages = useRef(new Set<number>([1]));
-    const { data: messages } = use(messagesPromise);
+    const { data: messages, hasNext } = use(messagesPromise);
+    const [hasMore, setHasMore] = useState(hasNext);
 
     // Deduplicate and merge messages
-    const combined = [...messages, ...history];
+    const combined = [...history, ...messages];
     const uniqueMap = new Map();
     combined.forEach(msg => {
         if (msg?.id) uniqueMap.set(msg.id, msg);
@@ -54,12 +56,12 @@ export default function MessagesContent({ friendId, messagesPromise, currentUser
 
             try {
                 const { data: messagesHistory, hasNext } = await getMessages(
-                    friendId,
+                    roomId,
                     nextPage
                 );
 
                 if (messagesHistory && messagesHistory.length > 0) {
-                    setHistory(prev => [...prev, ...messagesHistory]);
+                    setHistory(prev => [ ...messagesHistory, ...prev]);
                     setPage(nextPage);
                 }
                 setHasMore(hasNext);
@@ -76,6 +78,25 @@ export default function MessagesContent({ friendId, messagesPromise, currentUser
             if (scrollTrigger.current) observer.unobserve(scrollTrigger.current);
         };
     }, [hasMore, page]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.emit("join_room", roomId);
+    }, [roomId, socket]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.on("message", (sentMessage) => {
+            console.log("sent message", sentMessage)
+            setHistory(prev => [sentMessage, ...prev]);
+        });
+
+        return () => {
+            socket.off("message")
+        }
+    }, [socket]);
 
     return (
         <div

@@ -24,11 +24,11 @@ export default async function Page({ params }: PageProps<"/messages/[roomId]">) 
                     <MessagesSkeleton />
                 </div>
             } >
-                <MessagesContent friendId={+roomId} messagesPromise={messagesPromise} currentUser={currentUser} />
+                <MessagesContent roomId={+roomId} messagesPromise={messagesPromise} currentUser={currentUser} />
             </Suspense>
 
             {/*Input*/}
-            <MessagesInput friendId={+roomId} />
+            <MessagesInput roomId={+roomId} />
         </section>
     )
 }
