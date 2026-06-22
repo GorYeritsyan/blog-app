@@ -1,16 +1,8 @@
 import {getFriends, getRooms} from "@/actions/users";
 import Search from "@/components/shared/Search";
 import ChatList from "@/components/shared/messages/ChatList";
-import EmptyChatList from "@/components/empty/EmptyChatList";
 import { getCurrentUser } from "@/actions/auth";
 import {GroupChatDialog} from "@/components/shared/dialogs/GroupChatDialog";
-
-type Tab = "DM" | "GROUP";
-
-const tabs: { label: string; value: Tab }[] = [
-    { label: "Direct", value: "DM" },
-    { label: "Group", value: "GROUP" },
-];
 
 export default async function MessagesSidebar() {
     const rooms = await getRooms();
