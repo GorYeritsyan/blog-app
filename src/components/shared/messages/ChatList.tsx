@@ -2,11 +2,12 @@
 
 import {useEffect, useState} from "react";
 import Link from "next/link";
+
+import {useSocket} from "@/providers/SocketProvider";
 import { cn } from "@/lib/utils";
 import { TRoom } from "@/types/types";
 import Chat from "@/components/shared/messages/Chat";
 import EmptyChatList from "@/components/empty/EmptyChatList";
-import {useSocket} from "@/providers/SocketProvider";
 import {revalidateRooms} from "@/actions/users";
 
 export type Tab = "DM" | "GROUP";
