@@ -17,8 +17,8 @@ export default function Chat({ room, currentUserId }: { room: TRoom; currentUser
     const chatName = isGroup ? room.name : otherMember?.user?.name;
     const lastMessage = room.messages?.at(0);
 
-    const isOnline = !isGroup && onlineUsers?.includes(otherMember?.userId);
-    const isActiveRoom = +roomId === room.id;
+    const isOnline = !isGroup && otherMember && onlineUsers?.includes(otherMember.userId);
+    const isActiveRoom = typeof roomId !== "undefined" && +roomId === room.id;
 
     const lastMessagePreview = lastMessage
         ? `${lastMessage.sender.name}: ${lastMessage.content}`

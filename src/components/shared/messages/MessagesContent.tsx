@@ -86,10 +86,10 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
         if (!socket) return;
 
         console.log("room id", roomId);
-        socket.emit("join_room", roomId);
+        socket.emit("join_room", String(roomId));
 
         return () => {
-            socket.emit("leave_room", roomId);
+            socket.emit("leave_room", String(roomId));
         }
     }, [roomId, socket]);
 

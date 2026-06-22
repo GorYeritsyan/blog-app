@@ -10,6 +10,7 @@ import {TUser} from "@/types/types";
 export default function MessagesInput({ roomId, currentUser }: { roomId: number; currentUser: TUser; }) {
     const socket = useSocket();
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+    const [isTyping, setIsTyping] = useState(false);
 
     const [value, setValue] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -19,21 +20,27 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
 
         setIsSending(true);
 
+        // Stop real time typing indicator
+        socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: false });
+
         // Trigger message web socket event
-        socket?.emit("message", { roomId, content: value }, () => setIsSending(false));
+        socket?.emit("message", { roomId: String(roomId), content: value }, () => setIsSending(false));
         setValue("");
     }
 
     function handleInputChange(value: string) {
         setValue(value);
-        // socket?.emit("typing", { roomId, user: currentUser.name, isTyping: true });
-        //
-        // // if (timeoutRef.current) {
-        //     clearTimeout(timeoutRef.current);
-        //     timeoutRef.current = setTimeout(() => {
-        //         socket?.emit("typing", { roomId, user: currentUser.name, isTyping: false });
-        //     }, 1000);
-        // // }
+
+        if (!isTyping) {
+            socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: true });
+            setIsTyping(true);
+        }
+
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+            socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: false });
+            setIsTyping(false);
+        }, 1000);
     }
 
     return (
