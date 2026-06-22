@@ -6,7 +6,6 @@ import { Spinner } from "@/components/shadcn/spinner";
 import { Textarea } from "@/components/shadcn/textarea";
 import { useSocket } from "@/providers/SocketProvider";
 import {TUser} from "@/types/types";
-import {revalidateRooms} from "@/actions/users";
 
 export default function MessagesInput({ roomId, currentUser }: { roomId: number; currentUser: TUser; }) {
     const socket = useSocket();

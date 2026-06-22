@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { TRoom } from "@/types/types";
 import Chat from "@/components/shared/messages/Chat";
 import EmptyChatList from "@/components/empty/EmptyChatList";
+import {useSocket} from "@/providers/SocketProvider";
+import {revalidateRooms} from "@/actions/users";
 
 export type Tab = "DM" | "GROUP";
 
@@ -16,8 +18,18 @@ const TABS: { label: string; value: Tab }[] = [
 
 export default function ChatList({ rooms, currentUserId }: { rooms: TRoom[]; currentUserId?: number }) {
     const [activeTab, setActiveTab] = useState<Tab>("DM");
+    const socket = useSocket();
 
     const filteredRooms = rooms.filter(room => room.type === activeTab);
+
+    // todo: check logic
+    useEffect(() => {
+        if (!socket) return;
+
+        socket?.on("room_updated", async () => {
+            await revalidateRooms();
+        })
+    }, [socket]);
 
     return (
         <div className="flex flex-col h-full">
