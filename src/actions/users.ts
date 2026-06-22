@@ -84,6 +84,13 @@ export const getFriends = async () => {
 }
 
 export const getRooms = async () => {
-    const { data } = await fetchInstance("/rooms");
+    // "use cache";
+    // cacheTag("rooms");
+    const { data } = await fetchInstance("/rooms", { next: { tags: ["rooms"] } });
     return data;
+}
+
+export const revalidateRooms = async () => {
+    // revalidateTag("rooms", "max");
+    revalidatePath("/messages");
 }
