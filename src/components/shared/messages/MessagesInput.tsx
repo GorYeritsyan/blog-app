@@ -26,14 +26,14 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
 
     function handleInputChange(value: string) {
         setValue(value);
-        socket?.emit("typing", { roomId, user: currentUser.name, isTyping: true });
-
-        // if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-                socket?.emit("typing", { roomId, user: currentUser.name, isTyping: false });
-            }, 1000);
-        // }
+        // socket?.emit("typing", { roomId, user: currentUser.name, isTyping: true });
+        //
+        // // if (timeoutRef.current) {
+        //     clearTimeout(timeoutRef.current);
+        //     timeoutRef.current = setTimeout(() => {
+        //         socket?.emit("typing", { roomId, user: currentUser.name, isTyping: false });
+        //     }, 1000);
+        // // }
     }
 
     return (

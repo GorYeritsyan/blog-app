@@ -5,7 +5,7 @@ import { useSocket } from "@/providers/SocketProvider";
 
 export const useOnlineUsers = () => {
     const socket = useSocket();
-    const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+    const [onlineUsers, setOnlineUsers] = useState<number[]>([]);
 
     useEffect(() => {
         if (!socket) return;

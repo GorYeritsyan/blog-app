@@ -2,10 +2,12 @@ import {cn} from "@/lib/utils";
 import {TRoom} from "@/types/types";
 import {usePathname} from "next/navigation";
 import MessageDateTime from "@/components/shared/messages/MessageDateTime";
+import {useMessages} from "@/providers/MessagesProvider";
 
-export default function Chat({ room, currentUserId, onlineUsers }: { room: TRoom; currentUserId?: number; onlineUsers: string[]; }) {
+export default function Chat({ room, currentUserId }: { room: TRoom; currentUserId?: number }) {
     const pathname = usePathname();
     const roomId = pathname.split("/").at(-1);
+    const { onlineUsers } = useMessages();
 
     const member = room?.members?.find(member => member.userId !== currentUserId);
 
@@ -13,7 +15,7 @@ export default function Chat({ room, currentUserId, onlineUsers }: { room: TRoom
     const lastMessage = room.messages?.at(0);
 
     const userId = room.type === "DM" && member?.userId;
-    const isOnline = !!onlineUsers.find(onlineUserId => onlineUserId === userId);
+    const isOnline = !!onlineUsers?.find(onlineUserId => onlineUserId === userId);
 
     return (
         <div className={cn("px-4 pl-6 py-3 hover:bg-zinc-100 cursor-pointer flex flex-col",

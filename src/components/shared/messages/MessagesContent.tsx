@@ -85,7 +85,12 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
     useEffect(() => {
         if (!socket) return;
 
+        console.log("room id", roomId);
         socket.emit("join_room", roomId);
+
+        return () => {
+            socket.emit("leave_room", roomId);
+        }
     }, [roomId, socket]);
 
     useEffect(() => {
