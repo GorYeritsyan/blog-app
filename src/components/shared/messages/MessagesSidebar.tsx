@@ -5,6 +5,13 @@ import EmptyChatList from "@/components/empty/EmptyChatList";
 import { getCurrentUser } from "@/actions/auth";
 import {GroupChatDialog} from "@/components/shared/dialogs/GroupChatDialog";
 
+type Tab = "DM" | "GROUP";
+
+const tabs: { label: string; value: Tab }[] = [
+    { label: "Direct", value: "DM" },
+    { label: "Group", value: "GROUP" },
+];
+
 export default async function MessagesSidebar() {
     const rooms = await getRooms();
     const currentUser = await getCurrentUser();
@@ -21,11 +28,7 @@ export default async function MessagesSidebar() {
                     <GroupChatDialog members={friends} />
                 </div>
 
-                {rooms.length > 0 ? (
-                    <ChatList currentUserId={currentUser?.id} rooms={rooms} />
-                ) : (
-                    <EmptyChatList />
-                )}
+                <ChatList currentUserId={currentUser?.id} rooms={rooms} />
             </div>
         </div>
     )

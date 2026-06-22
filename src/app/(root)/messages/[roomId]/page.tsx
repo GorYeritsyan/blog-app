@@ -12,8 +12,6 @@ export default async function Page({ params }: PageProps<"/messages/[roomId]">) 
     const chatDetails = await getChatById(+roomId);
     const messagesPromise = getMessages(+roomId);
 
-    console.log("chat", chatDetails);
-
     return (
         <section className="flex flex-col flex-1 h-full w-full min-w-0">
             <ChatHeader chatDetails={chatDetails} currentUserId={currentUser.id} />

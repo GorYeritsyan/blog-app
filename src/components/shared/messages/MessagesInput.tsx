@@ -27,7 +27,7 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
         // Trigger message web socket event
         socket?.emit("message", { roomId: String(roomId), content: value }, async () => {
             setIsSending(false);
-            await revalidateRooms();
+            // await revalidateRooms();
         });
         setValue("");
     }

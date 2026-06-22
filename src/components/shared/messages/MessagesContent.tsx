@@ -7,6 +7,7 @@ import { TMessage, TUser } from "@/types/types";
 import { getMessages } from "@/actions/messages";
 import MessagesSkeleton from "@/components/shared/skeletons/MessagesSkeleton";
 import {useSocket} from "@/providers/SocketProvider";
+import {revalidateRooms} from "@/actions/users";
 
 type MessageContentProps = {
     roomId: number;
@@ -96,9 +97,10 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
     useEffect(() => {
         if (!socket) return;
 
-        socket.on("message", (sentMessage) => {
+        socket.on("message", async (sentMessage) => {
             console.log("sent message", sentMessage)
             setSocketMessages(prev => [sentMessage, ...prev]);
+            await revalidateRooms();
         });
 
         return () => {

@@ -1,16 +1,9 @@
-import Link from "next/link";
-import {Button} from "@/components/shadcn/button";
+import {Tab} from "@/components/shared/messages/ChatList";
 
-export default function EmptyChatList() {
+export default function EmptyChatList({ type }: { type: Tab }) {
     return (
-        <div className="flex flex-col items-center gap-2">
-            <div className="flex flex-col items-center justify-center text-center text-zinc-500">
-                <p>Your chat list is empty.</p>
-                <p>Try adding some friends to start chatting!</p>
-            </div>
-            <Link href="/users">
-                <Button>Find friends</Button>
-            </Link>
-        </div>
-    )
+        <p className="text-sm text-zinc-400 text-center py-6">
+            {type === "DM" ? "No direct messages yet" : "No groups yet"}
+        </p>
+    );
 }
