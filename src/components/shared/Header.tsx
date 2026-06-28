@@ -14,6 +14,10 @@ const navLinks: { href: string; label: string }[] = [
     {
         href: "/messages",
         label: "Messages",
+    },
+    {
+        href: "/shop",
+        label: "Shop",
     }
 ];
 
