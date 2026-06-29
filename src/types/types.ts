@@ -94,3 +94,22 @@ export type TMember = {
     user?: TUser;
     createdAt: Date;
 }
+
+export type TProduct = {
+    id: number;
+    title: string;
+    price: number;
+    currency?: string;
+    sellerId: number;
+    seller?: TUser;
+    cartItems?: TCartItem[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export type TCartItem = {
+    id: number;
+    quantity: number;
+    productId: number;
+    product?: TProduct;
+}
