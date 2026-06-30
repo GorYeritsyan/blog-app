@@ -11,9 +11,6 @@ export default async function Page({ searchParams }: PageProps<"/products">) {
         <section className="flex flex-col gap-8">
             <div className="flex items-center justify-between w-full">
                 <h1 className="text-4xl font-semibold">Shop</h1>
-                <Link href="/blog/create">
-                    <Button>Create Product</Button>
-                </Link>
 
                 <ProductDialog />
             </div>

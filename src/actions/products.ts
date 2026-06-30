@@ -35,3 +35,15 @@ export const createProduct = async ({ title, price }: { title: string; price: nu
 
     revalidatePath("/products");
 }
+
+export const addToCart = async ({ productId, quantity }: { productId: number; quantity: number }) => {
+    await fetchInstance(`/cart/items/${productId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity })
+    });
+
+    revalidatePath("/products");
+}

@@ -1,5 +1,3 @@
-"use client";
-
 import {
     Drawer, DrawerClose,
     DrawerContent,
@@ -10,8 +8,14 @@ import {
 } from "@/components/shadcn/drawer";
 import {Button} from "@/components/shadcn/button";
 import {ShoppingCart} from "lucide-react";
+import {getCartItems} from "@/actions/cart";
+import Image from "next/image";
+import {cn} from "@/lib/utils";
 
-export default function CartDrawer() {
+export default async function CartDrawer() {
+    const cartItems = await getCartItems();
+    console.log("cart Items", cartItems);
+
     return (
         <Drawer direction="right">
             <DrawerTrigger asChild>
@@ -22,8 +26,21 @@ export default function CartDrawer() {
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle className="text-xl">Cart</DrawerTitle>
-                    <DrawerDescription className="text-base text-center">Your cart is empty</DrawerDescription>
+                    <DrawerDescription className={cn("text-base", cartItems.length === 0 && "text-center")}>
+                        {cartItems.length > 0 ? `${cartItems.length} items` : "Your cart is empty"}
+                    </DrawerDescription>
                 </DrawerHeader>
+                <div className="flex flex-col gap-1">
+                    {cartItems.map(item => (
+                        <div key={item.id} className="flex gap-1">
+                            <Image src="/macbook.png" alt="cart image" width={50} height={50} />
+                            <div>
+                                <h4>{item.product.title}</h4>
+                                <p>${item.product.price}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
                 <DrawerFooter>
                     <Button>Checkout</Button>
                     <DrawerClose>
