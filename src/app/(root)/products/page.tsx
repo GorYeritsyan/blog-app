@@ -1,8 +1,6 @@
 import Search from "@/components/shared/Search";
 import Products from "@/components/shared/products/Products";
-import Link from "next/link";
-import {Button} from "@/components/shadcn/button";
-import {ProductDialog} from "@/components/shared/dialogs/ProductDialog";
+import ProductDialog from "@/components/shared/dialogs/ProductDialog";
 
 export default async function Page({ searchParams }: PageProps<"/products">) {
     const { query, page = "1" } = await searchParams;
@@ -12,7 +10,9 @@ export default async function Page({ searchParams }: PageProps<"/products">) {
             <div className="flex items-center justify-between w-full">
                 <h1 className="text-4xl font-semibold">Shop</h1>
 
-                <ProductDialog />
+                <div>
+                    <ProductDialog />
+                </div>
             </div>
 
             <div className="flex flex-col gap-4">

@@ -9,7 +9,7 @@ export default async function Products({ query, page }: { query?: string; page: 
     const currentUser = await getCurrentUser();
 
     return (
-        <div>
+        <div className="space-y-4">
             {products.length > 0 ? (
                 <div className="grid grid-cols-4 gap-4">
                     {products.map((product: TProduct) => (

@@ -111,5 +111,5 @@ export type TCartItem = {
     id: number;
     quantity: number;
     productId: number;
-    product?: TProduct;
+    product: TProduct;
 }

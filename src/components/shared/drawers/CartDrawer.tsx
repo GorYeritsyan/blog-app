@@ -9,12 +9,15 @@ import {
 import {Button} from "@/components/shadcn/button";
 import {ShoppingCart} from "lucide-react";
 import {getCartItems} from "@/actions/cart";
-import Image from "next/image";
 import {cn} from "@/lib/utils";
+import CartItem from "@/components/shared/cart/CartItem";
+import {TCartItem} from "@/types/types";
 
 export default async function CartDrawer() {
     const cartItems = await getCartItems();
     console.log("cart Items", cartItems);
+
+    const totalPrice = cartItems.reduce((acc: number, item: TCartItem) => acc + (item.quantity * item.product.price), 0);
 
     return (
         <Drawer direction="right">
@@ -30,20 +33,21 @@ export default async function CartDrawer() {
                         {cartItems.length > 0 ? `${cartItems.length} items` : "Your cart is empty"}
                     </DrawerDescription>
                 </DrawerHeader>
-                <div className="flex flex-col gap-1">
-                    {cartItems.map(item => (
-                        <div key={item.id} className="flex gap-1">
-                            <Image src="/macbook.png" alt="cart image" width={50} height={50} />
-                            <div>
-                                <h4>{item.product.title}</h4>
-                                <p>${item.product.price}</p>
-                            </div>
+
+                <div className="flex flex-col justify-between h-full px-3">
+                    {cartItems.length > 0 && (
+                        <div className="flex flex-col gap-3">
+                            {cartItems.map((item: TCartItem) => (
+                                <CartItem key={item.id} item={item} />
+                            ))}
                         </div>
-                    ))}
+                    )}
+
+                    <p className="text-lg font-medium">Total <span className="text-zinc-500">${totalPrice}</span></p>
                 </div>
                 <DrawerFooter>
                     <Button>Checkout</Button>
-                    <DrawerClose>
+                    <DrawerClose asChild>
                         <Button variant="outline">Cancel</Button>
                     </DrawerClose>
                 </DrawerFooter>

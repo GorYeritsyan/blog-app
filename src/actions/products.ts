@@ -36,6 +36,18 @@ export const createProduct = async ({ title, price }: { title: string; price: nu
     revalidatePath("/products");
 }
 
+export const editProduct = async ({ title, price, productId }: { title: string; price: number; productId: number }) => {
+    await fetchInstance(`/products/${productId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, price })
+    });
+
+    revalidatePath("/products");
+}
+
 export const addToCart = async ({ productId, quantity }: { productId: number; quantity: number }) => {
     await fetchInstance(`/cart/items/${productId}`, {
         method: "POST",
@@ -43,6 +55,14 @@ export const addToCart = async ({ productId, quantity }: { productId: number; qu
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ quantity })
+    });
+
+    revalidatePath("/products");
+}
+
+export const deleteProduct = async (productId: number) => {
+    await fetchInstance(`/products/${productId}`, {
+        method: "DELETE",
     });
 
     revalidatePath("/products");

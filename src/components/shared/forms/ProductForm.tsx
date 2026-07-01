@@ -7,22 +7,29 @@ import {FieldGroup} from "@/components/shadcn/field";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProductFormValues, ProductSchema} from "@/lib/validations/products";
-import {createProduct} from "@/actions/products";
+import {createProduct, editProduct} from "@/actions/products";
+import {TProduct} from "@/types/types";
 
-export default function ProductForm({ onClose }: { onClose: () => void }) {
+export default function ProductForm({ product, onClose }: { product?: TProduct; onClose: () => void }) {
+    const isEditing = !!product;
+
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(ProductSchema),
         defaultValues: {
-            title: "",
-            price: 0,
+            title: product?.title ?? "",
+            price: product?.price ?? 0,
         },
     });
 
-    const onSubmit = async (values: ProductFormValues) => {
-        console.log("Values", values);
+    const onSubmit = async ({ title, price }: ProductFormValues) => {
         try {
-            await createProduct(values);
-            toast.success("Your product successfully created!");
+            if (isEditing) {
+                await editProduct({ title, price, productId: product.id });
+            } else {
+                await createProduct({ title, price });
+            }
+
+            toast.success(`Your product successfully ${isEditing ? "updated" : "created" }!`);
         } catch (error) {
             toast.error(error.message);
         } finally {
