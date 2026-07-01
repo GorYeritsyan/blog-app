@@ -8,10 +8,11 @@ import {
 } from "@/components/shadcn/drawer";
 import {Button} from "@/components/shadcn/button";
 import {ShoppingCart} from "lucide-react";
-import {getCartItems} from "@/actions/cart";
+import {checkoutCartItems, getCartItems} from "@/actions/cart";
 import {cn} from "@/lib/utils";
 import CartItem from "@/components/shared/cart/CartItem";
 import {TCartItem} from "@/types/types";
+import CheckoutButton from "@/components/shared/buttons/CheckoutButton";
 
 export default async function CartDrawer() {
     const cartItems = await getCartItems();
@@ -46,7 +47,11 @@ export default async function CartDrawer() {
                     <p className="text-lg font-medium">Total <span className="text-zinc-500">${totalPrice}</span></p>
                 </div>
                 <DrawerFooter>
-                    <Button>Checkout</Button>
+                    {/*Checkout button to redirect stripe checkout page*/}
+                    <CheckoutButton cartItems={cartItems}>
+                        Checkout
+                    </CheckoutButton>
+
                     <DrawerClose asChild>
                         <Button variant="outline">Cancel</Button>
                     </DrawerClose>

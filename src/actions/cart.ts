@@ -31,3 +31,19 @@ export const decrementCartItemQuantity = async (productId: number) => {
 
     revalidatePath("/products");
 }
+
+export const createCheckoutSession = async (cartItems: TCartItem[]) => {
+    const { data: session } = await fetchInstance(`/checkout/session`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: cartItems })
+    });
+
+    return session;
+}
+
+export const getCheckoutSession = async (sessionId: string) => {
+    return await fetchInstance(`/cart/session/${sessionId}`);
+}
