@@ -1,13 +1,9 @@
 import Search from "@/components/shared/Search";
 import Products from "@/components/shared/products/Products";
 import ProductDialog from "@/components/shared/dialogs/ProductDialog";
-import {getCheckoutSession} from "@/actions/cart";
 
 export default async function Page({ searchParams }: PageProps<"/products">) {
-    const { query, page = "1", session_id } = await searchParams;
-
-    const session = await getCheckoutSession(session_id as string);
-    console.log("session_id", session);
+    const { query, page = "1" } = await searchParams;
 
     return (
         <section className="flex flex-col gap-8">

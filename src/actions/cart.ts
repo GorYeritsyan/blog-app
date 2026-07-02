@@ -3,11 +3,12 @@
 import {fetchInstance} from "@/actions/index";
 import {revalidatePath} from "next/cache";
 import {TCartItem} from "@/types/types";
+import {tryCatch} from "@/utils/utils";
 
 export const getCartItems = async () => {
-    const { data } = await fetchInstance<{ data: TCartItem[]}>("/cart");
+    const { data } = await tryCatch<TCartItem[]>(fetchInstance("/cart"));
 
-    return data;
+    return data.data;
 }
 
 export const incrementCartItemQuantity = async (productId: number) => {
@@ -32,6 +33,14 @@ export const decrementCartItemQuantity = async (productId: number) => {
     revalidatePath("/products");
 }
 
+export const removeCartItem = async (productId: number) => {
+    await fetchInstance(`/cart/items/${productId}`, {
+        method: "DELETE",
+    });
+
+    revalidatePath("/products");
+}
+
 export const createCheckoutSession = async (cartItems: TCartItem[]) => {
     const { data: session } = await fetchInstance(`/checkout/session`, {
         method: "POST",
@@ -45,5 +54,9 @@ export const createCheckoutSession = async (cartItems: TCartItem[]) => {
 }
 
 export const getCheckoutSession = async (sessionId: string) => {
-    return await fetchInstance(`/cart/session/${sessionId}`);
+    const { data } = await tryCatch(fetchInstance(`/checkout/session/${sessionId}`));
+
+    console.log("Data", data);
+
+    return data?.data;
 }

@@ -1,3 +1,6 @@
+"use client";
+
+import {ShoppingCart} from "lucide-react";
 import {
     Drawer, DrawerClose,
     DrawerContent,
@@ -7,24 +10,22 @@ import {
     DrawerTrigger
 } from "@/components/shadcn/drawer";
 import {Button} from "@/components/shadcn/button";
-import {ShoppingCart} from "lucide-react";
-import {checkoutCartItems, getCartItems} from "@/actions/cart";
 import {cn} from "@/lib/utils";
 import CartItem from "@/components/shared/cart/CartItem";
 import {TCartItem} from "@/types/types";
 import CheckoutButton from "@/components/shared/buttons/CheckoutButton";
 
-export default async function CartDrawer() {
-    const cartItems = await getCartItems();
-    console.log("cart Items", cartItems);
-
-    const totalPrice = cartItems.reduce((acc: number, item: TCartItem) => acc + (item.quantity * item.product.price), 0);
+export default function CartDrawer({ cartItems }: { cartItems: TCartItem[] }) {
+    const totalPrice = cartItems.reduce((acc: number, item: TCartItem) => acc + (Math.round(item.quantity * item.product.price)), 0);
 
     return (
         <Drawer direction="right">
             <DrawerTrigger asChild>
                 <Button variant="outline" size="icon" className="p-2 relative text-zinc-600">
                     <ShoppingCart />
+                    {cartItems.length > 0 && (
+                        <div className="size-2 rounded-full bg-red-400 absolute -top-px -right-px flex items-center justify-center" />
+                    )}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
@@ -44,7 +45,9 @@ export default async function CartDrawer() {
                         </div>
                     )}
 
-                    <p className="text-lg font-medium">Total <span className="text-zinc-500">${totalPrice}</span></p>
+                    {cartItems.length > 0 && (
+                        <p className="text-lg font-medium">Total <span className="text-zinc-500">${totalPrice}</span></p>
+                    )}
                 </div>
                 <DrawerFooter>
                     {/*Checkout button to redirect stripe checkout page*/}

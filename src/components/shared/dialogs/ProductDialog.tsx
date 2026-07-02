@@ -37,7 +37,6 @@ export default function ProductDialog({ product }: { product?: TProduct }) {
 
                 {/*Form*/}
                 <ProductForm product={product} onClose={closeModal} />
-                {/*<GroupChatForm onClose={closeModal} members={members} />*/}
 
                 <DialogFooter>
                     <DialogClose asChild>

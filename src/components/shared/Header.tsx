@@ -6,6 +6,7 @@ import Notifications from "@/components/shared/Notifications";
 import {getNotifications} from "@/actions/users";
 import {Button} from "@/components/shadcn/button";
 import CartDrawer from "@/components/shared/drawers/CartDrawer";
+import {getCartItems} from "@/actions/cart";
 
 const navLinks: { href: string; label: string }[] = [
     {
@@ -25,6 +26,7 @@ const navLinks: { href: string; label: string }[] = [
 export default async function Header() {
     const currentUser = await getCurrentUser();
     const notifications = await getNotifications();
+    const cartItems = await getCartItems();
 
     console.log("current user", notifications);
 
@@ -48,7 +50,7 @@ export default async function Header() {
 
                     {/*<LogoutButton />*/}
                     <div className="flex items-center gap-4">
-                        <CartDrawer />
+                        <CartDrawer cartItems={cartItems} />
                         <Notifications notifications={notifications || []} />
 
                         <span className="text-sm font-medium">{currentUser?.email}</span>

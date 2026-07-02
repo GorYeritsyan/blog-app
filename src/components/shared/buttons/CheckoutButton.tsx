@@ -1,9 +1,10 @@
 "use client";
 
-import {ReactNode} from "react";
+import {ReactNode, useTransition} from "react";
 import {Button} from "@/components/shadcn/button";
 import { createCheckoutSession } from "@/actions/cart";
 import {TCartItem} from "@/types/types";
+import {Spinner} from "@/components/shadcn/spinner";
 
 type CheckoutButtonProps = {
     children: ReactNode;
@@ -11,14 +12,19 @@ type CheckoutButtonProps = {
 }
 
 export default function CheckoutButton({ children, cartItems }: CheckoutButtonProps) {
+    const [isPending, startTransition] = useTransition();
+
     const handleCheckout = async () => {
-        const session = await createCheckoutSession(cartItems);
-        window.location.href = session.url;
+        startTransition(async () => {
+            const session = await createCheckoutSession(cartItems);
+            console.log("session", session);
+            window.location.href = session.url;
+        });
     }
 
     return (
-        <Button onClick={handleCheckout}>
-            {children}
+        <Button disabled={isPending} onClick={handleCheckout}>
+            {isPending ? <Spinner /> : children}
         </Button>
     )
 }

@@ -1,17 +1,18 @@
 "use client";
 
+import {useForm} from "react-hook-form";
 import {toast} from "sonner";
+
 import FormField from "@/components/shared/forms/FormField";
 import {Input} from "@/components/shadcn/input";
 import {FieldGroup} from "@/components/shadcn/field";
-import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProductFormValues, ProductSchema} from "@/lib/validations/products";
 import {createProduct, editProduct} from "@/actions/products";
 import {TProduct} from "@/types/types";
 
 export default function ProductForm({ product, onClose }: { product?: TProduct; onClose: () => void }) {
-    const isEditing = !!product;
+    // const isEditing = !!product;
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(ProductSchema),
@@ -23,13 +24,13 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
 
     const onSubmit = async ({ title, price }: ProductFormValues) => {
         try {
-            if (isEditing) {
+            if (product) {
                 await editProduct({ title, price, productId: product.id });
             } else {
                 await createProduct({ title, price });
             }
 
-            toast.success(`Your product successfully ${isEditing ? "updated" : "created" }!`);
+            toast.success(`Your product successfully ${product ? "updated" : "created" }!`);
         } catch (error) {
             toast.error(error.message);
         } finally {

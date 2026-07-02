@@ -29,7 +29,7 @@ export default function QuantityStepper({
             </Button>
 
             {/*Quantity*/}
-            <span className="">
+            <span>
                 {quantity}
             </span>
 
