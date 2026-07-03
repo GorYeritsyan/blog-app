@@ -24,25 +24,19 @@ export const getAllProducts = async ({ query, page }: { query?: string; page: nu
     return { data: products, totalPages: pagination.totalPages };
 }
 
-export const createProduct = async ({ title, price }: { title: string; price: number }) => {
+export const createProduct = async (formData: FormData) => {
     await fetchInstance("/products", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, price })
+        body: formData,
     });
 
     revalidatePath("/products");
 }
 
-export const editProduct = async ({ title, price, productId }: { title: string; price: number; productId: number }) => {
+export const editProduct = async (productId: number, formData: FormData) => {
     await fetchInstance(`/products/${productId}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, price })
+        body: formData,
     });
 
     revalidatePath("/products");

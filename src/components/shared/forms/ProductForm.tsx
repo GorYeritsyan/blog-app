@@ -12,8 +12,6 @@ import {createProduct, editProduct} from "@/actions/products";
 import {TProduct} from "@/types/types";
 
 export default function ProductForm({ product, onClose }: { product?: TProduct; onClose: () => void }) {
-    // const isEditing = !!product;
-
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(ProductSchema),
         defaultValues: {
@@ -23,11 +21,18 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
     });
 
     const onSubmit = async ({ title, price }: ProductFormValues) => {
+        const formData = new FormData();
+        formData.set("title", title);
+        formData.set("price", price.toString());
+
+        console.log("form data");
+
         try {
             if (product) {
-                await editProduct({ title, price, productId: product.id });
+                await editProduct(product.id, formData);
             } else {
-                await createProduct({ title, price });
+                // await createProduct({ title, price });
+                await createProduct(formData);
             }
 
             toast.success(`Your product successfully ${product ? "updated" : "created" }!`);
@@ -64,6 +69,20 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
                             aria-invalid={fieldState.invalid}
                             className="py-1.5 h-fit"
                             type="number"
+                        />
+                    )}
+                />
+
+                <FormField
+                    name="image"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Input
+                            {...field}
+                            id={field.name}
+                            aria-invalid={fieldState.invalid}
+                            className="py-1.5 h-fit"
+                            type="file"
                         />
                     )}
                 />
