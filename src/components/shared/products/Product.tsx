@@ -31,15 +31,13 @@ export default function Product({ product, currentUser }: { product: TProduct; c
 
     return (
         <div className="flex flex-col justify-between p-3 gap-3 rounded-lg border border-zinc-200">
-            <div className="w-full">
-                <Image
-                    className="w-full h-60 object-contain"
-                    src={product.image ? `http://localhost:8080/uploads/products/${product.image}` : "/macbook.png"}
-                    alt="image"
-                    width={100}
-                    height={100}
-                />
-            </div>
+            <Image
+                className="size-68 object-cover rounded-md border self-center"
+                src={product.image ? `http://localhost:8080/uploads/products/${product.image}` : "/macbook.png"}
+                alt="image"
+                width={272}
+                height={272}
+            />
             <div className="flex items-center justify-between gap-2">
                 <h3 className="text-lg font-medium">{product.title}</h3>
                 <p className="text-xl text-zinc-500"><span className="font-medium">${quantity * product.price}</span></p>

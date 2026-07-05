@@ -1,18 +1,25 @@
 import Link from "next/link";
-import {Button} from "@/components/shadcn/button";
+import { CircleX } from "lucide-react";
+
+import { Button } from "@/components/shadcn/button";
 
 export default function CheckoutCancelPage() {
     return (
         <section className="flex flex-col items-center gap-4 py-16 text-center">
-            <h1 className="text-3xl font-semibold">Checkout cancelled</h1>
-            <p className="text-muted-foreground">
-                No payment was made. Your cart is still saved if you'd like to try again.
-            </p>
-            <Link href="/products">
-                <Button>
-                    Back to shop
-                </Button>
-            </Link>
+            <div className="flex flex-col gap-4 border border-zinc-200 px-8 py-8 rounded-xl bg-red-50">
+                <div className="flex justify-center items-center gap-3">
+                    <CircleX className="text-red-500 size-8" />
+                    <h1 className="text-3xl font-semibold">Checkout cancelled</h1>
+                </div>
+                <p className="text-muted-foreground">
+                    No payment was made. Your cart is still saved if you'd like to try again.
+                </p>
+                <Link href="/products">
+                    <Button>
+                        Back to shop
+                    </Button>
+                </Link>
+            </div>
         </section>
     );
 }
