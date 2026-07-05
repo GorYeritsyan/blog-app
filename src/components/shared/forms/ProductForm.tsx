@@ -10,8 +10,13 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {ProductFormValues, ProductSchema} from "@/lib/validations/products";
 import {createProduct, editProduct} from "@/actions/products";
 import {TProduct} from "@/types/types";
+import {useState} from "react";
+import Image from "next/image";
 
 export default function ProductForm({ product, onClose }: { product?: TProduct; onClose: () => void }) {
+    const imageUrl = product ? `http://localhost:8080/uploads/products/${product?.image}` : "";
+    const [previewUrl, setPreviewUrl] = useState(imageUrl);
+
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(ProductSchema),
         defaultValues: {
@@ -80,15 +85,34 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
                     name="image"
                     control={form.control}
                     render={({ field: { value, onChange, ...field }, fieldState }) => (
-                        <Input
+                        <div className="flex flex-col gap-2">
+                            {previewUrl && (
+                                <Image
+                                    src={previewUrl}
+                                    alt="Product preview"
+                                    className="size-24 object-cover rounded-md border"
+                                    width={96}
+                                    height={96}
+                                />
+                            )}
+
+                            <Input
                             {...field}
                             id={field.name}
                             aria-invalid={fieldState.invalid}
-                            className="py-1.5 h-fit"
+                            className="py-1.5 h-fit cursor-pointer"
                             type="file"
                             accept="image/*"
-                            onChange={e => onChange(e.target.files?.[0])}
+                            onChange={e => {
+                                const file = e.target.files?.[0];
+                                onChange(file);
+
+                                if (file) {
+                                    setPreviewUrl(URL.createObjectURL(file));
+                                }
+                            }}
                         />
+                        </div>
                     )}
                 />
             </FieldGroup>

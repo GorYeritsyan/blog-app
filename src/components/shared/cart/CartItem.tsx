@@ -8,7 +8,8 @@ import {useTransition} from "react";
 import {Button} from "@/components/shadcn/button";
 
 export default function CartItem({ item }: { item: TCartItem }) {
-    const [isPending, startTransition] = useTransition()
+    const [isPending, startTransition] = useTransition();
+    const imageUrl = item?.product?.image ? `http://localhost:8080/uploads/products/${item.product.image}` : "/macbook.png"
 
     async function handleIncrement(productId: number) {
         startTransition(async () => {
@@ -29,8 +30,8 @@ export default function CartItem({ item }: { item: TCartItem }) {
     }
 
     return (
-        <div className="flex gap-3 hover:bg-zinc-50 px-3 py-2 rounded-lg">
-            <Image src="/macbook.png" alt="cart image" width={40} height={40} className="object-cover" />
+        <div className="flex items-center gap-3 hover:bg-zinc-50 px-3 py-2 rounded-lg">
+            <Image src={imageUrl} alt="cart image" width={40} height={40} className="size-12 object-cover rounded border border-zinc-200" />
             <div className="flex flex-col gap-1 w-full">
                 <h4 className="text-base font-medium">{item.product.title}</h4>
                 <div className="flex items-center justify-between">

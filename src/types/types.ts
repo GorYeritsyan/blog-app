@@ -99,6 +99,7 @@ export type TProduct = {
     id: number;
     title: string;
     price: number;
+    image?: string;
     currency?: string;
     sellerId: number;
     seller?: TUser;
