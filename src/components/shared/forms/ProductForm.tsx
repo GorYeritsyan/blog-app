@@ -17,15 +17,18 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
         defaultValues: {
             title: product?.title ?? "",
             price: product?.price ?? 0,
+            // image: undefined,
         },
     });
 
-    const onSubmit = async ({ title, price }: ProductFormValues) => {
+    const onSubmit = async ({ title, price, image }: ProductFormValues) => {
         const formData = new FormData();
         formData.set("title", title);
         formData.set("price", price.toString());
 
-        console.log("form data");
+        if (image) {
+            formData.set("image", image);
+        }
 
         try {
             if (product) {
@@ -76,13 +79,15 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
                 <FormField
                     name="image"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    render={({ field: { value, onChange, ...field }, fieldState }) => (
                         <Input
                             {...field}
                             id={field.name}
                             aria-invalid={fieldState.invalid}
                             className="py-1.5 h-fit"
                             type="file"
+                            accept="image/*"
+                            onChange={e => onChange(e.target.files?.[0])}
                         />
                     )}
                 />

@@ -12,7 +12,6 @@ import QuantityStepper from "@/components/shared/products/QuantityStepper";
 
 export default function Product({ product, currentUser }: { product: TProduct; currentUser?: TUser }) {
     const [quantity, setQuantity] = useState(1);
-    // const [] = useActionState(addToCart, undefined);
     const [isPending, startTransition] = useTransition();
 
     const incrementQuantity = () => {
@@ -35,7 +34,7 @@ export default function Product({ product, currentUser }: { product: TProduct; c
             <div className="w-full">
                 <Image
                     className="w-full h-60 object-contain"
-                    src="/macbook.png"
+                    src={product.image ? `http://localhost:8080/uploads/products/${product.image}` : "/macbook.png"}
                     alt="image"
                     width={100}
                     height={100}
