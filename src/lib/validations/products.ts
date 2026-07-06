@@ -7,7 +7,8 @@ export const ProductSchema = z.object({
     title: z.string().min(1, "Title is required"),
     price: z.coerce.number().positive("Price must be greater than 0").min(10, "Price must be greater than 10"),
     image: z
-        .instanceof(File, { error: "Image is required" })
+        .instanceof(File)
+        .optional()
         .refine(file => !file || file.size <= MAX_FILE_SIZE, "Image must be smaller than 5MB")
         .refine(file => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), "Unsupported file format"),
 });
