@@ -2,7 +2,7 @@
 
 import {cacheLife, cacheTag, revalidatePath, revalidateTag, updateTag} from "next/cache";
 import {tryCatch} from "@/utils/utils";
-import {fetchInstance} from "@/actions/index";
+import {authFetchInstance, fetchInstance} from "@/actions/index";
 import {TFriendRequest} from "@/types/types";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
@@ -19,14 +19,14 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
     searchParams.set("page", `${page}`);
     searchParams.set("limit", `${limit}`);
 
-    const { data, error } = await tryCatch(fetchInstance(`/users?${searchParams.toString()}`));
+    const { data, error } = await tryCatch(authFetchInstance(`/users?${searchParams.toString()}`));
     const { items: users, pagination } = data?.data;
 
     return { data: users, totalPages: pagination.totalPages };
 }
 
 export const getNotifications = async () => {
-    const { data } = await tryCatch<TFriendRequest[]>(fetchInstance("/friends/incoming", {
+    const { data } = await tryCatch<TFriendRequest[]>(authFetchInstance("/friends/incoming", {
         next: { tags: ["notifications"] },
     }));
 
@@ -34,7 +34,7 @@ export const getNotifications = async () => {
 }
 
 export const sendFriendRequest = async (prevState: any, receiverId: number) => {
-    const { error } = await tryCatch(fetchInstance(`/friends`, {
+    const { error } = await tryCatch(authFetchInstance(`/friends`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export const sendFriendRequest = async (prevState: any, receiverId: number) => {
 }
 
 export const acceptFriendRequest = async (prevState: any, requestId: number) => {
-    await fetchInstance(`/friends/accept/${requestId}`, {
+    await authFetchInstance(`/friends/accept/${requestId}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const acceptFriendRequest = async (prevState: any, requestId: number) => 
 }
 
 export const rejectFriendRequest = async (prevState: any, requestId: number) => {
-    await fetchInstance(`/friends/reject/${requestId}`, {
+    await authFetchInstance(`/friends/reject/${requestId}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const rejectFriendRequest = async (prevState: any, requestId: number) => 
 }
 
 export const removeFriend = async (prevState: any, friendId: number) => {
-    await fetchInstance(`/friends/${friendId}`, {
+    await authFetchInstance(`/friends/${friendId}`, {
         method: "DELETE",
     });
 
@@ -78,19 +78,16 @@ export const removeFriend = async (prevState: any, friendId: number) => {
 }
 
 export const getFriends = async () => {
-    const { data } = await fetchInstance("/friends/accepted");
+    const { data } = await authFetchInstance("/friends/accepted");
 
     return data;
 }
 
 export const getRooms = async () => {
-    // "use cache";
-    // cacheTag("rooms");
-    const { data } = await fetchInstance("/rooms", { next: { tags: ["rooms"] } });
+    const { data } = await authFetchInstance("/rooms", { next: { tags: ["rooms"] } });
     return data;
 }
 
 export const revalidateRooms = async () => {
-    // revalidateTag("rooms", "max");
     revalidatePath("/messages");
 }

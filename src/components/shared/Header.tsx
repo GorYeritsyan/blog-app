@@ -1,7 +1,6 @@
+import Link from "next/link";
 import Container from "@/components/shared/Container";
 import { getCurrentUser, logout } from "@/actions/auth";
-// import Button from "@/components/ui/Button";
-import Link from "next/link";
 import Notifications from "@/components/shared/Notifications";
 import {getNotifications} from "@/actions/users";
 import {Button} from "@/components/shadcn/button";
@@ -28,8 +27,6 @@ export default async function Header() {
     const notifications = await getNotifications();
     const cartItems = await getCartItems();
 
-    console.log("current user", notifications);
-
     return (
         <header className="border-b border-zinc-200 shadow-sm shadow-zinc-100">
             <Container>
@@ -50,7 +47,7 @@ export default async function Header() {
 
                     {/*<LogoutButton />*/}
                     <div className="flex items-center gap-4">
-                        <CartDrawer cartItems={cartItems} />
+                        <CartDrawer cartItems={cartItems ?? []} />
                         <Notifications notifications={notifications || []} />
 
                         <span className="text-sm font-medium">{currentUser?.email}</span>

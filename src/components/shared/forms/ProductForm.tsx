@@ -1,5 +1,7 @@
 "use client";
 
+import {useState} from "react";
+import Image from "next/image";
 import {useForm} from "react-hook-form";
 import {toast} from "sonner";
 
@@ -10,8 +12,6 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {ProductFormValues, ProductSchema} from "@/lib/validations/products";
 import {createProduct, editProduct} from "@/actions/products";
 import {TProduct} from "@/types/types";
-import {useState} from "react";
-import Image from "next/image";
 
 export default function ProductForm({ product, onClose }: { product?: TProduct; onClose: () => void }) {
     const imageUrl = product ? `http://localhost:8080/uploads/products/${product?.image}` : "";

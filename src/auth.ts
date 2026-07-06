@@ -4,6 +4,7 @@ import { LoginSchema } from "@/lib/validations/auth";
 import { authConfig } from "@/auth.config";
 import { fetchInstance } from "@/actions";
 import { tryCatch } from "@/utils/utils";
+import {TUser} from "@/types/types";
 
 export class InvalidLoginError extends CredentialsSignin {
     constructor(code: string) {
@@ -19,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             authorize: async (credentials) => {
                 const validBody = await LoginSchema.parseAsync(credentials);
 
-                const { data, error } = await tryCatch(fetchInstance(`/auth/login`, {
+                const { data, error } = await tryCatch<{ user: Pick<TUser, "email" | "name" | "createdAt">; token: string }>(fetchInstance(`/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -32,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
 
                 const { user, token } = data.data;
+                console.log("user", user);
 
                 return { ...user, token };
             }

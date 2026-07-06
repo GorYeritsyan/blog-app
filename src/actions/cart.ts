@@ -1,18 +1,18 @@
 "use server";
 
-import {fetchInstance} from "@/actions/index";
+import {authFetchInstance, fetchInstance} from "@/actions/index";
 import {revalidatePath} from "next/cache";
 import {TCartItem} from "@/types/types";
 import {tryCatch} from "@/utils/utils";
 
 export const getCartItems = async () => {
-    const { data } = await tryCatch<TCartItem[]>(fetchInstance("/cart"));
+    const { data } = await tryCatch<TCartItem[]>(authFetchInstance("/cart"));
 
-    return data.data;
+    return data?.data;
 }
 
 export const incrementCartItemQuantity = async (productId: number) => {
-    await fetchInstance(`/cart/items/${productId}/increment`, {
+    await authFetchInstance(`/cart/items/${productId}/increment`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const incrementCartItemQuantity = async (productId: number) => {
 }
 
 export const decrementCartItemQuantity = async (productId: number) => {
-    await fetchInstance(`/cart/items/${productId}/decrement`, {
+    await authFetchInstance(`/cart/items/${productId}/decrement`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const decrementCartItemQuantity = async (productId: number) => {
 }
 
 export const removeCartItem = async (productId: number) => {
-    await fetchInstance(`/cart/items/${productId}`, {
+    await authFetchInstance(`/cart/items/${productId}`, {
         method: "DELETE",
     });
 
@@ -42,7 +42,7 @@ export const removeCartItem = async (productId: number) => {
 }
 
 export const createCheckoutSession = async (cartItems: TCartItem[]) => {
-    const { data: session } = await fetchInstance(`/checkout/session`, {
+    const { data: session } = await authFetchInstance(`/checkout/session`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const createCheckoutSession = async (cartItems: TCartItem[]) => {
 }
 
 export const getCheckoutSession = async (sessionId: string) => {
-    const { data } = await tryCatch(fetchInstance(`/checkout/session/${sessionId}`));
+    const { data } = await tryCatch(authFetchInstance(`/checkout/session/${sessionId}`));
 
     console.log("Data", data);
 

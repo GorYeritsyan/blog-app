@@ -9,9 +9,6 @@ export const useSocket = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
     const socketRef = useRef<Socket | null>(null);
 
-    // const token = session
-
-        console.log("status", status);
     useEffect(() => {
         // Always tear down any existing socket first (handles logout)
         if (socketRef.current) {

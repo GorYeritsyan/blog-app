@@ -11,7 +11,6 @@ const MessagesContext = createContext<MessagesContextProps>({});
 
 export default function MessagesProvider({ children }: { children: ReactNode }) {
     const onlineUsers = useOnlineUsers();
-    console.log("online Users", onlineUsers);
 
     return (
         <MessagesContext.Provider value={{ onlineUsers }}>

@@ -30,7 +30,6 @@ export default function SocketProvider({ children, token }: { children: ReactNod
             socketInstance.off("connect");
             socketInstance.off("connect_error");
             socketInstance.disconnect();
-            // socketRef.current = null;
             setSocket(null);
         };
     }, [token]);
