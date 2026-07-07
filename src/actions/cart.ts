@@ -1,19 +1,19 @@
 "use server";
 
-import {authFetchInstance, fetchInstance} from "@/actions/index";
+import {fetchInstance} from "@/actions/index";
 import {revalidatePath} from "next/cache";
 import {TCartItem} from "@/types/types";
 import {tryCatch} from "@/utils/utils";
 import {Stripe} from "stripe";
 
 export const getCartItems = async () => {
-    const { data } = await tryCatch<TCartItem[]>(authFetchInstance("/cart"));
+    const { data } = await tryCatch<TCartItem[]>(fetchInstance("/cart"));
 
     return data?.data;
 }
 
 export const updateCartItemQuantity = async (productId: number, quantity: number) => {
-    await authFetchInstance(`/cart/items/${productId}`, {
+    await fetchInstance(`/cart/items/${productId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const updateCartItemQuantity = async (productId: number, quantity: number
 }
 
 export const removeCartItem = async (productId: number) => {
-    await authFetchInstance(`/cart/items/${productId}`, {
+    await fetchInstance(`/cart/items/${productId}`, {
         method: "DELETE",
     });
 
@@ -33,7 +33,7 @@ export const removeCartItem = async (productId: number) => {
 }
 
 export const createCheckoutSession = async (cartItems: TCartItem[]) => {
-    const { data: session } = await authFetchInstance<{ data: Stripe.Checkout.Session }>(`/checkout/session`, {
+    const { data: session } = await fetchInstance<{ data: Stripe.Checkout.Session }>(`/checkout/session`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const createCheckoutSession = async (cartItems: TCartItem[]) => {
 }
 
 export const getCheckoutSession = async (sessionId: string) => {
-    const { data } = await tryCatch(authFetchInstance(`/checkout/session/${sessionId}`));
+    const { data } = await tryCatch(fetchInstance(`/checkout/session/${sessionId}`));
 
     console.log("Data", data);
 

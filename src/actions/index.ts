@@ -24,6 +24,6 @@ export const fetchInstance = async <T = ApiResponse>(endpoint: string, options?:
     return await res.json();
 }
 
-export const authFetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
-    return fetchInstance<T>(`/authenticated${endpoint}`, options);
-}
+// export const authFetchInstance = async <T = ApiResponse>(endpoint: string, options?: RequestInit): Promise<T> => {
+//     return fetchInstance<T>(`/authenticated${endpoint}`, options);
+// }

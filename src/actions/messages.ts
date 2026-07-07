@@ -1,14 +1,14 @@
 "use server";
 
 import {revalidatePath} from "next/cache";
-import {authFetchInstance, fetchInstance} from "@/actions/index";
-import { TMessage} from "@/types/types";
+import {fetchInstance} from "@/actions/index";
+import {TMessage} from "@/types/types";
 import {tryCatch} from "@/utils/utils";
 import {toast} from "sonner";
 import {redirect} from "next/navigation";
 
 export const getMessages = async (friendId: number, page?: number) => {
-    const { data, error } = await tryCatch<{ items: TMessage[]; totalPages: number }>(authFetchInstance(`/messages/${friendId}?page=${page || 1}`));
+    const { data, error } = await tryCatch<{ items: TMessage[]; totalPages: number }>(fetchInstance(`/messages/${friendId}?page=${page || 1}`));
 
     const messages = (data?.data?.items && data?.data.items.length > 0) ? data.data.items : [];
 
@@ -18,7 +18,7 @@ export const getMessages = async (friendId: number, page?: number) => {
 export const sendMessage = async (prevState: any, payload: { friendId: number, content: string }) => {
     const { friendId, content } = payload;
 
-    await authFetchInstance(`/messages/${friendId}`, {
+    await fetchInstance(`/messages/${friendId}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const sendMessage = async (prevState: any, payload: { friendId: number, c
 }
 
 export const createGroupChat = async ({ name, memberIds }: { name: string; memberIds: number[] }) => {
-    await authFetchInstance("/rooms", {
+    await fetchInstance("/rooms", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const createGroupChat = async ({ name, memberIds }: { name: string; membe
 }
 
 export const getChatById = async (roomId: number) => {
-    const { data, error } = await tryCatch(authFetchInstance(`/rooms/${roomId}`));
+    const { data, error } = await tryCatch(fetchInstance(`/rooms/${roomId}`));
 
     if (error) {
         toast.error(error.message);

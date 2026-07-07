@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { type TBlogPost } from "@/types/types";
-import {authFetchInstance, fetchInstance} from "@/actions/index";
+import { fetchInstance} from "@/actions/index";
 import { tryCatch } from "@/utils/utils";
 import { type BlogPostFormValues, BlogPostSchema } from "@/lib/validations/blog";
 
@@ -23,7 +23,7 @@ export const fetchBlogPosts = async ({ query, page = 1 }: { query?: string; page
     searchParams.set("limit", `${limit}`);
 
     // All blog posts
-    const { data, error } = await tryCatch<TBlogPost[]>(authFetchInstance(`/blog?${searchParams.toString()}`));
+    const { data, error } = await tryCatch<TBlogPost[]>(fetchInstance(`/blog?${searchParams.toString()}`));
 
     if (error) console.log(error.message);
 
@@ -32,7 +32,7 @@ export const fetchBlogPosts = async ({ query, page = 1 }: { query?: string; page
 
 // Fetch blog post by ID
 export const fetchBlogPostById = async (postId: string) => {
-    const { data, error } = await tryCatch<TBlogPost>(authFetchInstance(`/blog/${postId}`));
+    const { data, error } = await tryCatch<TBlogPost>(fetchInstance(`/blog/${postId}`));
 
     if (error) console.log(error.message);
 
@@ -51,7 +51,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
 
     // Edit blog post
     if (postId) {
-        const { error } = await tryCatch<TBlogPost>(authFetchInstance(`/blog/${postId}`, {
+        const { error } = await tryCatch<TBlogPost>(fetchInstance(`/blog/${postId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
     }
 
     // Create blog post
-    const { error } = await tryCatch<TBlogPost>(authFetchInstance("/blog", {
+    const { error } = await tryCatch<TBlogPost>(fetchInstance("/blog", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
 
 // Delete blog post by ID
 export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
-    await authFetchInstance(`/blog/${postId}`, {
+    await fetchInstance(`/blog/${postId}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",

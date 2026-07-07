@@ -1,7 +1,7 @@
 "use server";
 
 import {tryCatch} from "@/utils/utils";
-import {authFetchInstance, fetchInstance} from "@/actions/index";
+import { fetchInstance } from "@/actions/index";
 import {revalidatePath} from "next/cache";
 
 export const getAllProducts = async ({ query, page }: { query?: string; page: number }) => {
@@ -18,14 +18,14 @@ export const getAllProducts = async ({ query, page }: { query?: string; page: nu
     searchParams.set("page", `${page}`);
     searchParams.set("limit", `${limit}`);
 
-    const { data, error } = await tryCatch(authFetchInstance(`/products?${searchParams.toString()}`));
+    const { data, error } = await tryCatch(fetchInstance(`/products?${searchParams.toString()}`));
     const { items: products, pagination } = data?.data;
 
     return { data: products, totalPages: pagination.totalPages };
 }
 
 export const createProduct = async (formData: FormData) => {
-    await authFetchInstance("/products", {
+    await fetchInstance("/products", {
         method: "POST",
         body: formData,
     });
@@ -34,7 +34,7 @@ export const createProduct = async (formData: FormData) => {
 }
 
 export const editProduct = async (productId: number, formData: FormData) => {
-    await authFetchInstance(`/products/${productId}`, {
+    await fetchInstance(`/products/${productId}`, {
         method: "PUT",
         body: formData,
     });
@@ -43,7 +43,7 @@ export const editProduct = async (productId: number, formData: FormData) => {
 }
 
 export const addToCart = async ({ productId, quantity }: { productId: number; quantity: number }) => {
-    await authFetchInstance(`/cart/items/${productId}`, {
+    await fetchInstance(`/cart/items/${productId}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const addToCart = async ({ productId, quantity }: { productId: number; qu
 }
 
 export const deleteProduct = async (productId: number) => {
-    await authFetchInstance(`/products/${productId}`, {
+    await fetchInstance(`/products/${productId}`, {
         method: "DELETE",
     });
 

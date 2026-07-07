@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import {useEffect, useRef, useState, useTransition} from "react";
 import Image from "next/image";
 
 import { TCartItem } from "@/types/types";
@@ -16,7 +16,11 @@ export default function CartItem({ item }: { item: TCartItem }) {
     const [isPending, startTransition] = useTransition();
     const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-    const imageUrl = item?.product?.image ? `http://localhost:8080/uploads/products/${item.product.image}` : "/macbook.png"
+    // useEffect(() => {
+    //     setQuantity(item.quantity);
+    // }, [item.quantity]);
+
+    const imageUrl = item?.product?.image ? `http://localhost:8080/uploads/products/${item.product.image}` : "/macbook.png";
 
     async function handleUpdate(newQuantity: number) {
         if (newQuantity < 0) return;
@@ -26,7 +30,7 @@ export default function CartItem({ item }: { item: TCartItem }) {
         if (debounceRef.current) clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(async () => {
             await updateCartItemQuantity(item.productId, newQuantity);
-        }, 500);
+        }, 1000);
     }
 
     async function handleRemove(productId: number) {
