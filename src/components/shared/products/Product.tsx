@@ -9,19 +9,11 @@ import {Spinner} from "@/components/shadcn/spinner";
 import DeleteProductDialog from "@/components/shared/dialogs/DeleteProductDialog"
 import ProductDialog from "@/components/shared/dialogs/ProductDialog";
 import QuantityStepper from "@/components/shared/products/QuantityStepper";
+import {useQuantity} from "@/hooks/useQuantity";
 
 export default function Product({ product, currentUser }: { product: TProduct; currentUser?: TUser }) {
-    const [quantity, setQuantity] = useState(1);
+    const { quantity, incrementQuantity, decrementQuantity } = useQuantity();
     const [isPending, startTransition] = useTransition();
-
-    const incrementQuantity = () => {
-        setQuantity(prev => prev + 1);
-    }
-
-    const decrementQuantity = () => {
-        if (quantity <= 1) return;
-        setQuantity(prev => prev - 1);
-    }
 
     const handleAddToCart = (productId: number) => {
         startTransition(async () => {

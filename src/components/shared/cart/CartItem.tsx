@@ -1,26 +1,32 @@
 "use client";
 
-import { TCartItem } from "@/types/types";
+import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
+
+import { TCartItem } from "@/types/types";
 import QuantityStepper from "@/components/shared/products/QuantityStepper";
-import {decrementCartItemQuantity, incrementCartItemQuantity, removeCartItem} from "@/actions/cart";
-import {useTransition} from "react";
-import {Button} from "@/components/shadcn/button";
+import {
+    removeCartItem,
+    updateCartItemQuantity
+} from "@/actions/cart";
+import { Button } from "@/components/shadcn/button";
 
 export default function CartItem({ item }: { item: TCartItem }) {
+    const [quantity, setQuantity] = useState(item.quantity);
     const [isPending, startTransition] = useTransition();
+    const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
+
     const imageUrl = item?.product?.image ? `http://localhost:8080/uploads/products/${item.product.image}` : "/macbook.png"
 
-    async function handleIncrement(productId: number) {
-        startTransition(async () => {
-            await incrementCartItemQuantity(productId);
-        });
-    }
+    async function handleUpdate(newQuantity: number) {
+        if (newQuantity < 0) return;
 
-    async function handleDecrement(productId: number) {
-        startTransition(async () => {
-            await decrementCartItemQuantity(productId);
-        });
+        setQuantity(newQuantity);
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(async () => {
+            await updateCartItemQuantity(item.productId, newQuantity);
+        }, 500);
     }
 
     async function handleRemove(productId: number) {
@@ -37,12 +43,12 @@ export default function CartItem({ item }: { item: TCartItem }) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <QuantityStepper
-                            quantity={item.quantity}
-                            onIncrement={() => handleIncrement(item.product.id)}
-                            onDecrement={() => handleDecrement(item.product.id)}
+                            quantity={quantity}
+                            onIncrement={() => handleUpdate(quantity + 1)}
+                            onDecrement={() => handleUpdate(quantity - 1)}
                             disabled={isPending}
                         />
-                        <p className="text-base text-zinc-500">${item.quantity * item.product.price}</p>
+                        <p className="text-base text-zinc-500">${quantity * item.product.price}</p>
                     </div>
 
                     <Button
