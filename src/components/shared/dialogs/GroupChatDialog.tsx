@@ -13,7 +13,7 @@ import GroupChatForm from "@/components/shared/forms/GroupChatForm";
 import { type TUser } from "@/types/types";
 import {useState} from "react";
 
-export function GroupChatDialog({ members }: { members: TUser[] }) {
+export function GroupChatDialog({ members }: { members?: TUser[] }) {
     const [open, setOpen] = useState(false);
 
     function closeModal() {

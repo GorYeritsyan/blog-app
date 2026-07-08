@@ -3,7 +3,7 @@ import Tags from "@/components/shared/blog/Tags";
 
 export default async function BlogPostDetails({ postId }: { postId: string }) {
     const blogPost = await fetchBlogPostById(postId);
-    const date = new Date(blogPost.createdAt).toDateString();
+    const date = typeof blogPost !== "undefined" && new Date(blogPost.createdAt).toDateString();
 
     return (
         <div className="flex flex-col gap-8 w-full">

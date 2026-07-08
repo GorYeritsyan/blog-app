@@ -20,7 +20,7 @@ export default async function MessagesSidebar() {
                     <GroupChatDialog members={friends} />
                 </div>
 
-                <ChatList currentUserId={currentUser?.id} rooms={rooms} />
+                <ChatList currentUserId={currentUser?.id} rooms={rooms ?? []} />
             </div>
         </div>
     )

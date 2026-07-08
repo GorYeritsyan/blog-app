@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { tryCatch } from "@/utils/utils";
 import { fetchInstance } from "@/actions/index";
-import {type TFriendRequest, TPagination, TUser} from "@/types/types";
+import {type TFriendRequest, TPagination, TRoom, TUser} from "@/types/types";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -79,13 +79,13 @@ export const removeFriend = async (prevState: any, friendId: number) => {
 }
 
 export const getFriends = async () => {
-    const { data } = await tryCatch(fetchInstance("/friends/accepted"));
+    const { data } = await tryCatch<TUser[]>(fetchInstance("/friends/accepted"));
 
     return data?.data;
 }
 
 export const getRooms = async () => {
-    const { data } = await tryCatch(fetchInstance("/rooms", { next: { tags: ["rooms"] } }));
+    const { data } = await tryCatch<TRoom[]>(fetchInstance("/rooms", { next: { tags: ["rooms"] } }));
     return data?.data;
 }
 

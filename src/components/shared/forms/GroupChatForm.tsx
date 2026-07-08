@@ -11,7 +11,7 @@ import {TUser} from "@/types/types";
 import {createGroupChat} from "@/actions/messages";
 import {toast} from "sonner";
 
-export default function GroupChatForm({ onClose, members }: { onClose: () => void; members: TUser[] }) {
+export default function GroupChatForm({ onClose, members }: { onClose: () => void; members?: TUser[] }) {
     const form = useForm<GroupChatFormValues>({
         resolver: zodResolver(GroupChatSchema),
         defaultValues: {
@@ -26,7 +26,7 @@ export default function GroupChatForm({ onClose, members }: { onClose: () => voi
             await createGroupChat(values);
 
             toast.success("Group chat created successfully.");
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             onClose();
@@ -55,12 +55,6 @@ export default function GroupChatForm({ onClose, members }: { onClose: () => voi
                     control={form.control}
                     render={({ field, fieldState }) => (
                         <MembersCombobox field={field} fieldState={fieldState} members={members} />
-                        // <Input
-                        //     {...field}
-                        //     id={field.name}
-                        //     aria-invalid={fieldState.invalid}
-                        //     className="py-1.5 h-fit"
-                        // />
                     )}
                 />
             </FieldGroup>

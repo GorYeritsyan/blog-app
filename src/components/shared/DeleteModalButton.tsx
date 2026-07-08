@@ -10,8 +10,8 @@ import {
 } from "@/components/shadcn/alert-dialog";
 import { Button } from "@/components/shadcn/button";
 
-export default function DeleteModalButton({ postId }: { postId: string }) {
-    const handleDeleteBlogPost = async (postId: string) => {
+export default function DeleteModalButton({ postId }: { postId: number }) {
+    const handleDeleteBlogPost = async (postId: number) => {
         await deleteBlogPost(postId);
     }
 

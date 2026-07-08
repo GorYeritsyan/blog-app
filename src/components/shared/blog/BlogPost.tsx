@@ -21,10 +21,10 @@ export default async function BlogPost({ post }: { post: TBlogPost }) {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <Link className="text-2xl font-semibold hover:underline capitalize" href={`/${post.id}`}>
+                    <Link className="text-2xl font-semibold hover:underline capitalize truncate" href={`/${post.id}`}>
                         {post.title}
                     </Link>
-                    <p className="text-gray-500">{post.content}</p>
+                    <p className="text-gray-500 truncate">{post.content}</p>
                 </div>
             </div>
 

@@ -13,7 +13,7 @@ type UserProps = {
 //  TODO: Show error toast when something went wrong
 export default function User({ user, sentFriendRequests, receivedFriendRequests }: UserProps) {
     // Get author status from all sent and received friend requests - pending, accepted, rejected
-    const  userStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === user.id || request.senderId === user.id)?.status?.toLowerCase() as TFriendRequestStatus;
+    const  userStatus = [...sentFriendRequests, ...receivedFriendRequests]?.find(request => request.receiverId === user.id || request.senderId === user.id)?.status?.toLowerCase() as Lowercase<TFriendRequestStatus>;
     const friendRequest = receivedFriendRequests?.find(request => request.senderId === user.id && request.status === "PENDING");
 
     return (

@@ -18,14 +18,14 @@ type MessageContentProps = {
 export default function MessagesContent({ roomId, messagesPromise, currentUser }: MessageContentProps) {
     const socket = useSocket();
     const [page, setPage] = useState(1);
-    const [history, setHistory] = useState([]);
+    const [history, setHistory] = useState<TMessage[]>([]);
     const scrollTrigger = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isFetching = useRef(false);
     const fetchedPages = useRef(new Set<number>([1]));
     const { data: messages, hasNext } = use(messagesPromise);
 
-    const [socketMessages, setSocketMessages] = useState([]);
+    const [socketMessages, setSocketMessages] = useState<TMessage[]>([]);
 
     const [hasMore, setHasMore] = useState(hasNext);
 
@@ -68,7 +68,7 @@ export default function MessagesContent({ roomId, messagesPromise, currentUser }
                     setHistory(prev => [...prev, ...messagesHistory]);
                     setPage(nextPage);
                 }
-                setHasMore(hasNext);
+                setHasMore(!!hasNext);
             } catch (error) {
                 console.error(error);
                 fetchedPages.current.delete(nextPage);

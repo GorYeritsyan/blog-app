@@ -39,7 +39,7 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
             setIsTyping(true);
         }
 
-        clearTimeout(timeoutRef.current);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
             socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: false });
             setIsTyping(false);

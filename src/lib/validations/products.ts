@@ -4,7 +4,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 
 export const ProductSchema = z.object({
-    title: z.string().min(1, "Title is required"),
+    title: z.string().min(1, "Title is required").trim(),
     price: z.coerce.number().positive("Price must be greater than 0").min(10, "Price must be greater than 10"),
     image: z
         .instanceof(File)

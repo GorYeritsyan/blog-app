@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useActionState } from "react";
+import {startTransition, useActionState, useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,6 +14,7 @@ import { Button } from "@/components/shadcn/button";
 import Spinner from "@/components/ui/Spinner";
 import FormField from "@/components/shared/forms/FormField";
 import CreatableCombobox from "@/components/shared/CreatableCombobox";
+import {toast} from "sonner";
 
 const tags = ["React", "Next.js", "TypeScript", "JavaScript", "CSS", "Node.js", "REST API", "GraphQL", "Docker", "CI/CD", "Git", "PostgreSQL", "Redis", "Python", "Security", "Testing", "Performance", "Accessibility", "WebSockets", "Documentation"];
 
@@ -31,6 +32,11 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     });
 
     const [error, blogFormAction, isPending] = useActionState(saveOrCreateBlogPost, undefined);
+    const errors = error?.details;
+
+    useEffect(() => {
+        if (error) toast.error(error.message);
+    }, [error]);
 
     // Add new combobox chip
     function handleAddTag(value: string) {
@@ -51,11 +57,12 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
                 <FormField
                     name="title"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    errors={errors}
+                    render={({ field, fieldState, isInvalid }) => (
                         <Input
                             {...field}
                             id={field.name}
-                            aria-invalid={fieldState.invalid}
+                            aria-invalid={isInvalid}
                             className="py-1.5 h-fit"
                         />
                     )}
@@ -65,11 +72,12 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
                 <FormField
                     name="content"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    errors={errors}
+                    render={({ field, fieldState, isInvalid }) => (
                         <Textarea
                             {...field}
                             id={field.name}
-                            aria-invalid={fieldState.invalid}
+                            aria-invalid={isInvalid}
                             className="py-1.5"
                         />
                     )}
@@ -80,6 +88,7 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
                     name="tags"
                     label="Tags (Optional)"
                     control={form.control}
+                    errors={errors}
                     render={({ field, fieldState }) => (
                         <CreatableCombobox field={field} fieldState={fieldState} onCreate={handleAddTag} items={tags} />
                     )}

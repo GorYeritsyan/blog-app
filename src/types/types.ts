@@ -1,5 +1,5 @@
 export type TBlogPost = {
-    id: string;
+    id: number;
     title: string;
     content: string;
     author?: TUser;

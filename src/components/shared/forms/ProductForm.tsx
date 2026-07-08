@@ -44,7 +44,7 @@ export default function ProductForm({ product, onClose }: { product?: TProduct; 
             }
 
             toast.success(`Your product successfully ${product ? "updated" : "created" }!`);
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             onClose();

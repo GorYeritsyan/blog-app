@@ -36,7 +36,6 @@ export const fetchBlogPostById = async (postId: string) => {
 
     if (error) console.log(error.message);
 
-    console.log("data", data)
     return data?.data;
 }
 
@@ -51,7 +50,7 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
 
     // Edit blog post
     if (postId) {
-        const { error } = await tryCatch<TBlogPost>(fetchInstance(`/blog/${postId}`, {
+        const { error, details } = await tryCatch<TBlogPost>(fetchInstance(`/blog/${postId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -60,14 +59,14 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
         }));
 
         if (error) {
-            return { message: "Something went wrong when updating the blog post" };
+            return { message: error.message, details };
         }
 
         redirect("/");
     }
 
     // Create blog post
-    const { error } = await tryCatch<TBlogPost>(fetchInstance("/blog", {
+    const { error, details } = await tryCatch<TBlogPost>(fetchInstance("/blog", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -77,14 +76,14 @@ export const saveOrCreateBlogPost = async (prevState: { message: string } | unde
 
     // If something went wrong in the server
     if (error) {
-        return {message: "Something went wrong when creating the blog post"};
+        return { message: error.message, details };
     }
 
     redirect("/");
 }
 
 // Delete blog post by ID
-export const deleteBlogPost = async (postId: string): Promise<TBlogPost> => {
+export const deleteBlogPost = async (postId: number): Promise<TBlogPost> => {
     await fetchInstance(`/blog/${postId}`, {
         method: "DELETE",
         headers: {
