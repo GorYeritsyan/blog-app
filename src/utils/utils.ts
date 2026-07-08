@@ -9,8 +9,8 @@ export const cn = (...classNames: ClassValue[]) => {
 }
 
 // tryCatch Utility function to not use try/catch block everywhere
-type Failure<E> = { data: null; error: E };
-type Success<T> = { data: ApiSuccess<T>, error: null };
+type Failure<E> = { data: null; error: E; details?: { [key: string]: string } };
+type Success<T> = { data: ApiSuccess<T>; error: null; details?: { [key: string]: string } };
 
 type Result<T, E = Error> = Success<T> | Failure<E>;
 
@@ -20,7 +20,7 @@ export const tryCatch = async <T = never, E = Error>(promise: Promise<ApiRespons
 
         // TODO: Check logic
         // If promise resolved, but don't succeed then return error
-        if (!data.success) return { data: null, error: new Error(data.error) as E };
+        if (!data.success) return { data: null, error: new Error(data.error) as E, details: data.details };
 
         return { data, error: null };
     } catch (error) {

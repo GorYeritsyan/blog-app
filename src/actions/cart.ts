@@ -45,7 +45,7 @@ export const createCheckoutSession = async (cartItems: TCartItem[]) => {
 }
 
 export const getCheckoutSession = async (sessionId: string) => {
-    const { data } = await tryCatch(fetchInstance(`/checkout/session/${sessionId}`));
+    const { data } = await tryCatch<Stripe.Checkout.Session>(fetchInstance(`/checkout/session/${sessionId}`));
 
     console.log("Data", data);
 

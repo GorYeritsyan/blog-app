@@ -51,6 +51,7 @@ export type TFriendRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 type ApiFailure = {
     success: false;
     error: string;
+    details?: { [key: string]: string };
 };
 
 export type ApiSuccess<T> = {

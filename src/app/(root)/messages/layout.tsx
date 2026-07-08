@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
+import { auth } from "@/auth";
 import MessagesSidebar from "@/components/shared/messages/MessagesSidebar";
 import SocketProvider from "@/providers/SocketProvider";
-import {auth} from "@/auth";
 import MessagesProvider from "@/providers/MessagesProvider";
 
 export default async function Layout({ children }: { children: ReactNode }) {

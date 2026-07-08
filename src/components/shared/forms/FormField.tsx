@@ -16,24 +16,32 @@ type FormFieldProps<T extends FieldValues> = {
     control: Control<T>;
     render: (props: {
         field:  ControllerRenderProps<T, FieldPath<T>>;
-        fieldState: ControllerFieldState
+        fieldState: ControllerFieldState;
+        isInvalid?: boolean;
     }) => ReactNode;
+    errors?: { [key: string]: string };
 }
 
-export default function FormField<T extends FieldValues>({ name, control, label, render }: FormFieldProps<T>) {
+export default function FormField<T extends FieldValues>({ name, control, label, render, errors }: FormFieldProps<T>) {
+    console.log("field error", errors?.[name])
+
     return (
         <Controller
             name={name}
             control={control}
-            render={({ field, fieldState }) => (
-                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel className="capitalize" htmlFor={field.name}>{label ? label : name}</FieldLabel>
-                    {render({ field, fieldState })}
-                    {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                    )}
-                </Field>
-            )}
+            render={({ field, fieldState }) => {
+                const isInvalid = fieldState.invalid || Boolean(errors?.[name]);
+
+                return (
+                    <Field className="gap-1.5" data-invalid={isInvalid}>
+                        <FieldLabel className="capitalize" htmlFor={field.name}>{label ? label : name}</FieldLabel>
+                        {render({ field, fieldState, isInvalid })}
+                        {isInvalid && (
+                            <FieldError errors={[fieldState.error || { message: errors?.[name] }]} />
+                        )}
+                    </Field>
+                )
+            }}
         />
     );
 }

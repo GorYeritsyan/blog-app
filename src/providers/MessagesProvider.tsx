@@ -1,7 +1,7 @@
 "use client";
 
-import {createContext, ReactNode, useContext} from "react";
-import {useOnlineUsers} from "@/hooks/useOnlineUsers";
+import { createContext, ReactNode, useContext } from "react";
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 
 type MessagesContextProps = {
     onlineUsers?: number[];

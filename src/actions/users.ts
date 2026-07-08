@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { tryCatch } from "@/utils/utils";
 import { fetchInstance } from "@/actions/index";
-import { type TFriendRequest } from "@/types/types";
+import {type TFriendRequest, TPagination, TUser} from "@/types/types";
 
 export const getAllUsers = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -19,8 +19,9 @@ export const getAllUsers = async ({ query, page }: { query?: string; page: numbe
     searchParams.set("page", `${page}`);
     searchParams.set("limit", `${limit}`);
 
-    const { data, error } = await tryCatch(fetchInstance(`/users?${searchParams.toString()}`));
-    const { items: users, pagination } = data?.data;
+    const { data, error } = await tryCatch<{ items: TUser[]; pagination: TPagination }>(fetchInstance(`/users?${searchParams.toString()}`));
+
+    const { items: users, pagination } = data?.data as { items: TUser[]; pagination: TPagination };
 
     return { data: users, totalPages: pagination.totalPages };
 }
@@ -78,14 +79,14 @@ export const removeFriend = async (prevState: any, friendId: number) => {
 }
 
 export const getFriends = async () => {
-    const { data } = await fetchInstance("/friends/accepted");
+    const { data } = await tryCatch(fetchInstance("/friends/accepted"));
 
-    return data;
+    return data?.data;
 }
 
 export const getRooms = async () => {
-    const { data } = await fetchInstance("/rooms", { next: { tags: ["rooms"] } });
-    return data;
+    const { data } = await tryCatch(fetchInstance("/rooms", { next: { tags: ["rooms"] } }));
+    return data?.data;
 }
 
 export const revalidateRooms = async () => {

@@ -1,8 +1,9 @@
 "use server";
 
+import {revalidatePath} from "next/cache";
 import {tryCatch} from "@/utils/utils";
 import { fetchInstance } from "@/actions/index";
-import {revalidatePath} from "next/cache";
+import {TPagination, TProduct} from "@/types/types";
 
 export const getAllProducts = async ({ query, page }: { query?: string; page: number }) => {
     const limit = 4;
@@ -18,8 +19,8 @@ export const getAllProducts = async ({ query, page }: { query?: string; page: nu
     searchParams.set("page", `${page}`);
     searchParams.set("limit", `${limit}`);
 
-    const { data, error } = await tryCatch(fetchInstance(`/products?${searchParams.toString()}`));
-    const { items: products, pagination } = data?.data;
+    const { data, error } = await tryCatch<{ items: TProduct[]; pagination: TPagination }>(fetchInstance(`/products?${searchParams.toString()}`));
+    const { items: products, pagination } = data?.data as { items: TProduct[]; pagination: TPagination };
 
     return { data: products, totalPages: pagination.totalPages };
 }

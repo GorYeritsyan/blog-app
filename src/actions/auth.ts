@@ -7,22 +7,22 @@ import { fetchInstance } from "@/actions/index";
 import { tryCatch } from "@/utils/utils";
 import { type TUser } from "@/types/types";
 import { type LoginFormValues, LoginSchema, type RegisterFormValues, RegisterSchema } from "@/lib/validations/auth";
-import { signIn, signOut } from "@/auth";
+import {InvalidLoginError, signIn, signOut} from "@/auth";
 
 export const registerUser = async (prevState: { message: string } | undefined, formValues: RegisterFormValues) => {
     // Validate Form Data using Zod
-    const result = RegisterSchema.safeParse(formValues);
+    const { name, email, password } = await RegisterSchema.parseAsync(formValues);
 
-    // Handle error
-    if (!result.success) {
-        return { errors: "Invalid data" };
-    }
+    // // Handle error
+    // if (!result.success) {
+    //     return { errors: "Invalid data" };
+    // }
 
     // Get form values
-    const { name, email, password } = result.data;
+    // const { name, email, password } = result.data;
 
     // Create user
-    const { error } = await tryCatch<TUser>(fetchInstance(`/auth/register`, {
+    const { error, details } = await tryCatch<TUser>(fetchInstance(`/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -31,26 +31,27 @@ export const registerUser = async (prevState: { message: string } | undefined, f
     }));
 
     // If there is any error during try/catch
-    if (error) return { message: error.message };
+    if (error) return { message: error.message, details };
 
     redirect("/login");
 }
 
 export const loginUser = async (prevState: { message: string } | undefined, formValues: LoginFormValues) => {
-    const result = LoginSchema.safeParse(formValues);
+    const { email, password } = await LoginSchema.parseAsync(formValues);
 
-    if (!result.success) {
-        return { message: "Invalid data" };
-    }
-
-    const { email, password } = result.data;
+    // console.log("result", result);
+    // if (!result.success) {
+    //     return { message: "Invalid data" };
+    // }
+    //
+    // const { email, password } = result.data;
 
     // TODO: Check redirection logic
     try {
         await signIn("credentials", { email, password, redirectTo: "/" });
     } catch (error) {
-        if (error instanceof CredentialsSignin) {
-            return { message: error.code };
+        if (error instanceof InvalidLoginError) {
+            return { message: error.code, details: error.details };
         }
         throw error;
     }

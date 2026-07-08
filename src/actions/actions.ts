@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { type TBlogPost } from "@/types/types";
-import { fetchInstance} from "@/actions/index";
+import { fetchInstance } from "@/actions/index";
 import { tryCatch } from "@/utils/utils";
 import { type BlogPostFormValues, BlogPostSchema } from "@/lib/validations/blog";
 
