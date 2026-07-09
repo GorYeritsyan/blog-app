@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import {TProduct, TUser} from "@/types/types";
-import {Button} from "@/components/shadcn/button";
+import { useTransition } from "react";
+import { TProduct, TUser } from "@/types/types";
+import { Button } from "@/components/shadcn/button";
 import Image from "next/image";
 import {addToCart} from "@/actions/products";
 import {Spinner} from "@/components/shadcn/spinner";
@@ -10,6 +10,7 @@ import DeleteProductDialog from "@/components/shared/dialogs/DeleteProductDialog
 import ProductDialog from "@/components/shared/dialogs/ProductDialog";
 import QuantityStepper from "@/components/shared/products/QuantityStepper";
 import {useQuantity} from "@/hooks/useQuantity";
+import {toast} from "sonner";
 
 export default function Product({ product, currentUser }: { product: TProduct; currentUser?: TUser }) {
     const { quantity, incrementQuantity, decrementQuantity } = useQuantity();
@@ -17,7 +18,15 @@ export default function Product({ product, currentUser }: { product: TProduct; c
 
     const handleAddToCart = (productId: number) => {
         startTransition(async () => {
-            await addToCart({ productId, quantity });
+            const result = await addToCart({ productId, quantity });
+
+            if (result?.error) {
+                toast.error(result.error.message);
+                return;
+            }
+
+            const successMessage = quantity > 1 ? `${quantity} items added to cart.` : "1 item added to cart.";
+            toast.success(successMessage);
         });
     }
 

@@ -44,13 +44,15 @@ export const editProduct = async (productId: number, formData: FormData) => {
 }
 
 export const addToCart = async ({ productId, quantity }: { productId: number; quantity: number }) => {
-    await fetchInstance(`/cart/items/${productId}`, {
+    const { error } = await tryCatch(fetchInstance(`/cart/items/${productId}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ quantity })
-    });
+    }));
+
+    if (error) return { error };
 
     revalidatePath("/products");
 }
