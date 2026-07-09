@@ -115,3 +115,24 @@ export type TCartItem = {
     productId: number;
     product: TProduct;
 }
+
+export type TOrder = {
+    id: number;
+    total: number;
+    currency: string;
+    userId: number;
+    user?: TUser;
+    items: TOrderItem[];
+    stripeSessionId?: string;
+    createdAt: Date;
+}
+
+export type TOrderItem = {
+    id: number;
+    quantity: number;
+    price: number;
+    orderId: number;
+    order?: TOrder;
+    productId: number;
+    product: TProduct;
+}

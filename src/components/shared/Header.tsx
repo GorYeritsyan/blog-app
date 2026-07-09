@@ -19,6 +19,10 @@ const navLinks: { href: string; label: string }[] = [
     {
         href: "/products",
         label: "Shop",
+    },
+    {
+        href: "/orders",
+        label: "Orders",
     }
 ];
 
