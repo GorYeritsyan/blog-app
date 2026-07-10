@@ -44,9 +44,11 @@ export default function BlogForm({ blogPost }: { blogPost?: TBlogPost }) {
     }
 
     // Handle form submit
-    const onSubmit = (values: BlogPostFormValues) => {
+    const onSubmit = ({ title, content, tags }: BlogPostFormValues) => {
+        if (!title || !content) return;
+
         startTransition(() => {
-            blogFormAction({ ...values, postId: blogPost?.id });
+            blogFormAction({ title, content, tags, postId: blogPost?.id });
         });
     };
 

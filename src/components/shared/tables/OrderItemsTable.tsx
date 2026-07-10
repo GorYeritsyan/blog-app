@@ -1,6 +1,6 @@
-import {Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/shadcn/table";
-import { TOrderItem } from "@/types/types";
 import Image from "next/image";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/shadcn/table";
+import { TOrderItem } from "@/types/types";
 
 const orderColumns = ["Image", "Title", "Quantity", "Price"];
 

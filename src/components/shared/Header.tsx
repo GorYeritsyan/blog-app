@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Container from "@/components/shared/Container";
-import { getCurrentUser, logout } from "@/actions/auth";
+import { getCurrentUser } from "@/actions/auth";
 import Notifications from "@/components/shared/Notifications";
 import {getNotifications} from "@/actions/users";
-import {Button} from "@/components/shadcn/button";
 import CartDrawer from "@/components/shared/drawers/CartDrawer";
-import {getCartItems} from "@/actions/cart";
+import { getCartItems } from "@/actions/cart";
+import AvatarDropdown from "@/components/dropdowns/AvatarDropdown";
 
 const navLinks: { href: string; label: string }[] = [
     {
@@ -17,13 +17,9 @@ const navLinks: { href: string; label: string }[] = [
         label: "Messages",
     },
     {
-        href: "/products",
+        href: "/shop",
         label: "Shop",
     },
-    {
-        href: "/orders",
-        label: "Orders",
-    }
 ];
 
 export default async function Header() {
@@ -53,11 +49,7 @@ export default async function Header() {
                     <div className="flex items-center gap-4">
                         <CartDrawer cartItems={cartItems ?? []} />
                         <Notifications notifications={notifications || []} />
-
-                        <span className="text-sm font-medium">{currentUser?.email}</span>
-                        <form action={logout}>
-                            <Button variant="destructive" size="lg" className="px-3 text-base">Logout</Button>
-                        </form>
+                        <AvatarDropdown user={currentUser} />
                     </div>
                 </div>
             </Container>

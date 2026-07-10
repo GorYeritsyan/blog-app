@@ -1,6 +1,6 @@
 "use server";
 
-import {revalidatePath} from "next/cache";
+import {revalidatePath, updateTag} from "next/cache";
 import {tryCatch} from "@/utils/utils";
 import { fetchInstance } from "@/actions/index";
 import {TPagination, TProduct} from "@/types/types";
@@ -25,13 +25,38 @@ export const getAllProducts = async ({ query, page }: { query?: string; page: nu
     return { data: products, totalPages: pagination.totalPages };
 }
 
+export const getMyProducts = async ({ query, page }: { query?: string; page: number }) => {
+    const limit = 4;
+
+    const searchParams = new URLSearchParams();
+
+    if (query) {
+        searchParams.set("query", query);
+    } else {
+        searchParams.delete("query");
+    }
+
+    searchParams.set("page", `${page}`);
+    searchParams.set("limit", `${limit}`);
+
+    const { data, error } = await tryCatch<{ items: TProduct[]; pagination: TPagination }>(fetchInstance(`/products/me?${searchParams.toString()}`, {
+        next: {
+            tags: ["products"],
+        },
+    }));
+    const { items: products, pagination } = data?.data as { items: TProduct[]; pagination: TPagination };
+
+    return { data: products, totalPages: pagination.totalPages };
+}
+
 export const createProduct = async (formData: FormData) => {
     await fetchInstance("/products", {
         method: "POST",
         body: formData,
     });
 
-    revalidatePath("/products");
+    // revalidatePath("/shop");
+    updateTag("products");
 }
 
 export const editProduct = async (productId: number, formData: FormData) => {
@@ -40,7 +65,7 @@ export const editProduct = async (productId: number, formData: FormData) => {
         body: formData,
     });
 
-    revalidatePath("/products");
+    updateTag("products");
 }
 
 export const addToCart = async ({ productId, quantity }: { productId: number; quantity: number }) => {
@@ -54,7 +79,7 @@ export const addToCart = async ({ productId, quantity }: { productId: number; qu
 
     if (error) return { error };
 
-    revalidatePath("/products");
+    revalidatePath("/shop");
 }
 
 export const deleteProduct = async (productId: number) => {
@@ -62,5 +87,5 @@ export const deleteProduct = async (productId: number) => {
         method: "DELETE",
     });
 
-    revalidatePath("/products");
+    updateTag("products");
 }

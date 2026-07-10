@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { CircleCheckBig } from "lucide-react";
 
 import { getCheckoutSession } from "@/actions/cart";
-import {Button} from "@/components/shadcn/button";
+import { Button } from "@/components/shadcn/button";
 
 export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/checkout/success">) {
     const { session_id } = await searchParams;
@@ -35,11 +35,18 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/
                 <p className="text-muted-foreground">
                     Your payment was successful.
                 </p>
-                <Link href="/products">
-                    <Button>
-                        Continue shopping
-                    </Button>
-                </Link>
+                <div className="flex justify-center items-center gap-1">
+                        <Button asChild>
+                            <Link href="/products">
+                                Continue shopping
+                            </Link>
+                        </Button>
+                        <Button variant="link" asChild>
+                            <Link href="/orders">
+                                View Orders
+                            </Link>
+                        </Button>
+                </div>
             </div>
         </section>
     );

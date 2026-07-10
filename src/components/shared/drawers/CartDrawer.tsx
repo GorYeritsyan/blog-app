@@ -24,7 +24,7 @@ export default function CartDrawer({ cartItems }: { cartItems: TCartItem[] }) {
                 <Button variant="outline" size="icon" className="p-2 relative text-zinc-600">
                     <ShoppingCart />
                     {cartItems.length > 0 && (
-                        <div className="p-2 h-5 min-w-5 w-fit text-xs text-white rounded-full bg-red-400 absolute -top-2.5 -right-2.5 flex items-center justify-center">
+                        <div className="p-1.5 h-5 min-w-5 w-fit text-xs text-white rounded-full bg-red-400 absolute -top-2.5 -right-2.5 flex items-center justify-center">
                             {cartItems.length}
                         </div>
                     )}

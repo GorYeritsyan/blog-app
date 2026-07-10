@@ -1,13 +1,17 @@
 "use server";
 
 import {fetchInstance} from "@/actions/index";
-import {revalidatePath} from "next/cache";
+import {revalidatePath, revalidateTag, updateTag} from "next/cache";
 import {TCartItem} from "@/types/types";
 import {tryCatch} from "@/utils/utils";
 import {Stripe} from "stripe";
 
 export const getCartItems = async () => {
-    const { data } = await tryCatch<TCartItem[]>(fetchInstance("/cart"));
+    const { data } = await tryCatch<TCartItem[]>(fetchInstance("/cart", {
+        next: {
+            tags: ["cart"],
+        }
+    }));
 
     return data?.data;
 }
@@ -21,7 +25,7 @@ export const updateCartItemQuantity = async (productId: number, quantity: number
         body: JSON.stringify({ quantity }),
     });
 
-    revalidatePath("/products");
+    updateTag("cart");
 }
 
 export const removeCartItem = async (productId: number) => {
@@ -29,7 +33,7 @@ export const removeCartItem = async (productId: number) => {
         method: "DELETE",
     });
 
-    revalidatePath("/products");
+    updateTag("cart");
 }
 
 export const createCheckoutSession = async (cartItems: TCartItem[]) => {

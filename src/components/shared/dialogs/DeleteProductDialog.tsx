@@ -18,7 +18,7 @@ export default function DeleteModalButton({ productId }: { productId: number }) 
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button className="flex-1" variant="destructive">Delete</Button>
+                <Button variant="destructive">Delete</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

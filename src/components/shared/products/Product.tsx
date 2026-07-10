@@ -44,24 +44,16 @@ export default function Product({ product, currentUser }: { product: TProduct; c
                 <p className="text-xl text-zinc-500"><span className="font-medium">${quantity * product.price}</span></p>
             </div>
 
-            {product.sellerId === currentUser?.id ? (
-                <div className="flex items-center gap-2 w-full justify-center">
-                    {/*<Button className="flex-1">Edit</Button>*/}
-                    <ProductDialog product={product} />
-                    <DeleteProductDialog productId={product.id} />
-                </div>
-            ) : (
-                <div className="flex flex-col gap-2.5">
-                    <QuantityStepper
-                        quantity={quantity}
-                        onIncrement={incrementQuantity}
-                        onDecrement={decrementQuantity}
-                    />
-                    <Button disabled={isPending} onClick={() => handleAddToCart(product.id)}>
-                        {isPending ? <Spinner /> : "Add to cart"}
-                    </Button>
-                </div>
-            )}
+            <div className="flex flex-col gap-2.5">
+                <QuantityStepper
+                    quantity={quantity}
+                    onIncrement={incrementQuantity}
+                    onDecrement={decrementQuantity}
+                />
+                <Button disabled={isPending} onClick={() => handleAddToCart(product.id)}>
+                    {isPending ? <Spinner /> : "Add to cart"}
+                </Button>
+            </div>
         </div>
     );
 }

@@ -23,7 +23,7 @@ export default function ProductDialog({ product }: { product?: TProduct }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="flex-1">
+                <Button>
                     {product ? "Edit" : "Create Product"}
                 </Button>
             </DialogTrigger>
