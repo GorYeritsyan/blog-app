@@ -8,7 +8,7 @@ import { type TRoom } from "@/types/types";
 
 type ChatHeaderProps = {
     chatDetails: TRoom;
-    currentUserId: number;
+    currentUserId?: number;
 }
 
 export default function ChatHeader({ chatDetails, currentUserId }: ChatHeaderProps) {

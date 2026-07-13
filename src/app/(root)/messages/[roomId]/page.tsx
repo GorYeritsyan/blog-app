@@ -14,7 +14,7 @@ export default async function Page({ params }: PageProps<"/messages/[roomId]">) 
 
     return (
         <section className="flex flex-col flex-1 h-full w-full min-w-0">
-            <ChatHeader chatDetails={chatDetails} currentUserId={currentUser.id} />
+            <ChatHeader chatDetails={chatDetails} currentUserId={currentUser?.id} />
 
             {/*Content */}
             <Suspense fallback={

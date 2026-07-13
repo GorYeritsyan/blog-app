@@ -37,7 +37,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/
                 </p>
                 <div className="flex justify-center items-center gap-1">
                         <Button asChild>
-                            <Link href="/products">
+                            <Link href="/shop">
                                 Continue shopping
                             </Link>
                         </Button>

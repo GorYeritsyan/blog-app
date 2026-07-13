@@ -14,7 +14,7 @@ export default function CheckoutCancelPage() {
                 <p className="text-muted-foreground">
                     No payment was made. Your cart is still saved if you'd like to try again.
                 </p>
-                <Link href="/products">
+                <Link href="/shop">
                     <Button>
                         Back to shop
                     </Button>

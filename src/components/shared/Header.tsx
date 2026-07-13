@@ -19,7 +19,7 @@ const navLinks: { href: string; label: string }[] = [
     {
         href: "/shop",
         label: "Shop",
-    },
+    }
 ];
 
 export default async function Header() {

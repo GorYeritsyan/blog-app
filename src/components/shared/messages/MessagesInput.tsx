@@ -7,7 +7,7 @@ import { Textarea } from "@/components/shadcn/textarea";
 import { useSocket } from "@/providers/SocketProvider";
 import {TUser} from "@/types/types";
 
-export default function MessagesInput({ roomId, currentUser }: { roomId: number; currentUser: TUser; }) {
+export default function MessagesInput({ roomId, currentUser }: { roomId: number; currentUser?: TUser; }) {
     const socket = useSocket();
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
     const [isTyping, setIsTyping] = useState(false);
@@ -21,7 +21,7 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
         setIsSending(true);
 
         // Stop real time typing indicator
-        socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: false });
+        socket?.emit("typing", { roomId: String(roomId), user: currentUser?.name, isTyping: false });
 
         // Trigger message web socket event
         socket?.emit("message", { roomId: String(roomId), content: value }, async () => {
@@ -35,13 +35,13 @@ export default function MessagesInput({ roomId, currentUser }: { roomId: number;
         setValue(value);
 
         if (!isTyping) {
-            socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: true });
+            socket?.emit("typing", { roomId: String(roomId), user: currentUser?.name, isTyping: true });
             setIsTyping(true);
         }
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
-            socket?.emit("typing", { roomId: String(roomId), user: currentUser.name, isTyping: false });
+            socket?.emit("typing", { roomId: String(roomId), user: currentUser?.name, isTyping: false });
             setIsTyping(false);
         }, 1000);
     }

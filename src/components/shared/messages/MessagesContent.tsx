@@ -11,7 +11,7 @@ import {revalidateRooms} from "@/actions/users";
 
 type MessageContentProps = {
     roomId: number;
-    messagesPromise: Promise<{ data: TMessage[]; totalPages: number; hasNext: boolean }>;
+    messagesPromise: Promise<{ data: TMessage[]; totalPages?: number; hasNext?: boolean }>;
     currentUser?: TUser;
 }
 

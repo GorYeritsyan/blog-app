@@ -15,6 +15,10 @@ const dropdownItems = [
     {
         label: "My Products",
         route: "/products",
+    },
+    {
+        label: "Subscription Plans",
+        route: "/pricing",
     }
 ];
 

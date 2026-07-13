@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { format } from "date-fns";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/shadcn/table";
 import { TOrder } from "@/types/types";
 import { Button } from "@/components/shadcn/button";
 
-const orderColumns = ["Order ID", "Payment Date", "Items Count", "Total", "Actions"];
+const orderColumns = ["Order ID", "Order Date", "Items", "Total Amount", "Actions"];
 
 export default function OrdersTable({ orders }: { orders: TOrder[] }) {
     return (

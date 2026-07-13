@@ -77,7 +77,10 @@ export const addToCart = async ({ productId, quantity }: { productId: number; qu
         body: JSON.stringify({ quantity })
     }));
 
-    if (error) return { error };
+    if (error) {
+        revalidatePath("/shop");
+        return { error };
+    }
 
     revalidatePath("/shop");
 }
