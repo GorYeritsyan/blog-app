@@ -1,6 +1,14 @@
 import OrdersTable from "@/components/shared/tables/OrdersTable";
 import Pagination from "@/components/ui/pagination";
 import {Button} from "@/components/shadcn/button";
+import SubscriptionPlan from "@/components/shared/subscriptions/SubscriptionPlan";
+
+const plans = [
+    {
+        name: "Pro Plan",
+        price: 30
+    }
+];
 
 export default function PricingPage() {
     return (
@@ -8,10 +16,10 @@ export default function PricingPage() {
             <h1 className="text-4xl fon-semibold">Subscription Plans</h1>
 
             {/* Subscription Plans */}
-            <div>
-                <h2>Pro Plan</h2>
-                <span>30$ per month</span>
-                <Button>Subscribe</Button>
+            <div className="flex gap-3">
+                {plans.map(plan => (
+                    <SubscriptionPlan plan={plan} />
+                ))}
             </div>
         </section>
     );

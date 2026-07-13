@@ -136,3 +136,9 @@ export type TOrderItem = {
     productId: number;
     product: TProduct;
 }
+
+export type TSubscriptionPlan = {
+    id: number;
+    name: string;
+    price: number;
+}
