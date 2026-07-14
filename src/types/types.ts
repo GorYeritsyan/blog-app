@@ -33,6 +33,21 @@ export type TUser = {
     createdAt: Date;
     sentFriendRequests?: TFriendRequest[];
     receivedFriendRequests?: TFriendRequest[];
+    subscriptions?: TSubscription[];
+}
+
+export type TSubscription = {
+    id: number;
+    stripeSubscriptionId: string;
+    status: string;
+    currentPeriodEnd: Date;
+    cancelAtPeriodEnd: boolean;
+    userId: number;
+    planId: number;
+    user?: TUser;
+    plan?: TSubscriptionPlan;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export type TFriendRequest = {
@@ -140,5 +155,14 @@ export type TOrderItem = {
 export type TSubscriptionPlan = {
     id: number;
     name: string;
+    description: string;
     price: number;
+    slug: string;
+    interval: "month" | "year",
+    currency: string;
+    stripeProductId?: string;
+    stripePriceId?: string;
+
+    createdAt: Date;
+    updatedAt: Date;
 }

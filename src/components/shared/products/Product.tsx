@@ -1,16 +1,14 @@
 "use client";
 
 import { useTransition } from "react";
-import { TProduct, TUser } from "@/types/types";
-import { Button } from "@/components/shadcn/button";
 import Image from "next/image";
+import {toast} from "sonner";
+import { Button } from "@/components/shadcn/button";
 import {addToCart} from "@/actions/products";
 import {Spinner} from "@/components/shadcn/spinner";
-import DeleteProductDialog from "@/components/shared/dialogs/DeleteProductDialog"
-import ProductDialog from "@/components/shared/dialogs/ProductDialog";
 import QuantityStepper from "@/components/shared/products/QuantityStepper";
 import {useQuantity} from "@/hooks/useQuantity";
-import {toast} from "sonner";
+import { TProduct, TUser } from "@/types/types";
 
 export default function Product({ product, currentUser }: { product: TProduct; currentUser?: TUser }) {
     const { quantity, incrementQuantity, decrementQuantity } = useQuantity();
