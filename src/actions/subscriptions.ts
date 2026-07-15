@@ -29,3 +29,14 @@ export const getUserSubscription = async () => {
 
    return data?.data;
 }
+
+export const createBillingPortalSession = async () => {
+    const { data } = await tryCatch<Stripe.BillingPortal.Session>(fetchInstance("/subscriptions/portal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }));
+
+    return data?.data;
+}

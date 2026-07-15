@@ -27,17 +27,19 @@ export default function SubscriptionPlan({ plan, userSubscription }: { plan: TSu
                 window.location.href = session?.url;
             } catch (error) {
                 toast.error("Checkout failed. Please try again in a moment.");
-                console.error("createCheckoutSession error:", error);
+                console.error("createSubscriptionCheckoutSession error:", error);
             }
         });
     }
 
     return (
-        <div className="p-5 border border-zinc-200 rounded-xl flex flex-col justify-between gap-2 w-full max-w-70 min-h-80">
+        <div className="p-5 border border-zinc-300 shadow shadow-zinc-100 rounded-xl flex flex-col justify-between gap-2 w-full max-w-70 min-h-84">
             <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
                     <h2 className="text-3xl font-semibold">{plan.name}</h2>
-                    <Badge>Active</Badge>
+                    {isCurrentPlan && (
+                        <Badge>Active</Badge>
+                    )}
                 </div>
                 <p className="text-zinc-500">{plan.description}</p>
             </div>
@@ -53,7 +55,7 @@ export default function SubscriptionPlan({ plan, userSubscription }: { plan: TSu
                     </Button>
                 ) : (
                     <Button disabled={isPending} size="lg" className="text-base" onClick={handleSubscription}>
-                        {isPending ? <Spinner /> : `Get ${plan.name}`}
+                        {isPending ? <Spinner className="size-5" /> : `Get ${plan.name}`}
                     </Button>
                 )}
             </div>
