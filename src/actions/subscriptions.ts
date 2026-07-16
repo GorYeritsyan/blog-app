@@ -19,7 +19,6 @@ export const createSubscriptionCheckoutSession = async (plan: TSubscriptionPlan)
         },
         body: JSON.stringify({ plan })
     }));
-    console.log("session", data?.data);
 
     return data?.data;
 }
