@@ -1,9 +1,9 @@
 "use server";
 
+import {Stripe} from "stripe";
 import {tryCatch} from "@/utils/utils";
 import {fetchInstance} from "@/actions/index";
 import {TSubscription, TSubscriptionPlan} from "@/types/types";
-import {Stripe} from "stripe";
 
 export const getSubscriptionPlans = async () => {
     const { data } = await tryCatch<TSubscriptionPlan[]>(fetchInstance("/plans"));
