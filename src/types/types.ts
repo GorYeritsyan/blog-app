@@ -166,3 +166,26 @@ export type TSubscriptionPlan = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type TConversation = {
+    id: number;
+    title?: string;
+    user?: TUser;
+    userId: number;
+    messages: TChatMessage[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export type TChatMessage = {
+    id: number;
+    content: string;
+    role: TChatMessageRole;
+    status: TChatMessageStatus;
+    conversation?: TConversation;
+    conversationId: number;
+    createdAt: Date;
+}
+
+type TChatMessageStatus = "OK" | "ERROR";
+type TChatMessageRole = "assistant" | "user";
