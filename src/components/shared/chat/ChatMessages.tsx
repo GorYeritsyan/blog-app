@@ -2,22 +2,20 @@
 
 import { useEffect, useRef } from "react";
 import ChatMessage from "@/components/shared/chat/ChatMessage";
-import {TChatMessage, TUser} from "@/types/types";
+import { TChatMessage } from "@/types/types";
 import {Marker, MarkerContent, MarkerIcon} from "@/components/shadcn/marker";
 import {Spinner} from "@/components/shadcn/spinner";
 
 type ChatMessagesProps = {
-    chatMessagesPromise: Promise<TChatMessage[] | undefined>;
     messages: TChatMessage[];
     isThinking: boolean;
 }
 
-export default function ChatMessages({ chatMessagesPromise, messages, isThinking }: ChatMessagesProps) {
-    // const messages = use(chatMessagesPromise);
-    console.log("chat messages", messages);
+export default function ChatMessages({ messages, isThinking }: ChatMessagesProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Scroll to bottom only if message sent by user
         if (containerRef.current && messages.at(-1)?.role.toLowerCase() === "user") {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }

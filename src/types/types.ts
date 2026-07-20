@@ -181,9 +181,9 @@ export type TChatMessage = {
     id: number;
     content: string;
     role: TChatMessageRole;
-    status: TChatMessageStatus;
+    status?: TChatMessageStatus;
     conversation?: TConversation;
-    conversationId: number;
+    conversationId?: number;
     createdAt: Date;
 }
 

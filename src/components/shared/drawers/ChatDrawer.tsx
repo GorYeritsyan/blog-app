@@ -13,6 +13,8 @@ import ChatMessages from "@/components/shared/chat/ChatMessages";
 import ChatInput from "@/components/shared/chat/ChatInput";
 import { TChatMessage } from "@/types/types";
 import { getConversationMessages, sendConversationMessage } from "@/actions/conversations";
+import {Skeleton} from "@/components/shadcn/skeleton";
+import ChatSkeleton from "@/components/shared/skeletons/ChatSkeleton";
 
 export default function ChatDrawer() {
     const [open, setOpen] = useState(false);
@@ -89,7 +91,12 @@ export default function ChatDrawer() {
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <ChatMessages messages={messages} isThinking={isThinking} />
+
+                {isPending ? (
+                    <ChatSkeleton />
+                ) : (
+                    <ChatMessages messages={messages} isThinking={isThinking} />
+                )}
 
                 <DrawerFooter>
                     <ChatInput onSend={sendMessage} disabled={isThinking} />

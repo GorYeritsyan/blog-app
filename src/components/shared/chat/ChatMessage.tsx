@@ -12,7 +12,7 @@ export default function ChatMessage({ message }: { message: TChatMessage }) {
                 {/* Name of user who sent message */}
                 {/*<span className="font-medium">{isUserMessage ? "Me" : "User"}</span>*/}
                 <div className={cn("w-fit h-fit max-w-80 wrap-break-word",
-                    isUserMessage && "bg-zinc-800 border border-zinc-800 text-white px-3 py-1.5 rounded-lg"
+                    isUserMessage && "bg-zinc-100 border border-zinc-200  px-3 py-1.5 rounded-lg"
                 )}>
                     {message.content}
                 </div>
