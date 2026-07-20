@@ -1,29 +1,80 @@
-"use client";
+// ChatDrawer.tsx
+'use client';
 
+import { useState, useEffect, useTransition } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Astroid } from "lucide-react";
 import {
-    Drawer,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger
+    Drawer, DrawerContent, DrawerDescription, DrawerFooter,
+    DrawerHeader, DrawerTitle, DrawerTrigger
 } from "@/components/shadcn/drawer";
 import { Button } from "@/components/shadcn/button";
-import { Input } from "@/components/shadcn/input";
 import ChatMessages from "@/components/shared/chat/ChatMessages";
-import { getCurrentUser } from "@/actions/auth";
-import {getConversationMessages, sendConversationMessage} from "@/actions/conversations";
-import {Suspense, useState} from "react";
 import ChatInput from "@/components/shared/chat/ChatInput";
+import { TChatMessage } from "@/types/types";
+import { getConversationMessages, sendConversationMessage } from "@/actions/conversations";
 
-export default function ChatDrawer({ conversationId, messages }: { conversationId: number }) {
-    // const chatMessagesPromise = getConversationMessages(conversationId);
+export default function ChatDrawer() {
+    const [open, setOpen] = useState(false);
+    const [messages, setMessages] = useState<TChatMessage[]>([]);
+    const [isThinking, setIsThinking] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const params = useParams();
+    const router = useRouter();
+    const conversationId = params.conversationId?.at(-1);
 
+    useEffect(() => {
+        if (!conversationId) {
+            setMessages([]);
+            return;
+        }
+        startTransition(async () => {
+            const conversationMessages = await getConversationMessages(+conversationId);
+            setMessages(conversationMessages);
+        });
+    }, [conversationId]);
+
+    // Open drawer when there is conversationId
+    useEffect(() => {
+        if (conversationId) {
+            setOpen(true);
+        }
+    }, [conversationId]);
+
+    const sendMessage = async (content: string) => {
+        const isNewChat = !conversationId;
+
+        // 1. optimistic user message, shown instantly
+        const optimisticUserMessage: TChatMessage = {
+            id: Date.now(),
+            role: "user",
+            content,
+            createdAt: new Date(Date.now())
+        };
+        setMessages(prev => [...prev, optimisticUserMessage]);
+
+        // 2. show "thinking" state while waiting for assistant
+        setIsThinking(true);
+
+        try {
+            const assistantMessage = await sendConversationMessage(
+                isNewChat ? { content } : { conversationId: +conversationId, content }
+            );
+
+            if (isNewChat && assistantMessage) {
+                // redirect; the useEffect above will refetch full history
+                // (including this exchange) once conversationId updates
+                router.push(`/shop/conversations/${assistantMessage.conversationId}`);
+            } else if (assistantMessage) {
+                setMessages(prev => [...prev, assistantMessage]);
+            }
+        } finally {
+            setIsThinking(false);
+        }
+    };
 
     return (
-        <Drawer direction="right">
+        <Drawer direction="right" open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <Button variant="outline">
                     <Astroid />
@@ -38,25 +89,10 @@ export default function ChatDrawer({ conversationId, messages }: { conversationI
                     </DrawerDescription>
                 </DrawerHeader>
 
-                {/*<div className="flex flex-col justify-between h-full px-3">*/}
-                {/*    {cartItems.length > 0 && (*/}
-                {/*        <div className="flex flex-col gap-3">*/}
-                {/*            {cartItems.map((item: TCartItem) => (*/}
-                {/*                <CartItem key={item.id} item={item} />*/}
-                {/*            ))}*/}
-                {/*        </div>*/}
-                {/*    )}*/}
-                {/*</div>*/}
-
-                {/*<Suspense fallback={<span>Loading...</span>}>*/}
-                    <ChatMessages
-                        // chatMessagesPromise={chatMessagesPromise}
-                        messages={messages}
-                    />
-                {/*</Suspense>*/}
+                <ChatMessages messages={messages} isThinking={isThinking} />
 
                 <DrawerFooter>
-                    <ChatInput />
+                    <ChatInput onSend={sendMessage} disabled={isThinking} />
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
