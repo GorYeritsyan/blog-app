@@ -1,3 +1,5 @@
+"use client";
+
 import { Astroid } from "lucide-react";
 import {
     Drawer,
@@ -12,12 +14,13 @@ import { Button } from "@/components/shadcn/button";
 import { Input } from "@/components/shadcn/input";
 import ChatMessages from "@/components/shared/chat/ChatMessages";
 import { getCurrentUser } from "@/actions/auth";
-import { getConversationMessages } from "@/actions/conversations";
+import {getConversationMessages, sendConversationMessage} from "@/actions/conversations";
+import {Suspense, useState} from "react";
+import ChatInput from "@/components/shared/chat/ChatInput";
 
-export default async function ChatDrawer() {
-    const currentUser = await getCurrentUser();
-    const conversationId = 5;
-    const chatMessagesPromise = getConversationMessages(conversationId);
+export default function ChatDrawer({ conversationId, messages }: { conversationId: number }) {
+    // const chatMessagesPromise = getConversationMessages(conversationId);
+
 
     return (
         <Drawer direction="right">
@@ -45,16 +48,15 @@ export default async function ChatDrawer() {
                 {/*    )}*/}
                 {/*</div>*/}
 
-                <ChatMessages
-                    conversationId={conversationId}
-                    chatMessagesPromise={chatMessagesPromise}
-                />
+                {/*<Suspense fallback={<span>Loading...</span>}>*/}
+                    <ChatMessages
+                        // chatMessagesPromise={chatMessagesPromise}
+                        messages={messages}
+                    />
+                {/*</Suspense>*/}
 
                 <DrawerFooter>
-                    <div className="flex gap-2">
-                        <Input placeholder="Write a message..." />
-                        <Button>Send</Button>
-                    </div>
+                    <ChatInput />
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
