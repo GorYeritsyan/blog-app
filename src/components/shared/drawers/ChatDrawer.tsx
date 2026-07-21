@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Astroid } from "lucide-react";
+import {Astroid, PanelRight} from "lucide-react";
 import {
     Drawer, DrawerContent, DrawerDescription, DrawerFooter,
     DrawerHeader, DrawerTitle, DrawerTrigger
@@ -15,6 +15,7 @@ import { getConversationMessages, sendConversationMessage } from "@/actions/conv
 import {Skeleton} from "@/components/shadcn/skeleton";
 import ChatSkeleton from "@/components/shared/skeletons/ChatSkeleton";
 import {toast} from "sonner";
+import ChatSidebarDrawer from "@/components/shared/drawers/ChatSidebarDrawer";
 
 export default function ChatDrawer() {
     const [open, setOpen] = useState(false);
@@ -87,7 +88,12 @@ export default function ChatDrawer() {
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
-                    <DrawerTitle className="text-xl">AI Chatbot</DrawerTitle>
+                    <DrawerTitle className="text-xl">
+                        <div className="flex items-center justify-between">
+                            <h3>AI Chatbot</h3>
+                            <ChatSidebarDrawer />
+                        </div>
+                    </DrawerTitle>
                     <DrawerDescription>
                         Chat with our assistant for help and questions.
                     </DrawerDescription>

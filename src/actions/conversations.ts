@@ -5,6 +5,12 @@ import {tryCatch} from "@/utils/utils";
 import {TChatMessage, TConversation} from "@/types/types";
 import {revalidatePath, updateTag} from "next/cache";
 
+export const getAllConversations = async () => {
+    const { data } = await tryCatch<TConversation[]>(fetchInstance(`/chat/conversations`));
+
+    return data?.data ?? [];
+}
+
 export const getConversationMessages = async (conversationId: number) => {
     const { data } = await tryCatch<TConversation>(fetchInstance(`/chat/conversations/${conversationId}`, {
         next: { tags: [`conversation-${conversationId}`] }
