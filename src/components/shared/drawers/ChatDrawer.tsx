@@ -1,5 +1,4 @@
-// ChatDrawer.tsx
-'use client';
+"use client";
 
 import { useState, useEffect, useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -15,6 +14,7 @@ import { TChatMessage } from "@/types/types";
 import { getConversationMessages, sendConversationMessage } from "@/actions/conversations";
 import {Skeleton} from "@/components/shadcn/skeleton";
 import ChatSkeleton from "@/components/shared/skeletons/ChatSkeleton";
+import {toast} from "sonner";
 
 export default function ChatDrawer() {
     const [open, setOpen] = useState(false);
@@ -59,9 +59,11 @@ export default function ChatDrawer() {
         setIsThinking(true);
 
         try {
-            const assistantMessage = await sendConversationMessage(
+            const { data: assistantMessage, error } = await sendConversationMessage(
                 isNewChat ? { content } : { conversationId: +conversationId, content }
             );
+
+            if (error) toast.error(error.message);
 
             if (isNewChat && assistantMessage) {
                 // redirect; the useEffect above will refetch full history

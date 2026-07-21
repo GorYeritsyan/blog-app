@@ -14,7 +14,7 @@ export const getConversationMessages = async (conversationId: number) => {
 }
 
 export const sendConversationMessage = async ({ conversationId, content }: { conversationId?: number; content: string }) => {
-    const { data } = await tryCatch<TChatMessage>(fetchInstance(`/chat/messages`, {
+    const { data, error } = await tryCatch<TChatMessage>(fetchInstance(`/chat/messages`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -23,5 +23,5 @@ export const sendConversationMessage = async ({ conversationId, content }: { con
     }));
 
     updateTag(`conversation-${conversationId}`);
-    return data?.data;
+    return { data: data?.data, error };
 }
