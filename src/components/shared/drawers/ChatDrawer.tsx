@@ -16,6 +16,7 @@ import {Skeleton} from "@/components/shadcn/skeleton";
 import ChatSkeleton from "@/components/shared/skeletons/ChatSkeleton";
 import {toast} from "sonner";
 import ChatSidebarDrawer from "@/components/shared/drawers/ChatSidebarDrawer";
+import ChatEmpty from "@/components/shared/chat/ChatEmpty";
 
 export default function ChatDrawer() {
     const [open, setOpen] = useState(false);
@@ -103,7 +104,11 @@ export default function ChatDrawer() {
                 {isPending ? (
                     <ChatSkeleton />
                 ) : (
-                    <ChatMessages messages={messages} isThinking={isThinking} />
+                    messages && messages.length > 0 ? (
+                        <ChatMessages messages={messages} isThinking={isThinking} />
+                    ) : (
+                        <ChatEmpty />
+                    )
                 )}
 
                 <DrawerFooter>

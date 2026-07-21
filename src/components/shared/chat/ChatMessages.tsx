@@ -27,13 +27,9 @@ export default function ChatMessages({ messages, isThinking }: ChatMessagesProps
             id="message-content"
             className="flex-1 min-h-0 h-full flex flex-col gap-4 p-6 overflow-y-auto"
         >
-            {messages && messages.length > 0 ? (
-                messages.map(message => (
-                    <ChatMessage key={message.id} message={message} />
-                ))
-            ) : (
-                <p className="text-zinc-700 text-base text-center">How can I help you today?</p>
-            )}
+            {messages.map(message => (
+                <ChatMessage key={message.id} message={message} />
+            ))}
 
             {isThinking && (
                 <Marker role="status">
