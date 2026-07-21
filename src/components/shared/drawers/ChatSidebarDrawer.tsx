@@ -37,11 +37,15 @@ export default function ChatSidebarDrawer() {
                     <PanelRight />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent className="data-[vaul-drawer-direction=right]:w-68">
+            <DrawerContent className="data-[vaul-drawer-direction=right]:w-70">
                 <DrawerHeader>
                     <DrawerTitle className="text-base">Chats</DrawerTitle>
+                    <DrawerDescription>
+                        Start a new chat or pick up a recent conversation.
+                    </DrawerDescription>
+
                     <Button className="mt-2" variant="outline" asChild>
-                        <Link href="/shop">
+                        <Link href="/shop/conversations/new">
                             <CirclePlus />
                             New Chat
                         </Link>

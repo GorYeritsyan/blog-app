@@ -27,8 +27,10 @@ export default function ChatDrawer() {
     const router = useRouter();
     const conversationId = params.conversationId?.at(-1);
 
+    const isNewChat = !conversationId || conversationId === "new";
+
     useEffect(() => {
-        if (!conversationId) {
+        if (isNewChat) {
             setMessages([]);
             return;
         }
@@ -40,14 +42,12 @@ export default function ChatDrawer() {
 
     // Open drawer when there is conversationId
     useEffect(() => {
-        if (conversationId) {
+        if (conversationId || conversationId === "new") {
             setOpen(true);
         }
     }, [conversationId]);
 
     const sendMessage = async (content: string) => {
-        const isNewChat = !conversationId;
-
         // 1. optimistic user message, shown instantly
         const optimisticUserMessage: TChatMessage = {
             id: Date.now(),
@@ -101,14 +101,12 @@ export default function ChatDrawer() {
                 </DrawerHeader>
 
 
-                {isPending ? (
+                {isNewChat && (!messages || messages?.length === 0)  ? (
+                    <ChatEmpty />
+                ) : isPending ? (
                     <ChatSkeleton />
                 ) : (
-                    messages && messages.length > 0 ? (
-                        <ChatMessages messages={messages} isThinking={isThinking} />
-                    ) : (
-                        <ChatEmpty />
-                    )
+                    <ChatMessages messages={messages} isThinking={isThinking} />
                 )}
 
                 <DrawerFooter>
