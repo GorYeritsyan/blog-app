@@ -30,7 +30,7 @@ export default function ChatConversations({ conversations }: { conversations: TC
                         </Button>
 
                         <div className="absolute top-1/2 -translate-y-1/2 right-1">
-                            <ChatConversationActions />
+                            <ChatConversationActions conversationId={conversation.id} />
                         </div>
                     </div>
                 ))

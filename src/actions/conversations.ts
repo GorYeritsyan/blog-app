@@ -3,7 +3,8 @@
 import {fetchInstance} from "@/actions/index";
 import {tryCatch} from "@/utils/utils";
 import {TChatMessage, TConversation} from "@/types/types";
-import {revalidatePath, updateTag} from "next/cache";
+import {revalidatePath, revalidateTag, updateTag} from "next/cache";
+import {redirect} from "next/navigation";
 
 export const getAllConversations = async () => {
     const { data } = await tryCatch<TConversation[]>(fetchInstance(`/chat/conversations`, {
@@ -16,9 +17,11 @@ export const getAllConversations = async () => {
 }
 
 export const getConversationMessages = async (conversationId: number) => {
-    const { data } = await tryCatch<TConversation>(fetchInstance(`/chat/conversations/${conversationId}`, {
+    const { data, error } = await tryCatch<TConversation>(fetchInstance(`/chat/conversations/${conversationId}`, {
         next: { tags: [`conversation-${conversationId}`] }
     }));
+
+    if (error) redirect("/shop/new");
 
     return data?.data && data?.data?.messages.length > 0 ? data?.data?.messages : [];
 }
@@ -41,6 +44,7 @@ export const removeConversation = async (conversationId: number) => {
         method: "DELETE",
     }));
 
+    if (error) return error;
+
     updateTag("conversations");
-    return error;
 }

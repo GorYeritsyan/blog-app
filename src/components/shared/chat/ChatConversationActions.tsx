@@ -1,5 +1,6 @@
 "use client";
 
+import {toast} from "sonner";
 import {EllipsisVertical, Trash} from "lucide-react";
 import {
     DropdownMenu,
@@ -9,10 +10,19 @@ import {
 } from "@/components/shadcn/dropdown-menu";
 import {Button} from "@/components/shadcn/button";
 import DeleteDialog from "@/components/shared/dialogs/DeleteDialog";
+import {removeConversation} from "@/actions/conversations";
 
 export default function ChatConversationActions({ conversationId }: { conversationId: number }) {
     const handleDeleteConversation = async () => {
-        console.log("deleting conversation", conversationId);
+        console.log("conversation deleted", conversationId);
+
+        const error = await removeConversation(conversationId);
+        if (error) {
+            toast.error(error.message);
+            return;
+        }
+
+        toast.info("Chat deleted");
     }
 
     return (
