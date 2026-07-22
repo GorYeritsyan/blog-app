@@ -9,27 +9,35 @@ import {
 } from "@/components/shadcn/alert-dialog";
 import { Button } from "@/components/shadcn/button";
 import {deleteProduct} from "@/actions/products";
+import {ReactNode} from "react";
+import {cn} from "@/lib/utils";
 
-export default function DeleteModalButton({ productId }: { productId: number }) {
-    const handleDeleteProduct = async (productId: number) => {
-        await deleteProduct(productId);
-    }
+type DeleteDialogProps = {
+    title: string;
+    description: string;
+    onDelete: () => void;
+    children?: ReactNode;
+    className?: string;
+}
 
+export default function DeleteDialog({ children, title, description, onDelete, className }: DeleteDialogProps) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive">Delete</Button>
+                <Button variant="destructive" className={cn(className)}>
+                    {children ? children : "Delete"}
+                </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle className="text-xl">Delete Product</AlertDialogTitle>
-                    <AlertDialogDescription className="text-base">Are you sure you want to delete this product?</AlertDialogDescription>
+                    <AlertDialogTitle className="text-xl">{title}</AlertDialogTitle>
+                    <AlertDialogDescription className="text-base">{description}</AlertDialogDescription>
                 </AlertDialogHeader>
 
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction variant="destructive" onClick={() => handleDeleteProduct(productId)}>
-                        Yes, I'm sure
+                    <AlertDialogAction variant="destructive" onClick={onDelete}>
+                        Delete
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

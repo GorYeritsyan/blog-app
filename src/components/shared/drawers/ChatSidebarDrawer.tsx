@@ -37,7 +37,7 @@ export default function ChatSidebarDrawer() {
                     <PanelRight />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent className="data-[vaul-drawer-direction=right]:w-70">
+            <DrawerContent className="data-[vaul-drawer-direction=right]:w-86">
                 <DrawerHeader>
                     <DrawerTitle className="text-base">Chats</DrawerTitle>
                     <DrawerDescription>

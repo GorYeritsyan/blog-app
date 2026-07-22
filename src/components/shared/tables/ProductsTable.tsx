@@ -1,13 +1,18 @@
+"use client";
+
 import {Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/shadcn/table";
-import {TOrderItem, TProduct} from "@/types/types";
+import {TProduct} from "@/types/types";
 import Image from "next/image";
 import ProductDialog from "@/components/shared/dialogs/ProductDialog";
-import DeleteProductDialog from "@/components/shared/dialogs/DeleteProductDialog";
+import DeleteDialog from "@/components/shared/dialogs/DeleteDialog";
+import {deleteProduct} from "@/actions/products";
 
 const productColumns = ["Image", "Title", "Price", "Actions"];
 
 export default function ProductsTable({ products }: { products: TProduct[] }) {
-    console.log(products);
+    const handleDeleteProduct = async (productId: number) => {
+        await deleteProduct(productId);
+    }
 
     return (
         <Table className="text-base table-fixed">
@@ -36,7 +41,11 @@ export default function ProductsTable({ products }: { products: TProduct[] }) {
                             <TableCell>
                                 <div className="flex items-center gap-2">
                                     <ProductDialog product={product} />
-                                    <DeleteProductDialog productId={product.id} />
+                                    <DeleteDialog
+                                        title="Delete Product"
+                                        description="Are you sure you want to delete this product?"
+                                        onDelete={() => handleDeleteProduct(product.id)}
+                                    />
                                 </div>
                             </TableCell>
                         </TableRow>

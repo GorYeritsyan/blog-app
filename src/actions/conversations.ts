@@ -6,7 +6,11 @@ import {TChatMessage, TConversation} from "@/types/types";
 import {revalidatePath, updateTag} from "next/cache";
 
 export const getAllConversations = async () => {
-    const { data } = await tryCatch<TConversation[]>(fetchInstance(`/chat/conversations`));
+    const { data } = await tryCatch<TConversation[]>(fetchInstance(`/chat/conversations`, {
+        next: {
+            tags: ["conversations"],
+        }
+    }));
 
     return data?.data ?? [];
 }
@@ -30,4 +34,13 @@ export const sendConversationMessage = async ({ conversationId, content }: { con
 
     updateTag(`conversation-${conversationId}`);
     return { data: data?.data, error };
+}
+
+export const removeConversation = async (conversationId: number) => {
+    const { error } = await tryCatch(fetchInstance(`/chat/conversations/${conversationId}`, {
+        method: "DELETE",
+    }));
+
+    updateTag("conversations");
+    return error;
 }
