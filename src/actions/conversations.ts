@@ -5,6 +5,7 @@ import {tryCatch} from "@/utils/utils";
 import {TChatMessage, TConversation} from "@/types/types";
 import {revalidatePath, revalidateTag, updateTag} from "next/cache";
 import {redirect} from "next/navigation";
+import {Stripe} from "stripe";
 
 export const getAllConversations = async () => {
     const { data } = await tryCatch<TConversation[]>(fetchInstance(`/chat/conversations`, {
@@ -27,7 +28,7 @@ export const getConversationMessages = async (conversationId: number) => {
 }
 
 export const sendConversationMessage = async ({ conversationId, content }: { conversationId?: number; content: string }) => {
-    const { data, error } = await tryCatch<TChatMessage>(fetchInstance(`/chat/messages`, {
+    const { data, error } = await tryCatch<{ message: TChatMessage; checkoutUrl: string }>(fetchInstance(`/chat/messages`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -35,8 +36,10 @@ export const sendConversationMessage = async ({ conversationId, content }: { con
         body: JSON.stringify({ conversationId, content }),
     }));
 
+    if (error) return { error };
+
     updateTag(`conversation-${conversationId}`);
-    return { data: data?.data, error };
+    return { data: data?.data };
 }
 
 export const removeConversation = async (conversationId: number) => {

@@ -61,11 +61,16 @@ export default function ChatDrawer() {
         setIsThinking(true);
 
         try {
-            const { data: assistantMessage, error } = await sendConversationMessage(
+            const { data, error } = await sendConversationMessage(
                 isNewChat ? { content } : { conversationId: +conversationId, content }
             );
 
-            if (error) toast.error(error.message);
+            if (error) {
+                toast.error(error.message);
+                return;
+            }
+
+            const { message: assistantMessage, checkoutUrl } = data;
 
             if (isNewChat && assistantMessage) {
                 // redirect; the useEffect above will refetch full history
@@ -74,6 +79,8 @@ export default function ChatDrawer() {
             } else if (assistantMessage) {
                 setMessages(prev => [...prev, assistantMessage]);
             }
+
+            if (checkoutUrl) window.location.href = checkoutUrl;
         } finally {
             setIsThinking(false);
         }
